@@ -9,7 +9,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 - Inventaire du matériel organisé par catégories.
 - Projets publics ou privés avec suivi des tâches en Kanban.
 - Affectation et réservation du matériel par projet.
-- Gestion des droits : administrateur, gestionnaires et utilisateurs.
+- Gestion des droits : un administrateur, un gestionnaire et des utilisateurs.
 - Historique et exports de l’inventaire.
 
 ## État du projet
@@ -18,4 +18,4 @@ Le projet est en phase de cadrage. Le premier sprint prévoit des maquettes, une
 
 ## Documentation
 
-Les besoins et les points à préciser sont détaillés dans le [compte rendu de réunion client](compte-rendu-reunion-client.md).
+Les besoins et les points à préciser sont détaillés dans le [compte rendu de réunion client](docs/compte-rendu-reunion-client.md).
