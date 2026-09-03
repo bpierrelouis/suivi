@@ -62,7 +62,7 @@ Le **nom est le seul champ obligatoire** à la création d’un matériel. Les c
 Deux modes de suivi sont prévus :
 
 - **Matériel non individualisé :** consommables et petits équipements référencés sans suivi par exemplaire ni comptage précis. Exemples : vis, tournevis et petits outils. L’objectif est d’indiquer leur présence et leur disponibilité dans le laboratoire. Ces matériels ne sont pas réservables.
-- **Matériel individualisé :** équipements enregistrés exemplaire par exemplaire, afin de connaître leur nombre exact et de suivre chaque matériel. Les fiches peuvent contenir un numéro de série, une adresse MAC, une référence constructeur, un numéro d’inventaire ou un autre identifiant utile.
+- **Matériel individualisé :** équipements enregistrés exemplaire par exemplaire, afin de connaître leur nombre exact et de suivre chaque matériel. Les fiches peuvent contenir un numéro de série, une référence constructeur, un numéro d’inventaire ou un autre identifiant utile.
 
 Un même type de matériel peut ainsi regrouper plusieurs exemplaires distincts, par exemple trois Raspberry Pi 5 possédant chacun leur propre fiche. Les identifiants techniques restent facultatifs, même pour un exemplaire individualisé.
 
@@ -78,7 +78,7 @@ Supprimer une catégorie retire son association aux matériels concernés, sans 
 
 L’inventaire permet de rechercher du matériel, de combiner plusieurs critères, de filtrer et trier les résultats, puis de consulter les fiches détaillées.
 
-Les critères envisagés comprennent le type de matériel, les catégories, la disponibilité, le numéro de série, l’adresse MAC et le projet associé, dans le respect des droits d’accès.
+Les critères envisagés comprennent le type de matériel, les catégories, la disponibilité, le numéro de série et le projet associé, dans le respect des droits d’accès.
 
 ### 3.4. Exports
 
