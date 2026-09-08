@@ -35,14 +35,14 @@ Les lots L2 à L5 sont des regroupements fonctionnels proposés, sans durée ni 
 | [US-17](user-stories.md#us-17) | Ajout de membres | E3 | P1 | L3 | US-14 ; Q-07 | À arbitrer |
 | [US-18](user-stories.md#us-18) | Retrait de membres | E3 | P1 | L3 | US-17 ; Q-07, Q-27 | À arbitrer |
 | [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable facultatif | E3 | P1 | L3 | US-14, US-17 ; Q-01, Q-26 | À arbitrer sur le cycle de vie |
-| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | L4 | US-14, US-19, US-24, US-25 ; Q-03, Q-06, Q-12 | Équivalence décidée ; autres actions à arbitrer |
-| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | L4 | US-20 ; Q-03, Q-12 | Droits de lecture décidés ; autres actions à arbitrer |
+| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | L4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12 | Équivalence et absence de réouverture décidées ; autres actions à arbitrer |
+| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | L4 | US-20 ; Q-12 | Droits de lecture et absence de réouverture décidés ; autres actions à arbitrer |
 | [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | L4 | US-14 à US-21 | À préparer |
 | [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | L4 | US-05, US-14, US-17 ; Q-22, Q-27 | À arbitrer |
 | [US-23](user-stories.md#us-23) | Modification de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
 | [US-24](user-stories.md#us-24) | Annulation de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
 | [US-25](user-stories.md#us-25) | Historique des réservations | E4 | P1 | L4 | US-22, US-23, US-24 | À préparer |
-| [US-26](user-stories.md#us-26) | Calendrier de disponibilité | E4 | P2 | L5 | US-22, US-23, US-24 ; Q-16, Q-22 | Candidate |
+| [US-26](user-stories.md#us-26) | Calendrier de disponibilité | E4 | P2 | L5 | US-22, US-23, US-24 ; Q-16, Q-22 | Retenu ; modalités à arbitrer |
 | [US-27](user-stories.md#us-27) | Notification de suppression | E5 | P1 | L4 | US-17, US-22, US-24 ; Q-02, Q-15 | À arbitrer ; intégré à US-10 |
 | [US-28](user-stories.md#us-28) | Lecture des notifications | E5 | P1 | L4 | US-27 ; Q-15 | À arbitrer |
 | [US-29](user-stories.md#us-29) | Confidentialité et droits | E5 | P0 | S1 puis tous les lots | Chaque surface de données livrée | À préparer ; validation progressive |
@@ -58,7 +58,7 @@ Ces éléments ne sont pas des besoins utilisateurs supplémentaires et n’impo
 | --- | --- | --- | --- | --- |
 | CAD-01 | Faire valider la référence client, les priorités et le périmètre S1. | Avant S1 | Q-04, Q-20 | À faire |
 | CAD-02 | Définir la simulation d’authentification et la configuration de `admin`. | Avant US-01 | Q-21 | À faire |
-| CAD-03 | Statuer sur rôles/membres, visibilité, cycles de vie et créneaux. | Avant fonctions concernées | Q-01 à Q-03, Q-06 à Q-09, Q-12, Q-13, Q-22, Q-23, Q-26, Q-27 | À faire |
+| CAD-03 | Statuer sur rôles/membres, visibilité, cycles de vie et créneaux. | Avant fonctions concernées | Q-01, Q-02, Q-06 à Q-09, Q-12, Q-13, Q-16, Q-22, Q-23, Q-26, Q-27 | À faire |
 | TEC-01 | Choisir le mode d’exécution et documenter démarrage/configuration du prototype. | S1 | Q-17, Q-24 | À définir |
 | TEC-02 | Préparer données fictives et comptes de démonstration cohérents. | S1 | Q-21 ; scénario gestionnaire sans interface d’attribution obligatoire | À faire |
 | TEC-03 | Définir contrôles d’accès, gestion des secrets et des sessions. | S1 | EX-04, EX-05 ; Q-24 | À définir |
@@ -85,4 +85,4 @@ Ces éléments ne sont pas des besoins utilisateurs supplémentaires et n’impo
 | §7 Premier sprint | US-01, US-02, US-04, US-30 ; tranche S1 de US-29 |
 | §8 Points à préciser | Registre Q-01 à Q-21, complété par Q-22 à Q-27 issus de l’analyse |
 
-Les décisions sur suppression/réouverture de projet, administration supplémentaire, import ou personnalisation pourront produire de nouvelles stories si elles sont retenues. Leur présence dans le registre ne les engage pas au développement.
+Les décisions sur la suppression de projet, l’administration supplémentaire, l’import ou la personnalisation pourront produire de nouvelles stories si elles sont retenues. Leur présence dans le registre ne les engage pas au développement.

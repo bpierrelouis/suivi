@@ -241,24 +241,24 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 
 En tant que créateur ou administrateur, je veux terminer un projet afin de libérer son matériel et conserver ses éléments.
 
-**Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-03, Q-06, Q-12 pour les modifications, la suppression et la réouverture.
+**Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-06 et Q-12 pour les droits des autres membres, les modifications et la suppression.
 
 - CA1 : le créateur et l’administrateur peuvent déclencher la clôture ou l’archivage ; ces deux termes désignent la même action et le même état. Les droits des autres membres restent à préciser.
 - CA2 : les matériels réservés pour le projet sont immédiatement libérés, y compris pour les périodes futures ; la trace des affectations est conservée.
 - CA3 : l’archive conserve informations, participants, matériels associés et tâches réalisées, sans échéance de suppression définie.
-- CA4 : les modifications ultérieures, la suppression et la réouverture suivent Q-03/Q-12 ; aucun comportement supplémentaire n’est présumé.
+- CA4 : un projet archivé ne peut pas être rouvert ; les modifications ultérieures et la suppression suivent Q-12.
 
 <a id="us-21"></a>
 ### US-21 — Consulter les archives des projets
 
 En tant qu’utilisateur, je veux retrouver les projets archivés auxquels leur visibilité me donne accès afin de consulter les éléments conservés.
 
-**Référence :** §4.4 et §8.2 ; RG-21. **Arbitrages :** Q-03, Q-12 pour les actions possibles après archivage.
+**Référence :** §4.4 et §8.2 ; RG-21. **Arbitrage :** Q-12 pour les actions possibles après archivage.
 
 - CA1 : les informations, participants, matériels associés et tâches réalisées restent conservés indéfiniment pour le moment.
 - CA2 : un projet public archivé reste consultable par tous les utilisateurs ; un projet privé archivé reste consultable par l’administrateur, son créateur et ses membres ; le gestionnaire reste exclu des projets.
 - CA3 : l’historique des modifications du projet reste consultable selon les mêmes droits.
-- CA4 : les actions de modification, suppression et réouverture ne sont pas intégrées comme acquises ; elles nécessitent un arbitrage puis, si retenues, des stories complémentaires.
+- CA4 : aucune action de réouverture n’est disponible ; les actions de modification et de suppression nécessitent un arbitrage puis, si retenues, des stories complémentaires.
 
 <a id="us-31"></a>
 ### US-31 — Consulter l’historique des modifications d’un projet
@@ -326,11 +326,11 @@ En tant qu’administrateur ou gestionnaire, je veux retrouver les réservations
 <a id="us-26"></a>
 ### US-26 — Visualiser un calendrier de disponibilité
 
-**Story candidate, fonctionnalité envisagée.** En tant qu’utilisateur autorisé à consulter l’inventaire, je veux visualiser les périodes de disponibilité afin de préparer l’utilisation du matériel.
+En tant qu’utilisateur autorisé à consulter l’inventaire, je veux visualiser les périodes de disponibilité dans un calendrier afin de préparer l’utilisation du matériel.
 
-**Référence :** §5 ; RG-17, RG-24. **Arbitrages :** Q-16, Q-22.
+**Référence :** §5 ; RG-17, RG-24, RG-31. **Arbitrages :** Q-16 pour les modalités et Q-22 pour les créneaux.
 
-- CA1 : si le calendrier est retenu, il représente les périodes disponibles et réservées selon le périmètre validé en Q-16.
+- CA1 : le calendrier représente les périodes disponibles et réservées selon le périmètre validé en Q-16.
 - CA2 : le nom d’un projet inaccessible est remplacé par « Réservé », sans accès au détail du projet.
 - CA3 : les périodes affichées correspondent aux réservations en vigueur ; les créneaux annulés n’apparaissent plus comme bloquants.
 - CA4 : consulter ce calendrier n’accorde pas de droit de réservation ni d’accès à l’historique réservé aux profils habilités.

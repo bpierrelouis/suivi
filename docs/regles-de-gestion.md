@@ -35,8 +35,8 @@
 | RG-17 | Pour une réservation liée à un projet inaccessible, afficher « Réservé » à la place du nom du projet. Ne pas divulguer ses informations via inventaire, recherche, historique ou export. |
 | RG-18 | L’ajout d’un membre est immédiat, sans invitation à accepter. Les membres peuvent modifier les informations, gérer les tâches et les réservations et ajouter des membres. L’administrateur peut aussi retirer des membres. Les autres droits de retrait restent ouverts, Q-07. |
 | RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
-| RG-20 | Créateur et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres et la réouverture restent à arbitrer. |
-| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur, le créateur et les membres ; le gestionnaire n’accède à aucun projet. Modifications, suppression et réouverture : Q-03/Q-12. |
+| RG-20 | Créateur et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres restent à arbitrer. Un projet archivé ne peut pas être rouvert. |
+| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur, le créateur et les membres ; le gestionnaire n’accède à aucun projet. Modifications et suppression : Q-12. |
 | RG-30 | Toute modification d’un projet est historisée avec sa date et son auteur. L’historique couvre au minimum la création, les informations et la visibilité, les membres, les tâches et la clôture/archivage. Il suit les droits de consultation du projet, y compris après archivage. |
 
 ## Réservations et notifications
@@ -48,6 +48,7 @@
 | RG-24 | Un matériel ne peut pas être réservé simultanément par deux projets. Toute création ou modification incompatible est refusée. Des réservations successives sans chevauchement sont possibles. Bornes et chevauchement dans un même projet : Q-22. |
 | RG-25 | Tous les membres peuvent modifier ou annuler toute réservation de leur projet, quel qu’en soit l’auteur. L’administrateur agit sur tous les projets. Une annulation libère le créneau et reste tracée. |
 | RG-26 | L’historique conserve le réservant, le matériel, la création, le début et la fin prévus, le projet et les éventuelles annulations, y compris après suppression du matériel. Réservations passées et annulées sont conservées. |
+| RG-31 | Un calendrier affiche les périodes disponibles et réservées du matériel individualisé. Un projet inaccessible est masqué par la mention « Réservé ». L’accès au calendrier n’accorde aucun droit supplémentaire de réservation ou d’historique. Les profils, vues, périodes et actions restent à préciser, Q-16. |
 | RG-27 | Les notifications sont internes à l’application. Chaque destinataire possède son propre état lu/non lu. La suppression d’un matériel notifie les membres des projets avec réservation en cours ou future. Contenu et présentation : Q-15. |
 | RG-28 | Le tableau de bord tient compte du profil. Le gestionnaire n’y voit aucun projet. L’administrateur dispose d’un accès direct à la gestion de l’inventaire. Contenu détaillé : Q-14. |
 | RG-29 | Premier sprint : connexion fonctionnelle simulée, maquettes et tableau de bord avec données fictives. La réservation est exclue de ce sprint. |
@@ -77,7 +78,7 @@ Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour 
 | Consulter un projet archivé | Oui | Non | Selon la visibilité : public pour tous, privé si créateur ou membre |
 | Consulter l’historique d’un projet | Oui | Non | Si le projet est consultable |
 | Supprimer un projet | Oui, modalités à préciser | Non | À préciser |
-| Rouvrir un projet | À préciser | Non | À préciser |
+| Rouvrir un projet | Non | Non | Non |
 | Attribuer/retirer le rôle gestionnaire | Oui | Non prévu | Non prévu |
 
 Le droit de consulter un projet public ne permet pas de le modifier. La consultation opérationnelle des réservations d’un projet et l’historique de l’inventaire sont deux accès distincts ; l’un ne donne pas accès à l’autre.

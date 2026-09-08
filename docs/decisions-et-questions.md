@@ -10,6 +10,8 @@
 | D-02 | Une tâche peut avoir un responsable facultatif choisi parmi les membres du projet. | US-19, RG-19, données, parcours et recette. | Appliquée |
 | D-03 | Clôture et archivage d’un projet sont équivalents : même action, même état et mêmes effets. | US-20, RG-20, glossaire, parcours et recette. | Appliquée |
 | D-04 | Un projet archivé reste consultable selon sa visibilité, comme un projet actif. Le gestionnaire reste exclu de tous les projets. | US-21, US-31, RG-21, matrice des droits et recette. | Appliquée |
+| D-05 | Un projet clôturé/archivé ne peut pas être rouvert. | US-20, US-21, RG-20, données, parcours et recette. | Appliquée |
+| D-06 | Le calendrier des disponibilités et des réservations est retenu. Ses profils, vues, périodes et actions restent à préciser. | US-26, RG-31, backlog, parcours et recette. | Appliquée |
 
 Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous-questions nécessaires à leur application. Q-22 à Q-27 sont des précisions issues de la rédaction des stories, distinctes des demandes explicites du client.
 
@@ -19,7 +21,7 @@ Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous
 | --- | --- | --- | --- |
 | Q-01 | Les colonnes Kanban sont-elles fixes ou personnalisables ? Confirmer leurs libellés. | US-19, données du tableau. | Avant réalisation du Kanban. |
 | Q-02 | Lors d’une nomination comme gestionnaire, les adhésions antérieures sont-elles conservées et masquées ou supprimées ? Comment traiter les projets créés, réservations, notifications et le retour au rôle utilisateur ? Faut-il retirer le gestionnaire actuel avant toute nouvelle nomination ? | US-03, US-17, US-27, US-29. | Avant changement de rôle. |
-| Q-03 | Un projet clôturé ou archivé peut-il être rouvert ? Par qui, et avec quel effet sur les réservations libérées ? | US-20, US-21 ; story de réouverture seulement si retenue. | Avant cycle de vie des projets. |
+| Q-03 | Décidé en D-05 : un projet clôturé/archivé ne peut pas être rouvert. | US-20, US-21 et matrice des droits. | Close et appliquée |
 | Q-04 | Renseigner date de réunion, participants, rédacteur, personne validant le compte rendu et date de validation. | Statut de la source et acceptation du cadrage. | Avant engagement du périmètre. |
 | Q-05 | Quelles « principales données » l’administrateur gère-t-il en plus des fonctions décrites ? Quels droits pour les autres profils ? | Périmètre éventuel supplémentaire. | Avant ajout de fonctions d’administration. |
 | Q-06 | Quels droits pour l’utilisateur sur suppression, choix/changement de visibilité et clôture/archivage par les membres non créateurs ? Comment appliquer une visibilité obligatoire à la création tant que les droits de choix sont indéfinis ? | US-14, US-16, US-20 ; matrice des droits. | Avant gestion des projets. |
@@ -32,7 +34,7 @@ Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous
 | Q-13 | Un changement des dates du projet modifie-t-il les réservations existantes ? Si oui, comment traiter les conflits ? | US-16, US-23. | Avant liaison dates projet/réservations. |
 | Q-14 | Quelles informations et actions figurent au tableau de bord de chaque profil ? « Mes projets » inclut-il uniquement participations/créations ou aussi les projets publics consultables ? | US-04, US-30. | Pendant conception S1. |
 | Q-15 | Contenu, présentation, regroupement et durée de conservation des notifications ? Marquage lu explicite ou à l’ouverture ? Retour à non lu ? Quel contenu reste visible après perte d’accès au projet ? | US-27, US-28. | Avant notifications. |
-| Q-16 | Le calendrier envisagé est-il retenu ? Pour quels profils, matériels, périodes et actions ? | US-26. | Avant engagement de cette candidate. |
+| Q-16 | Le calendrier est retenu en D-06. Pour quels profils, matériels, vues, périodes et actions doit-il être disponible ? | US-26. | Modalités à fixer avant réalisation. |
 | Q-17 | Application par navigateur ou installée ? Quels PC, navigateurs éventuels, serveurs et contraintes Intradef ? | TEC-01, TEC-05 ; aucune pile choisie. | Mode du prototype avant S1 ; cible avant déploiement. |
 | Q-18 | Quel inventaire existe déjà ? Quelle reprise et quels volumes de comptes, matériels et projets prévoir ? | Données initiales, import éventuel et objectifs de performance. | Avant conception de la reprise et dimensionnement. |
 | Q-19 | Quels autres écrans sont nécessaires au premier sprint ? | US-30, périmètre de conception. | Avant engagement S1. |

@@ -126,9 +126,9 @@ Pour un matériel actif, admin accède à son historique et aux projets ; G acc�
 
 ### REC-15 — Clôture et archives de projet
 
-**Stories :** US-20, US-21, US-31. **Préconditions :** Q-03/Q-06/Q-12/Q-26 décidés pour les comportements encore ouverts.
+**Stories :** US-20, US-21, US-31. **Préconditions :** Q-06/Q-12/Q-26 décidés pour les comportements encore ouverts.
 
-Clôturer puis, dans un autre jeu, archiver un projet comme créateur et comme admin non membre. Vérifier que les deux libellés produisent exactement le même état et les mêmes effets : matériels immédiatement libérés et affectations conservées. L’archive conserve les informations, participants, matériels associés, tâches réalisées et historique des modifications. Un utilisateur simple accède à l’archive publique, mais pas à l’archive privée ; le créateur, les membres et l’admin accèdent à l’archive privée ; le gestionnaire n’accède à aucune archive projet. Vérifier dans l’historique la date, l’auteur et la nature des modifications, y compris la clôture/archivage. Tester modification, suppression et réouverture uniquement selon les décisions retenues.
+Clôturer puis, dans un autre jeu, archiver un projet comme créateur et comme admin non membre. Vérifier que les deux libellés produisent exactement le même état et les mêmes effets : matériels immédiatement libérés et affectations conservées. L’archive conserve les informations, participants, matériels associés, tâches réalisées et historique des modifications. Un utilisateur simple accède à l’archive publique, mais pas à l’archive privée ; le créateur, les membres et l’admin accèdent à l’archive privée ; le gestionnaire n’accède à aucune archive projet. Vérifier dans l’historique la date, l’auteur et la nature des modifications, y compris la clôture/archivage. Vérifier qu’aucune interface ni requête directe ne permet de rouvrir le projet. Tester modification et suppression uniquement selon les décisions retenues.
 
 ### REC-16 — Notifications personnelles
 
@@ -138,11 +138,11 @@ Déclencher une suppression avec plusieurs destinataires A/B. Chaque destinatair
 
 ### REC-17 — Exports et calendrier
 
-**Stories :** US-13, US-26. **Préconditions :** Q-11/Q-16 décidés et fonctions retenues disponibles.
+**Stories :** US-13, US-26. **Préconditions :** modalités Q-11/Q-16 décidées et fonctions disponibles.
 
 Exporter tout l’inventaire actif puis un sous-ensemble filtré avec admin et G ; comparer lignes, colonnes et format aux décisions. Aucun fichier de G ne contient de données de projet interdites ; l’utilisateur ne déclenche ni ne récupère un export non autorisé. Tester les formats retenus avec un résultat vide et des noms accentués.
 
-Si le calendrier est retenu, vérifier périodes réservées/libres, actualisation après modification/annulation et masquage des projets. Son accès n’accorde ni droit de réservation supplémentaire ni accès à l’historique.
+Vérifier dans le calendrier les périodes réservées/libres, l’actualisation après modification/annulation et le masquage des projets. Son accès n’accorde ni droit de réservation supplémentaire ni accès à l’historique.
 
 ### REC-18 — Contrôles d’accès transverses
 

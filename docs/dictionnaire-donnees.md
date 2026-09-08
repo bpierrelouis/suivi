@@ -51,7 +51,7 @@ Aucun champ quantité précise pour le non-individualisé ni localisation physiq
 | Visibilité | Minimum requis, NP/public ou Secret/privé | Droits de l’utilisateur sur choix et changement à préciser en Q-06. |
 | Créateur | Requis métier, référence utilisateur | Droit de consultation privée et de clôture/archivage ; adhésion comme membre à confirmer. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
-| État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé ; réouverture à arbitrer en Q-03. |
+| État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. |
 | Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
 
 ## Participation à un projet

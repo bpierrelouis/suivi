@@ -37,10 +37,11 @@ La [matrice des droits](regles-de-gestion.md#matrice-des-droits) détaille les a
 - Archivage irréversible du matériel, historique daté et attribué à un auteur.
 - Projets publics ou privés, membres ajoutés immédiatement, tâches en Kanban avec responsable facultatif et historique des modifications.
 - Réservations du matériel individualisé par créneaux de trente minutes, sans conflit entre projets.
+- Calendrier des disponibilités et des réservations, dans le respect des droits d’accès.
 - Libération du matériel lors des annulations, de la suppression du matériel et de la clôture, équivalente à l’archivage du projet.
 - Tableau de bord selon le profil et notifications internes avec état de lecture individuel.
 
-Les exports Excel/PDF et le calendrier sont envisagés ; leurs modalités restent à valider.
+Les formats et le contenu des exports restent à valider. Le calendrier est retenu ; son périmètre d’affichage et ses actions restent à préciser.
 
 ## Premier incrément
 

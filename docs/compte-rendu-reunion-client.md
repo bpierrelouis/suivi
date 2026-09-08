@@ -154,6 +154,8 @@ Le **créateur et l’administrateur** peuvent clôturer ou archiver un projet. 
 
 L’archive du projet conserve ses informations, ses participants, les matériels associés et les tâches réalisées. Ces données sont conservées **indéfiniment pour le moment**, aucune durée limite n’étant définie. Un projet archivé reste consultable selon sa visibilité : un projet public reste visible par tous les utilisateurs, tandis qu’un projet privé reste visible par l’administrateur, son créateur et ses membres. Le gestionnaire demeure exclu de tous les projets.
 
+Un projet archivé ne peut pas être rouvert ni replacé dans l’état actif.
+
 Les modifications d’un projet sont conservées dans un historique avec leur date et leur auteur. Cet historique couvre au minimum la création, les changements d’informations et de visibilité, les changements de membres, les modifications des tâches et la clôture/archivage. Il est consultable par les personnes autorisées à consulter le projet, y compris après archivage.
 
 ## 5. Affectation et réservation du matériel
@@ -168,7 +170,7 @@ Un matériel ne peut pas être affecté à deux projets simultanément. Il est i
 
 Tous les membres peuvent modifier ou annuler les réservations de leur projet, quel qu’en soit l’auteur. L’administrateur dispose des mêmes droits sur tous les projets, même sans être membre. L’annulation libère le matériel pour la période concernée et reste tracée dans l’historique.
 
-Un calendrier est envisagé pour visualiser les périodes de disponibilité, les réservations et éventuellement le projet associé, selon les droits d’accès.
+Un calendrier permet de visualiser les périodes de disponibilité, les réservations et le projet associé lorsqu’il est accessible, selon les droits d’accès. Les profils, vues, périodes et actions disponibles dans le calendrier restent à préciser.
 
 **La réservation de matériel est hors périmètre du premier sprint.**
 
@@ -196,7 +198,6 @@ L’environnement Intradef est simulé et la connexion est gérée par l’appli
 
 - **Kanban :** les colonnes « À faire », « En cours » et « Fait » sont-elles fixes ou personnalisables ?
 - **Changement de rôle :** que deviennent les participations d’un utilisateur nommé gestionnaire ? Sont-elles conservées et masquées jusqu’à son retour au rôle utilisateur, ou supprimées ?
-- **Réouverture des projets :** peut-on rouvrir un projet après sa clôture ou son archivage ?
 
 ### 8.2. Autres précisions attendues
 
@@ -210,7 +211,7 @@ L’environnement Intradef est simulé et la connexion est gérée par l’appli
 | Matériel non individualisé | Signalement d’une indisponibilité ou rupture ; éventuelle association informative à un projet, sans réservation ni quantité précise. |
 | Catégories | Liste initiale à prévoir. |
 | Exports | Colonnes et informations à inclure dans les fichiers Excel et PDF. |
-| Archives des projets | Modifications encore permises, modalités de suppression et réouverture d’un projet. La clôture est équivalente à l’archivage et la consultation suit la visibilité. |
+| Archives des projets | Modifications encore permises et modalités de suppression d’un projet. La clôture est équivalente à l’archivage, la consultation suit la visibilité et aucune réouverture n’est possible. |
 | Réservations | Incidence des changements de dates d’un projet sur les réservations existantes et traitement des conflits éventuels. |
 | Tableau de bord | Informations et actions à présenter pour chaque profil. |
 | Notifications | Contenu et présentation des notifications dans l’application. |

@@ -25,7 +25,7 @@ Le mot CRUD dans une image n’accorde pas automatiquement création, modificati
 
 Accueil → inventaire actif → fiche → création/modification/suppression, catégories, historique et exports. Accès aux matériels archivés et à leur historique ; aucun bouton de restauration.
 
-Accueil → tous les projets autorisés au titre de l’administration → informations, membres, Kanban, réservations et historique des modifications. Les actions sont disponibles sans adhésion au projet. Les archives de tous les projets sont consultables ; les modalités de modification, suppression et réouverture restent à définir.
+Accueil → tous les projets autorisés au titre de l’administration → informations, membres, Kanban, réservations et historique des modifications. Les actions sont disponibles sans adhésion au projet. Les archives de tous les projets sont consultables et ne peuvent pas être rouvertes ; les modalités de modification et de suppression restent à définir.
 
 Gestion des rôles → choix d’un utilisateur → attribution/retrait du rôle gestionnaire. Le parcours de remplacement et l’effet sur les participations suivent Q-02. L’écran peut être reporté après S1 selon Q-20.
 
@@ -58,6 +58,7 @@ Depuis un projet accessible en modification → sélection d’un exemplaire →
 | Réservation | Début/fin obligatoires, minutes 00/30, valeurs projet comme défauts, message de conflit. |
 | Clôture/archivage projet | Expliquer la libération du matériel avant confirmation ; les deux libellés produisent le même état. Afficher l’archive et l’historique selon la visibilité du projet. |
 | Notifications | Liste personnelle, lu/non lu individuel et contenu conforme aux droits actuels. |
-| Export / calendrier | À concevoir après arbitrage des formats et du périmètre envisagé. |
+| Export | À concevoir après arbitrage des formats, colonnes et périmètres. |
+| Calendrier | Fonction retenue ; afficher disponibilités et réservations dans le respect des droits. Vues, périodes et actions à préciser en Q-16. |
 
 **Propositions ergonomiques communes :** navigation au clavier, libellés explicites, erreurs près des champs, retour clair après enregistrement, absence de projet privé dans les suggestions ou messages de conflit. La maquette finale devra préciser ces états ; le présent document ne remplace pas leur réalisation visuelle.

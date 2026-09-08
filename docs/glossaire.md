@@ -33,11 +33,12 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Réservé | Mention remplaçant le nom d’un projet inaccessible lorsqu’une réservation doit être signalée. |
 | Kanban | Tableau de suivi des tâches par colonnes ; À faire, En cours et Fait sont envisagées. |
 | Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable facultatif choisi parmi les membres ; sans priorité ni échéance. |
-| Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels. |
-| Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet. |
+| Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels et ne peut pas être annulée par une réouverture. |
+| Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet, sans possibilité de réouverture. |
 | Suppression de matériel | Archivage irréversible de sa fiche, conservée avec son historique pour l’administrateur. Annule les réservations en cours/futures. |
 | Suppression de projet | Action dont les modalités et certains droits restent à définir ; ne pas l’assimiler à la suppression du matériel. |
 | Historique | Trace datée et attribuée à un auteur pour l’inventaire, les réservations et les modifications des projets. |
+| Calendrier | Vue des périodes disponibles et réservées du matériel individualisé, soumise aux droits d’accès. |
 | Notification | Message dans l’application ; état lu/non lu propre à chaque destinataire. |
 | Export filtré | Fichier contenant les résultats correspondant aux filtres actifs et aux droits de l’utilisateur. |
 | Tableau de bord | Page d’accueil après connexion, adaptée au profil ; données fictives au premier sprint. |
