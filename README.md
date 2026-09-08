@@ -16,6 +16,8 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 
 Le projet est en phase de cadrage. Le premier sprint prévoit des maquettes, une connexion fonctionnelle et un tableau de bord avec des données fictives. L’environnement Intradef sera simulé, avec une connexion gérée par l’application.
 
+Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
+
 ## Documentation
 
 Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories, le backlog, les règles métier, les droits, le dictionnaire de données, le glossaire et la préparation de la recette.
