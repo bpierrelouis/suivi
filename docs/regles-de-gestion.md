@@ -7,9 +7,9 @@
 | ID | Règle |
 | --- | --- |
 | RG-01 | La connexion demande un identifiant et un mot de passe. L’identifiant peut être un courriel. Aucun formulaire d’inscription ni création manuelle de compte. La vérification des secrets simulés reste à définir, Q-21. |
-| RG-02 | À la première connexion validée, un utilisateur standard est créé automatiquement. Les connexions suivantes retrouvent le même compte et conservent son rôle. |
+| RG-02 | À la première connexion validée, un utilisateur est créé automatiquement. Les connexions suivantes retrouvent le même compte et conservent son rôle. |
 | RG-03 | Un seul administrateur existe, avec l’identifiant prédéfini `admin`. Son rôle ne peut pas être transféré. |
-| RG-04 | Il existe au plus un gestionnaire. Seul l’administrateur attribue ou retire ce rôle à un utilisateur standard. Le devenir de ses participations est à arbitrer, Q-02. |
+| RG-04 | Il existe au plus un gestionnaire. Seul l’administrateur attribue ou retire ce rôle à un utilisateur. Le devenir de ses participations est à arbitrer, Q-02. |
 | RG-05 | Le gestionnaire ne consulte, ne crée et ne gère aucun projet ; il ne peut pas y participer. L’administrateur gère tous les projets sans obligation d’en être membre. |
 
 ## Inventaire
@@ -24,19 +24,20 @@
 | RG-11 | « Supprimer » un matériel l’archive : il disparaît de l’inventaire actif, ses données et son historique sont conservés. Seul l’administrateur les consulte. Aucune restauration ni action distincte de retrait. |
 | RG-12 | Supprimer un matériel annule ses réservations en cours et futures, conserve leur trace et notifie les membres des projets concernés. |
 | RG-13 | Les créations, modifications et suppressions de matériel portent une date et un auteur. L’identification du matériel, la date et l’auteur de sa suppression sont conservés. |
-| RG-14 | Seuls l’administrateur et le gestionnaire consultent l’historique du matériel actif et de ses réservations. Le gestionnaire ne voit pas les informations des projets ; le standard n’a aucun accès à ces historiques, même pour ses projets. |
+| RG-14 | Seuls l’administrateur et le gestionnaire consultent l’historique du matériel actif et de ses réservations. Le gestionnaire ne voit pas les informations des projets ; l’utilisateur n’a aucun accès à ces historiques, même pour ses projets. |
 
 ## Projets
 
 | ID | Règle |
 | --- | --- |
-| RG-15 | L’administrateur et le standard créent un projet avec nom, description et visibilité. Les dates de début et de fin sont facultatives. Les droits du standard sur le choix/changement de visibilité restent à préciser, Q-06. |
+| RG-15 | L’administrateur et l’utilisateur créent un projet avec nom, description et visibilité. Les dates de début et de fin sont facultatives. Les droits de l’utilisateur sur le choix/changement de visibilité restent à préciser, Q-06. |
 | RG-16 | NP/public est consultable par tous sauf le gestionnaire. Secret/privé est consultable par l’administrateur, le créateur et les membres. « Secret » désigne une visibilité privée dans l’application. |
 | RG-17 | Pour une réservation liée à un projet inaccessible, afficher « Réservé » à la place du nom du projet. Ne pas divulguer ses informations via inventaire, recherche, historique ou export. |
 | RG-18 | L’ajout d’un membre est immédiat, sans invitation à accepter. Les membres peuvent modifier les informations, gérer les tâches et les réservations et ajouter des membres. L’administrateur peut aussi retirer des membres. Les autres droits de retrait restent ouverts, Q-07. |
-| RG-19 | Chaque tâche possède un titre et une description. Aucun responsable, échéance ou priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
-| RG-20 | Créateur et administrateur peuvent clôturer ou archiver un projet ; les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Droits des autres membres, réouverture et différences d’état restent à arbitrer. |
-| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Aucun journal des modifications des projets n’est prévu. Consultation et suppression : Q-12. |
+| RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
+| RG-20 | Créateur et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres et la réouverture restent à arbitrer. |
+| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur, le créateur et les membres ; le gestionnaire n’accède à aucun projet. Modifications, suppression et réouverture : Q-03/Q-12. |
+| RG-30 | Toute modification d’un projet est historisée avec sa date et son auteur. L’historique couvre au minimum la création, les informations et la visibilité, les membres, les tâches et la clôture/archivage. Il suit les droits de consultation du projet, y compris après archivage. |
 
 ## Réservations et notifications
 
@@ -53,9 +54,9 @@
 
 ## Matrice des droits
 
-« À préciser » signifie qu’un arbitrage est nécessaire. La qualité de créateur ou membre est relative au projet consulté.
+Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour un projet donné, l’utilisateur peut être créateur, membre ou simple (ni créateur ni membre). Un utilisateur simple peut consulter un projet public sans le modifier et ne peut pas accéder à un projet privé. Ces situations ne constituent pas des rôles globaux supplémentaires. « À préciser » signifie qu’un arbitrage est nécessaire.
 
-| Action | Administrateur | Gestionnaire | Standard |
+| Action | Administrateur | Gestionnaire | Utilisateur |
 | --- | --- | --- | --- |
 | Consulter l’inventaire actif et les fiches | Oui | Oui | Oui |
 | Créer/modifier/supprimer un matériel | Oui | Oui | Non prévu |
@@ -73,7 +74,8 @@
 | Ajouter un membre | Oui | Non | Membre |
 | Retirer un membre | Oui | Non | À préciser, Q-07 |
 | Clôturer/archiver un projet | Oui | Non | Créateur ; autres membres à préciser |
-| Consulter un projet archivé | À préciser | Non | À préciser |
+| Consulter un projet archivé | Oui | Non | Selon la visibilité : public pour tous, privé si créateur ou membre |
+| Consulter l’historique d’un projet | Oui | Non | Si le projet est consultable |
 | Supprimer un projet | Oui, modalités à préciser | Non | À préciser |
 | Rouvrir un projet | À préciser | Non | À préciser |
 | Attribuer/retirer le rôle gestionnaire | Oui | Non prévu | Non prévu |

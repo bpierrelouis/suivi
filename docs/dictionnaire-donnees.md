@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | Identifiant interne | Proposition, automatique | Référence stable pour membres, auteurs et destinataires. |
 | Identifiant de connexion | Requis métier, texte | Peut être un courriel ; `admin` réservé au compte administrateur. Reconnaissance/normalisation à préciser en Q-21. |
-| Rôle | Requis métier, administrateur / gestionnaire / standard | Un administrateur, zéro ou un gestionnaire ; standard par défaut à la première connexion. |
+| Rôle | Requis métier, administrateur / gestionnaire / utilisateur | Un administrateur, zéro ou un gestionnaire ; utilisateur par défaut à la première connexion. |
 | Données d’authentification | À définir | La simulation et la configuration des secrets relèvent de Q-21/Q-24. Aucun stockage de mot de passe en clair n’est proposé. |
 
 Aucun nom, prénom, courriel distinct ou annuaire éditable n’est imposé par le besoin actuel. Les utilisateurs supposés exister à l’extérieur et non encore connectés nécessitent Q-07.
@@ -48,15 +48,17 @@ Aucun champ quantité précise pour le non-individualisé ni localisation physiq
 | Identifiant interne | Proposition, automatique | Référence stable ; ne doit pas être divulguée par une surface masquant le projet. |
 | Nom | Minimum requis, texte | Avec description et visibilité. |
 | Description | Minimum requis, texte | Format/longueur non définis. |
-| Visibilité | Minimum requis, NP/public ou Secret/privé | Droits du standard sur choix et changement à préciser en Q-06. |
+| Visibilité | Minimum requis, NP/public ou Secret/privé | Droits de l’utilisateur sur choix et changement à préciser en Q-06. |
 | Créateur | Requis métier, référence utilisateur | Droit de consultation privée et de clôture/archivage ; adhésion comme membre à confirmer. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
-| État de cycle de vie | À préciser | Clôture et archivage prévus, distinction et réouverture à arbitrer en Q-03/Q-12. |
-| Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Technique de conservation et accès à préciser ; aucun journal des modifications du projet requis. |
+| État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé ; réouverture à arbitrer en Q-03. |
+| Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
 
 ## Participation à un projet
 
-Association entre un projet et un utilisateur. L’ajout produit ses effets immédiatement. Un projet peut avoir plusieurs membres et un utilisateur standard participer à plusieurs projets ; le gestionnaire ne peut pas participer. L’administrateur exerce ses droits sans avoir besoin d’une association.
+Les notions **créateur**, **membre** et **simple** décrivent la relation d’un utilisateur à un projet. Le créateur est identifié par le projet, le membre par une participation ; l’utilisateur simple n’est ni créateur ni membre du projet concerné. Il ne s’agit pas de valeurs supplémentaires du rôle global administrateur/gestionnaire/utilisateur.
+
+Association entre un projet et un utilisateur. L’ajout produit ses effets immédiatement. Un projet peut avoir plusieurs membres et un utilisateur participer à plusieurs projets ; le gestionnaire ne peut pas participer. L’administrateur exerce ses droits sans avoir besoin d’une association.
 
 **Proposition :** une seule participation active par couple utilisateur/projet. Le sort de l’association lors d’un changement de rôle ou du retrait du créateur est ouvert en Q-02/Q-27. Ne pas fusionner les notions de créateur et de membre avant cet arbitrage.
 
@@ -67,9 +69,22 @@ Association entre un projet et un utilisateur. L’ajout produit ses effets imm�
 | Identifiant interne et projet | Proposition de référence, automatiques | Une tâche appartient à un projet. |
 | Titre / description | Présents selon le compte rendu | Règles de saisie obligatoire et valeurs vides à confirmer en Q-26. |
 | Colonne / état Kanban | Nécessaire au suivi, valeurs à confirmer | À faire, En cours, Fait envisagés ; personnalisation Q-01. |
+| Responsable | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
 | Ordre dans la colonne | Proposition seulement | À retenir si nécessaire au parcours validé, Q-26. |
 
-Aucun responsable, date d’échéance ni priorité. Suppression de tâche et conservation des tâches non terminées lors de l’archivage : Q-26.
+Aucune date d’échéance ni priorité. Suppression de tâche et conservation des tâches non terminées lors de l’archivage : Q-26.
+
+## Historique des modifications d’un projet
+
+| Information | Obligation / forme conceptuelle | Règle |
+| --- | --- | --- |
+| Projet | Requis, référence projet | Relie l’événement au projet actif ou archivé. |
+| Date et heure | Requises | Moment de la modification. |
+| Auteur | Requis, référence utilisateur | Personne ayant effectué la modification. |
+| Nature de la modification | Requise | Création, informations, visibilité, membres, tâches ou clôture/archivage au minimum. |
+| Détail | À concevoir | Doit permettre de comprendre la modification sans imposer ici un format technique. |
+
+L’historique suit les droits de consultation du projet et reste conservé après archivage.
 
 ## Réservation
 

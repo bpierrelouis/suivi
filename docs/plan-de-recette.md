@@ -12,7 +12,7 @@ Consigner version testée, environnement, date, testeur et arbitrages applicable
 | --- | --- |
 | Compte `admin` | Administrateur unique ; secret configuré selon Q-21. |
 | Compte G | Gestionnaire unique, préparé selon le mécanisme convenu ; aucune participation opérationnelle à un projet. |
-| Comptes A, B, C | Standards ; A créateur et membre de P-PUB/P-PRIV, B membre, C extérieur. La double qualité d’A est préparée explicitement sans présumer de Q-27. |
+| Comptes A, B, C | Rôle utilisateur ; A créateur et membre de P-PUB/P-PRIV, B membre, C utilisateur simple sur ces projets. La double qualité d’A est préparée explicitement sans présumer de Q-27. |
 | Identifiant D reconnu par la simulation, absent de SUIVI | Première connexion, création automatique puis reconnexion. |
 | P-PUB | Projet public accessible à C en lecture seule. |
 | P-PRIV | Projet privé accessible à A/B/admin, inaccessible à C/G. |
@@ -30,7 +30,7 @@ Au premier sprint, ne préparer que les données nécessaires aux scénarios S1 
 
 **Stories :** US-01. **Périmètre :** S1, après Q-21.
 
-1. Se connecter avec D et un mot de passe reconnu par la simulation ; constater un unique compte standard et l’accès au tableau de bord.
+1. Se connecter avec D et un mot de passe reconnu par la simulation ; constater un unique compte de rôle utilisateur et l’accès au tableau de bord.
 2. Refaire une connexion avec D ; constater le même compte et le même rôle, sans doublon.
 3. Selon les règles de simulation décidées, soumettre des identifiants refusés et des champs manquants ; constater le refus d’accès et l’absence de création indue.
 
@@ -44,7 +44,7 @@ Se connecter avec `admin` : rôle administrateur conservé et accès adapté. V�
 
 **Stories :** US-03, US-29. **Précondition :** Q-02 décidé ; interface/routine d’administration disponible.
 
-Attribuer puis retirer le rôle à un standard existant ; vérifier unicité, retour au standard et conservation à la reconnexion. Tester deux attributions concurrentes : au plus un gestionnaire subsiste. Vérifier le devenir des adhésions selon Q-02 et l’absence immédiate d’accès aux projets/notifications non autorisées. Un non-administrateur ne peut ni attribuer ni retirer ce rôle.
+Attribuer puis retirer le rôle à un utilisateur existant ; vérifier unicité, retour à l’utilisateur et conservation à la reconnexion. Tester deux attributions concurrentes : au plus un gestionnaire subsiste. Vérifier le devenir des adhésions selon Q-02 et l’absence immédiate d’accès aux projets/notifications non autorisées. Un non-administrateur ne peut ni attribuer ni retirer ce rôle.
 
 ### REC-04 — Tableau de bord par profil
 
@@ -60,7 +60,7 @@ Avec les trois profils, ouvrir l’accueil après connexion : données fictives 
 2. Consulter M-1/M-2 comme fiches distinctes ; absence de numéro technique acceptée. Vérifier le non-individualisé sans quantité précise.
 3. Modifier un champ ; retrouver la modification avec date et auteur dans l’historique autorisé.
 4. Créer et renommer une catégorie ; affecter CAT-A et CAT-B à M-1, puis supprimer CAT-A. M-1 reste actif, CAT-B est conservée ; une fiche sans catégorie reste valide.
-5. Avec un standard, consulter puis tenter les opérations de création/modification/suppression et de catégories : aucune écriture autorisée.
+5. Avec un utilisateur, consulter puis tenter les opérations de création/modification/suppression et de catégories : aucune écriture autorisée.
 
 ### REC-06 — Recherche et confidentialité des filtres
 
@@ -84,7 +84,7 @@ Faire ajouter C à P-PRIV par B : accès immédiat sans invitation, puis droits 
 
 **Stories :** US-19. **Préconditions :** Q-01/Q-26 décidés.
 
-Vérifier titre, description, colonnes et opérations convenues : création, modification, déplacement, éventuelle suppression si retenue. A/B/admin peuvent agir selon leurs droits ; C sur P-PUB reste en lecture ; G et les extérieurs à P-PRIV ne voient pas son tableau. Aucun responsable, échéance ou priorité n’est requis. Vérifier la personnalisation seulement si elle a été retenue.
+Vérifier titre, description, responsable facultatif, colonnes et opérations convenues : création, modification, déplacement, éventuelle suppression si retenue. Affecter un membre du projet comme responsable, changer ce responsable puis le retirer ; refuser un utilisateur qui n’est pas membre. A/B/admin peuvent agir selon leurs droits ; C sur P-PUB reste en lecture ; G et les extérieurs à P-PRIV ne voient pas son tableau. Aucune échéance ni priorité n’est requise. Vérifier la personnalisation seulement si elle a été retenue.
 
 ### REC-10 — Création de réservation et horaires
 
@@ -93,7 +93,7 @@ Vérifier titre, description, colonnes et opérations convenues : création, mod
 1. B réserve M-1 pour son projet avec début/fin complets ; admin fait de même sur un projet sans adhésion.
 2. Préremplir les dates à partir du projet, puis les remplacer explicitement : les dates de réservation priment. Des horaires manquants doivent être complétés avant validation.
 3. Tester les minutes 00 et 30 (acceptées), puis 15 et 45 (refusées) et chaque champ obligatoire manquant (refus).
-4. Refuser une réservation de M-NI et une action par G ou un standard non membre.
+4. Refuser une réservation de M-NI et une action par G ou un utilisateur non membre.
 5. Tester les périodes inversées, de durée nulle, dans le passé et aux limites de fuseau selon les décisions Q-22 ; aucune réponse à ces cas ne doit être inventée pendant la recette.
 
 ### REC-11 — Conflits et demandes simultanées
@@ -116,7 +116,7 @@ A crée une réservation ; B la modifie puis l’annule. Vérifier les droits in
 
 Préparer pour M-1 une réservation passée, une en cours et une future, avec plusieurs membres destinataires. Supprimer M-1 avec G, puis répéter sur un autre jeu avec admin. Attendre : disparition de l’inventaire actif ; annulation des réservations en cours/futures ; créneaux libérés ; notifications des membres concernés ; conservation de la fiche et de toutes les traces passées/annulées.
 
-Admin retrouve l’archive, l’identification et date/auteur de suppression ; G et les standards ne peuvent plus la consulter, même via une référence connue. Aucun profil ne peut restaurer le matériel. Une réservation uniquement passée ne déclenche pas de notification de suppression au titre de ce cas.
+Admin retrouve l’archive, l’identification et date/auteur de suppression ; G et les utilisateurs ne peuvent plus la consulter, même via une référence connue. Aucun profil ne peut restaurer le matériel. Une réservation uniquement passée ne déclenche pas de notification de suppression au titre de ce cas.
 
 ### REC-14 — Accès aux historiques
 
@@ -126,9 +126,9 @@ Pour un matériel actif, admin accède à son historique et aux projets ; G acc�
 
 ### REC-15 — Clôture et archives de projet
 
-**Stories :** US-20, US-21. **Préconditions :** Q-03/Q-06/Q-12/Q-26 décidés.
+**Stories :** US-20, US-21, US-31. **Préconditions :** Q-03/Q-06/Q-12/Q-26 décidés pour les comportements encore ouverts.
 
-Clôturer puis, dans un autre jeu, archiver un projet comme créateur et comme admin non membre. Les matériels sont immédiatement libérés, les affectations restent tracées. L’archive conserve les informations, participants, matériels associés et tâches réalisées. Vérifier droits de lecture/modification après l’action et tâches restantes selon arbitrage. Tester les autres membres, suppression et réouverture uniquement selon les décisions retenues ; si une opération est exclue, elle ne doit pas être disponible.
+Clôturer puis, dans un autre jeu, archiver un projet comme créateur et comme admin non membre. Vérifier que les deux libellés produisent exactement le même état et les mêmes effets : matériels immédiatement libérés et affectations conservées. L’archive conserve les informations, participants, matériels associés, tâches réalisées et historique des modifications. Un utilisateur simple accède à l’archive publique, mais pas à l’archive privée ; le créateur, les membres et l’admin accèdent à l’archive privée ; le gestionnaire n’accède à aucune archive projet. Vérifier dans l’historique la date, l’auteur et la nature des modifications, y compris la clôture/archivage. Tester modification, suppression et réouverture uniquement selon les décisions retenues.
 
 ### REC-16 — Notifications personnelles
 
@@ -140,7 +140,7 @@ Déclencher une suppression avec plusieurs destinataires A/B. Chaque destinatair
 
 **Stories :** US-13, US-26. **Préconditions :** Q-11/Q-16 décidés et fonctions retenues disponibles.
 
-Exporter tout l’inventaire actif puis un sous-ensemble filtré avec admin et G ; comparer lignes, colonnes et format aux décisions. Aucun fichier de G ne contient de données de projet interdites ; le standard ne déclenche ni ne récupère un export non autorisé. Tester les formats retenus avec un résultat vide et des noms accentués.
+Exporter tout l’inventaire actif puis un sous-ensemble filtré avec admin et G ; comparer lignes, colonnes et format aux décisions. Aucun fichier de G ne contient de données de projet interdites ; l’utilisateur ne déclenche ni ne récupère un export non autorisé. Tester les formats retenus avec un résultat vide et des noms accentués.
 
 Si le calendrier est retenu, vérifier périodes réservées/libres, actualisation après modification/annulation et masquage des projets. Son accès n’accorde ni droit de réservation supplémentaire ni accès à l’historique.
 
@@ -154,7 +154,7 @@ Pour chaque case de la matrice des droits, vérifier un accès autorisé et les 
 
 **Stories :** US-30. **Périmètre :** S1.
 
-Parcourir connexion, accueil, inventaire et projets pour chaque profil. Vérifier les différences de lecture/modification, l’absence de projets pour le gestionnaire et la clarté des libellés. Consigner les retours du validateur, les écrans acceptés et ceux à reprendre. L’existence des anciennes images ne suffit pas à valider ce scénario.
+Parcourir connexion, accueil, inventaire et projets pour les trois rôles : administrateur, gestionnaire et utilisateur. Pour l’utilisateur, examiner les situations créateur, membre et simple sur un projet. Vérifier les différences de lecture/modification, l’absence de projets pour le gestionnaire et la clarté des libellés. Consigner les retours, les écrans acceptés et ceux à reprendre. L’existence des anciennes images ne suffit pas à valider ce scénario.
 
 ## Suivi d’exécution
 

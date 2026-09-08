@@ -4,6 +4,8 @@
 
 Chaque story est rattachée aux [règles de gestion](regles-de-gestion.md). Les `Q-xx` renvoient aux [arbitrages](decisions-et-questions.md). Les précisions nouvelles sont marquées « proposition » et restent à valider. Les autorisations se vérifient aussi lors d’un accès direct aux données, selon l’architecture retenue.
 
+Les trois rôles de l’application sont **administrateur (admin)**, **gestionnaire** et **utilisateur**. Pour un projet donné, on distingue l’utilisateur **créateur**, **membre** ou **simple** (ni créateur ni membre). Ces distinctions dépendent du projet, pas d’un rôle global supplémentaire.
+
 ## E1 — Accès et accueil
 
 <a id="us-01"></a>
@@ -13,7 +15,7 @@ En tant qu’utilisateur, je veux me connecter avec mon identifiant et mon mot d
 
 **Référence :** compte rendu §2.1 et §7 ; RG-01, RG-02, RG-29. **Arbitrage :** Q-21.
 
-- CA1 : lorsqu’une première connexion est validée par le mécanisme de simulation convenu, un seul compte standard est créé automatiquement, sans inscription ni création manuelle.
+- CA1 : lorsqu’une première connexion est validée par le mécanisme de simulation convenu, un seul compte de rôle utilisateur est créé automatiquement, sans inscription ni création manuelle.
 - CA2 : lors d’une nouvelle connexion avec le même identifiant reconnu, le compte existant est retrouvé et son rôle est conservé.
 - CA3 : la connexion demande un identifiant et un mot de passe ; le mécanisme de validation de ces valeurs doit être décidé avant de déclarer la story prête.
 - CA4 : une connexion réussie ouvre le tableau de bord. **Proposition :** une connexion refusée n’ouvre pas de session et ne crée pas de compte ; un message compréhensible est présenté.
@@ -26,19 +28,19 @@ En tant qu’administrateur, je veux utiliser le compte `admin` afin d’adminis
 **Référence :** §2.1 et §7 ; RG-03. **Arbitrage :** Q-21 pour la configuration du secret.
 
 - CA1 : le compte `admin` est disponible avec le rôle administrateur dès l’initialisation du prototype.
-- CA2 : une connexion de ce compte ne lui attribue jamais le rôle standard.
+- CA2 : une connexion de ce compte ne lui attribue jamais le rôle utilisateur.
 - CA3 : aucune opération d’attribution de rôle ne transfère le rôle administrateur ou ne crée un deuxième administrateur.
 
 <a id="us-03"></a>
 ### US-03 — Attribuer et retirer le rôle gestionnaire
 
-En tant qu’administrateur, je veux désigner un gestionnaire et lui rendre ensuite le rôle standard afin d’organiser la tenue de l’inventaire.
+En tant qu’administrateur, je veux désigner un gestionnaire et lui rendre ensuite le rôle utilisateur afin d’organiser la tenue de l’inventaire.
 
 **Référence :** §2.2 ; RG-03 à RG-05. **Arbitrages :** Q-02, Q-20.
 
-- CA1 : seul l’administrateur peut attribuer ce rôle à un utilisateur standard existant ou le lui retirer.
+- CA1 : seul l’administrateur peut attribuer ce rôle à un utilisateur existant ou le lui retirer.
 - CA2 : aucune séquence d’attribution, y compris simultanée, ne laisse plus d’un gestionnaire ; le parcours de remplacement est à préciser en Q-02.
-- CA3 : après retrait, l’utilisateur a le rôle standard ; une reconnexion conserve ce rôle.
+- CA3 : après retrait, l’utilisateur a le rôle utilisateur ; une reconnexion conserve ce rôle.
 - CA4 : dès l’attribution, aucun accès aux projets ni participation opérationnelle n’est autorisé au gestionnaire. Le traitement des adhésions antérieures doit suivre l’arbitrage Q-02.
 
 <a id="us-04"></a>
@@ -49,7 +51,7 @@ En tant qu’utilisateur connecté, je veux voir un accueil adapté à mes droit
 **Référence :** §6 et §7 ; RG-05, RG-28, RG-29. **Arbitrages :** Q-14, Q-20.
 
 - CA1 : après connexion, le tableau de bord est accessible ; au premier sprint, il utilise des données fictives.
-- CA2 : le gestionnaire n’y voit aucun projet ; le standard ne voit aucun projet privé auquel il n’a pas accès.
+- CA2 : le gestionnaire n’y voit aucun projet ; l’utilisateur ne voit aucun projet privé auquel il n’a pas accès.
 - CA3 : l’administrateur dispose d’un accès direct à la gestion de l’inventaire.
 - CA4 : les informations et actions affichées par profil correspondent à la maquette retenue ; leur liste finale doit être validée en Q-14.
 
@@ -77,7 +79,7 @@ En tant qu’administrateur ou gestionnaire, je veux ajouter du matériel afin d
 - CA1 : une fiche peut être créée en ne saisissant que son nom ; un nom absent empêche la validation. Le mode de suivi reçoit le comportement convenu en Q-23.
 - CA2 : les catégories et les identifiants techniques sont facultatifs, y compris pour un exemplaire individualisé.
 - CA3 : l’auteur et la date de création sont tracés ; la fiche est consultable dans l’inventaire actif.
-- CA4 : le standard ne peut pas créer de matériel. Aucune unicité des identifiants techniques n’est imposée au titre d’une décision client avant Q-08.
+- CA4 : l’utilisateur ne peut pas créer de matériel. Aucune unicité des identifiants techniques n’est imposée au titre d’une décision client avant Q-08.
 
 <a id="us-07"></a>
 ### US-07 — Modifier une fiche matériel
@@ -88,7 +90,7 @@ En tant qu’administrateur ou gestionnaire, je veux corriger une fiche active a
 
 - CA1 : les informations autorisées d’une fiche active peuvent être modifiées en conservant un nom obligatoire.
 - CA2 : la modification est tracée avec date et auteur ; les informations enregistrées sont visibles à la consultation suivante.
-- CA3 : un standard ne peut pas modifier la fiche.
+- CA3 : un utilisateur ne peut pas modifier la fiche.
 - CA4 : les changements de mode de suivi et le signalement d’indisponibilité du non-individualisé suivent les décisions Q-23 et Q-09 ; ils ne sont pas considérés comme acquis.
 
 <a id="us-08"></a>
@@ -98,7 +100,7 @@ En tant qu’administrateur ou gestionnaire, je veux gérer les catégories et l
 
 **Référence :** §3.2 ; RG-08. **Arbitrage :** Q-10 pour la liste initiale.
 
-- CA1 : l’administrateur et le gestionnaire peuvent créer, modifier et supprimer une catégorie ; le standard ne le peut pas.
+- CA1 : l’administrateur et le gestionnaire peuvent créer, modifier et supprimer une catégorie ; l’utilisateur ne le peut pas.
 - CA2 : une fiche accepte zéro, une ou plusieurs catégories ; aucun champ de localisation physique n’est demandé.
 - CA3 : supprimer une catégorie retire seulement ses associations ; les matériels restent actifs et leurs autres catégories sont conservées.
 
@@ -135,7 +137,7 @@ En tant qu’administrateur, je veux retrouver les matériels supprimés et leur
 
 - CA1 : l’administrateur retrouve la fiche archivée, son identification, la date et l’auteur de suppression.
 - CA2 : l’historique du matériel et de ses réservations reste consultable, y compris les annulations liées à la suppression.
-- CA3 : gestionnaire et standard ne peuvent accéder à ces données, même en visant directement une fiche connue.
+- CA3 : gestionnaire et utilisateur ne peuvent accéder à ces données, même en visant directement une fiche connue.
 - CA4 : aucune action de restauration n’est disponible ou exécutable.
 
 <a id="us-12"></a>
@@ -147,7 +149,7 @@ En tant qu’administrateur ou gestionnaire, je veux consulter les événements 
 
 - CA1 : les créations et modifications sont retrouvées avec date et auteur ; après suppression, l’historique relève de l’accès aux archives administrateur.
 - CA2 : le gestionnaire ne reçoit pas d’informations de projets dans les événements affichés.
-- CA3 : aucun standard n’accède à cet historique, même s’il est membre d’un projet utilisant le matériel.
+- CA3 : aucun utilisateur n’accède à cet historique, même s’il est membre d’un projet utilisant le matériel.
 
 <a id="us-13"></a>
 ### US-13 — Exporter l’inventaire
@@ -159,30 +161,30 @@ En tant qu’administrateur ou gestionnaire, je veux exporter l’inventaire com
 - CA1 : l’utilisateur choisit l’ensemble de l’inventaire actif ou les résultats des filtres actifs ; le fichier contient le périmètre choisi.
 - CA2 : le format et les colonnes suivent l’arbitrage Q-11 ; Excel et PDF sont envisagés, sans choix final présumé.
 - CA3 : l’export du gestionnaire ne contient aucune information de projet inaccessible ; « Réservé » remplace le nom concerné.
-- CA4 : un standard ne peut déclencher ni récupérer un export réservé à un autre profil.
+- CA4 : un utilisateur ne peut déclencher ni récupérer un export réservé à un autre profil.
 
 ## E3 — Projets et collaboration
 
 <a id="us-14"></a>
 ### US-14 — Créer un projet
 
-En tant qu’administrateur ou utilisateur standard, je veux créer un projet afin d’organiser un travail du laboratoire.
+En tant qu’administrateur ou utilisateur, je veux créer un projet afin d’organiser un travail du laboratoire.
 
 **Référence :** §4.1 ; RG-15, RG-16. **Arbitrages :** Q-06, Q-27.
 
 - CA1 : la création recueille nom, description et visibilité ; les dates de début et de fin restent facultatives.
 - CA2 : l’utilisateur à l’origine du projet est identifié comme créateur ; son adhésion automatique comme membre reste à confirmer en Q-27.
-- CA3 : le projet suit les droits NP/public ou Secret/privé ; les modalités du choix par un standard sont fixées en Q-06.
+- CA3 : le projet suit les droits NP/public ou Secret/privé ; les modalités du choix par un utilisateur sont fixées en Q-06.
 - CA4 : le gestionnaire ne peut pas créer de projet.
 
 <a id="us-15"></a>
 ### US-15 — Consulter les projets autorisés
 
-En tant qu’administrateur ou utilisateur standard, je veux consulter les projets auxquels j’ai accès afin de suivre leur activité.
+En tant qu’administrateur ou utilisateur, je veux consulter les projets auxquels j’ai accès afin de suivre leur activité.
 
 **Référence :** §2.2 et §4.1 ; RG-05, RG-16, RG-17.
 
-- CA1 : un standard consulte les projets publics ainsi que les projets privés dont il est créateur ou membre ; les autres projets privés sont inaccessibles.
+- CA1 : un utilisateur consulte les projets publics ainsi que les projets privés dont il est créateur ou membre ; les autres projets privés sont inaccessibles.
 - CA2 : l’administrateur consulte tous les projets actifs sans obligation d’adhésion.
 - CA3 : le gestionnaire ne reçoit ni liste ni détail de projet, public ou privé.
 - CA4 : consulter un projet public sans être membre n’accorde aucun droit de modification.
@@ -195,7 +197,7 @@ En tant que membre ou administrateur, je veux modifier les informations d’un p
 **Référence :** §2.2 et §4.2 ; RG-15, RG-18. **Arbitrages :** Q-06, Q-13.
 
 - CA1 : un membre modifie les informations de son projet ; l’administrateur agit aussi sans être membre.
-- CA2 : le gestionnaire et un standard non membre ne peuvent pas effectuer la modification.
+- CA2 : le gestionnaire et un utilisateur non membre ne peuvent pas effectuer la modification.
 - CA3 : le nom, la description et la visibilité restent renseignés ; les droits de changement de visibilité suivent Q-06.
 - CA4 : l’effet d’un changement des dates du projet sur les réservations existantes doit être fixé par Q-13 avant réalisation de ce comportement.
 
@@ -208,7 +210,7 @@ En tant que membre ou administrateur, je veux ajouter un utilisateur à un proje
 
 - CA1 : un membre ajoute d’autres membres à son projet ; l’administrateur peut le faire sur tout projet sans adhésion.
 - CA2 : l’ajout donne immédiatement les droits du membre, y compris la consultation d’un projet privé, sans acceptation d’invitation.
-- CA3 : le gestionnaire ne peut pas être ajouté ; un standard non membre ne peut pas ajouter d’utilisateur.
+- CA3 : le gestionnaire ne peut pas être ajouté ; un utilisateur non membre ne peut pas ajouter d’utilisateur.
 - CA4 : le mode de sélection, notamment pour un utilisateur jamais connecté, suit Q-07 et n’introduit pas de création manuelle de compte.
 
 <a id="us-18"></a>
@@ -219,7 +221,7 @@ En tant qu’administrateur, je veux retirer un membre afin de gérer la composi
 **Référence :** §4.2 ; RG-18. **Arbitrages :** Q-07, Q-27.
 
 - CA1 : l’administrateur peut retirer un membre d’un projet sans en être lui-même membre.
-- CA2 : après retrait d’un standard qui n’est pas créateur, l’appartenance ne donne plus de droits ; un projet privé devient inaccessible sauf autre droit applicable.
+- CA2 : après retrait d’un utilisateur qui n’est pas créateur, l’appartenance ne donne plus de droits ; un projet privé devient inaccessible sauf autre droit applicable.
 - CA3 : les droits éventuels de retrait des autres profils, le retrait du créateur et l’effet sur les réservations existantes doivent être décidés en Q-07/Q-27.
 
 <a id="us-19"></a>
@@ -229,7 +231,7 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 
 **Référence :** §4.3 ; RG-18, RG-19. **Arbitrages :** Q-01, Q-26.
 
-- CA1 : chaque tâche présente un titre et une description ; aucun responsable, échéance ni priorité n’est demandé.
+- CA1 : chaque tâche présente un titre et une description ; un responsable facultatif peut être choisi parmi les membres du projet, modifié ou retiré ; aucune échéance ni priorité n’est demandée.
 - CA2 : **proposition de détail du suivi** : un membre ou l’administrateur crée/modifie une tâche et la déplace entre colonnes ; ces opérations et l’éventuelle suppression sont à confirmer en Q-26.
 - CA3 : les colonnes et leur caractère fixe/personnalisable suivent Q-01 ; À faire, En cours et Fait sont la proposition initiale.
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
@@ -239,24 +241,36 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 
 En tant que créateur ou administrateur, je veux terminer un projet afin de libérer son matériel et conserver ses éléments.
 
-**Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-03, Q-06, Q-12.
+**Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-03, Q-06, Q-12 pour les modifications, la suppression et la réouverture.
 
-- CA1 : le créateur et l’administrateur peuvent déclencher la clôture ou l’archivage ; les droits des autres membres restent à préciser.
+- CA1 : le créateur et l’administrateur peuvent déclencher la clôture ou l’archivage ; ces deux termes désignent la même action et le même état. Les droits des autres membres restent à préciser.
 - CA2 : les matériels réservés pour le projet sont immédiatement libérés, y compris pour les périodes futures ; la trace des affectations est conservée.
 - CA3 : l’archive conserve informations, participants, matériels associés et tâches réalisées, sans échéance de suppression définie.
-- CA4 : les différences entre clôture et archivage, les modifications ultérieures et la réouverture suivent Q-03/Q-12 ; aucun comportement supplémentaire n’est présumé.
+- CA4 : les modifications ultérieures, la suppression et la réouverture suivent Q-03/Q-12 ; aucun comportement supplémentaire n’est présumé.
 
 <a id="us-21"></a>
 ### US-21 — Consulter les archives des projets
 
-**Story candidate, rôle à confirmer en Q-12.** En tant qu’utilisateur autorisé à consulter les archives de projets, je veux retrouver un projet archivé afin de consulter les éléments conservés.
+En tant qu’utilisateur, je veux retrouver les projets archivés auxquels leur visibilité me donne accès afin de consulter les éléments conservés.
 
-**Référence :** §4.4 et §8.2 ; RG-21. **Arbitrages :** Q-03, Q-12.
+**Référence :** §4.4 et §8.2 ; RG-21. **Arbitrages :** Q-03, Q-12 pour les actions possibles après archivage.
 
 - CA1 : les informations, participants, matériels associés et tâches réalisées restent conservés indéfiniment pour le moment.
-- CA2 : l’affichage des archives suit les profils et droits qui seront décidés en Q-12 ; le gestionnaire reste exclu des projets.
-- CA3 : la consultation ne présente pas un journal des modifications de projet, absent du périmètre.
+- CA2 : un projet public archivé reste consultable par tous les utilisateurs ; un projet privé archivé reste consultable par l’administrateur, son créateur et ses membres ; le gestionnaire reste exclu des projets.
+- CA3 : l’historique des modifications du projet reste consultable selon les mêmes droits.
 - CA4 : les actions de modification, suppression et réouverture ne sont pas intégrées comme acquises ; elles nécessitent un arbitrage puis, si retenues, des stories complémentaires.
+
+<a id="us-31"></a>
+### US-31 — Consulter l’historique des modifications d’un projet
+
+En tant que personne autorisée à consulter un projet, je veux consulter son historique afin de savoir quelles modifications ont été effectuées, quand et par qui.
+
+**Référence :** §4.4 ; RG-30.
+
+- CA1 : chaque événement indique au minimum sa date, son auteur et la nature de la modification.
+- CA2 : l’historique couvre la création, les changements d’informations et de visibilité, les changements de membres, les modifications des tâches et la clôture/archivage.
+- CA3 : l’historique est accessible aux personnes autorisées à consulter le projet et reste disponible après archivage selon la visibilité du projet.
+- CA4 : le gestionnaire ne peut pas consulter cet historique, puisqu’il n’accède à aucun projet.
 
 ## E4 — Réservations et traçabilité
 
@@ -267,7 +281,7 @@ En tant que membre ou administrateur, je veux réserver un matériel individuali
 
 **Référence :** §5 ; RG-17, RG-22 à RG-24, RG-26. **Arbitrages :** Q-22, Q-27. Hors premier sprint.
 
-- CA1 : un membre réserve pour son projet, l’administrateur pour tout projet ; le gestionnaire, le non-membre standard et le matériel non individualisé sont exclus.
+- CA1 : un membre réserve pour son projet, l’administrateur pour tout projet ; le gestionnaire, l’utilisateur non membre et le matériel non individualisé sont exclus.
 - CA2 : début et fin comprennent chacun date et heure ; seules les minutes 00 et 30 sont acceptées. Une valeur manquante empêche la validation.
 - CA3 : les valeurs propres à la réservation priment sur celles du projet ; les dates projet renseignées servent de défaut, sans inventer les horaires manquants.
 - CA4 : une réservation qui chevauche celle d’un autre projet est refusée ; des créneaux successifs sans chevauchement sont possibles.
@@ -295,7 +309,7 @@ En tant que membre ou administrateur, je veux annuler une réservation du projet
 - CA1 : un membre annule toute réservation de son projet indépendamment du réservant ; l’administrateur agit sans adhésion.
 - CA2 : après annulation, le créneau n’empêche plus une réservation compatible par un autre projet.
 - CA3 : la réservation et la trace de son annulation restent conservées dans l’historique autorisé.
-- CA4 : gestionnaire et standard non membre ne peuvent pas annuler une réservation.
+- CA4 : gestionnaire et utilisateur non membre ne peuvent pas annuler une réservation.
 
 <a id="us-25"></a>
 ### US-25 — Consulter l’historique des réservations
@@ -307,7 +321,7 @@ En tant qu’administrateur ou gestionnaire, je veux retrouver les réservations
 - CA1 : l’historique conserve réservant, matériel, date de création, début et fin prévus, projet et trace d’annulation éventuelle.
 - CA2 : les réservations passées et annulées restent disponibles ; après suppression du matériel, seul l’administrateur accède à l’historique archivé.
 - CA3 : le gestionnaire ne voit pas les informations du projet ; la référence visible au projet est remplacée par « Réservé ».
-- CA4 : aucun standard n’accède à cet historique, même pour une réservation qu’il a créée ou un projet dont il est membre.
+- CA4 : aucun utilisateur n’accède à cet historique, même pour une réservation qu’il a créée ou un projet dont il est membre.
 
 <a id="us-26"></a>
 ### US-26 — Visualiser un calendrier de disponibilité
@@ -354,21 +368,21 @@ En tant qu’utilisateur d’un projet privé, je veux que ses informations soie
 
 **Référence :** §2.2, §3.4, §3.6 et §4.1 ; RG-05, RG-14, RG-16, RG-17.
 
-- CA1 : un projet privé est inaccessible à un standard extérieur ; tous les projets sont inaccessibles au gestionnaire.
+- CA1 : un projet privé est inaccessible à un utilisateur extérieur ; tous les projets sont inaccessibles au gestionnaire.
 - CA2 : inventaire, recherches, historiques et exports ne révèlent pas les informations d’un projet inaccessible ; « Réservé » remplace son nom.
-- CA3 : un accès autorisé à un projet n’ouvre pas l’historique du matériel ou des réservations à un standard.
+- CA3 : un accès autorisé à un projet n’ouvre pas l’historique du matériel ou des réservations à un utilisateur.
 - CA4 : **proposition technique** : les restrictions sont vérifiées lors des lectures et écritures de données, pas uniquement par l’absence de bouton ; elles sont rejouées après un changement de rôle ou de membres.
 
 ## E6 — Conception du premier sprint
 
 <a id="us-30"></a>
-### US-30 — Examiner les maquettes et les parcours par profil
+### US-30 — Visualiser les écrans et les parcours de son profil
 
-En tant que représentant du laboratoire, je veux examiner les principaux écrans afin de valider l’organisation et la navigation de SUIVI.
+En tant qu’administrateur, gestionnaire ou utilisateur, je veux disposer de maquettes des écrans de mon profil afin de visualiser les fonctions accessibles et la navigation dans SUIVI.
 
 **Référence :** §7 ; RG-05, RG-28, RG-29. **Arbitrages :** Q-14, Q-17, Q-20.
 
-- CA1 : les maquettes couvrent connexion, navigation générale, accueil, consultation des projets et inventaire, avec les différences entre profils.
+- CA1 : les maquettes couvrent connexion, navigation générale, accueil, consultation des projets et inventaire, avec les différences entre administrateur, gestionnaire et utilisateur ; les parcours utilisateur distinguent créateur, membre et simple pour le projet concerné.
 - CA2 : la version proposée corrige l’accès aux projets montré dans la maquette gestionnaire existante ; aucun projet n’y est accessible.
-- CA3 : les écrans de modification distinguent les autorisations administrateur, gestionnaire et membre ; un public non membre reste en consultation.
-- CA4 : le représentant désigné peut examiner les parcours et consigner ses retours ; la personne, la date et les modalités de validation doivent être fixées en Q-04/Q-20.
+- CA3 : les actions proposées suivent les droits du profil et les qualités de créateur ou de membre ; un utilisateur simple reste en consultation sur les projets publics.
+- CA4 : les retours sur les maquettes et les parcours sont consignés ; la date et les modalités de validation doivent être fixées en Q-20.

@@ -5,9 +5,10 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Terme | Définition dans SUIVI |
 | --- | --- |
 | SUIVI | Suivi des Usages, Inventaires, Vie des projets et IA. Aucune fonction IA n’est définie à ce stade. |
-| Administrateur | Rôle unique du compte `admin`, non transférable ; gère tous les projets et l’inventaire. |
+| Administrateur / admin | Rôle unique du compte `admin`, non transférable ; gère tous les projets et l’inventaire. |
 | Gestionnaire | Rôle attribué à au plus un utilisateur ; gère l’inventaire sans accès ni participation aux projets. |
-| Utilisateur standard | Rôle attribué automatiquement à la première connexion, hors compte administrateur. |
+| Utilisateur | Rôle attribué automatiquement à la première connexion, hors compte administrateur. |
+| Utilisateur simple | Pour un projet donné, utilisateur ni créateur ni membre : consultation seulement si le projet est public, aucun accès s’il est privé. Ce n’est pas un rôle global distinct. |
 | Créateur | Utilisateur à l’origine d’un projet ; peut le clôturer ou l’archiver. Ce n’est pas un rôle global. |
 | Membre / participant | Utilisateur ajouté à un projet, avec effet immédiat et droits de collaboration. |
 | Inventaire actif | Ensemble des matériels qui n’ont pas été supprimés/archivés. |
@@ -31,12 +32,12 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Secret / privé | Visibilité limitée à l’administrateur, au créateur et aux membres. « Secret » est ici un libellé de visibilité applicative. |
 | Réservé | Mention remplaçant le nom d’un projet inaccessible lorsqu’une réservation doit être signalée. |
 | Kanban | Tableau de suivi des tâches par colonnes ; À faire, En cours et Fait sont envisagées. |
-| Tâche | Élément de travail d’un projet comportant titre et description ; sans responsable, priorité ni échéance. |
-| Clôture de projet | Action de fin de projet libérant immédiatement ses matériels ; différence avec archivage et réouverture à préciser. |
-| Archivage de projet | Conservation des informations, participants, matériels associés et tâches réalisées ; modalités de consultation à préciser. |
+| Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable facultatif choisi parmi les membres ; sans priorité ni échéance. |
+| Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels. |
+| Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet. |
 | Suppression de matériel | Archivage irréversible de sa fiche, conservée avec son historique pour l’administrateur. Annule les réservations en cours/futures. |
 | Suppression de projet | Action dont les modalités et certains droits restent à définir ; ne pas l’assimiler à la suppression du matériel. |
-| Historique | Trace datée de l’inventaire et des réservations, avec auteur. Aucun journal des modifications des projets n’est prévu. |
+| Historique | Trace datée et attribuée à un auteur pour l’inventaire, les réservations et les modifications des projets. |
 | Notification | Message dans l’application ; état lu/non lu propre à chaque destinataire. |
 | Export filtré | Fichier contenant les résultats correspondant aux filtres actifs et aux droits de l’utilisateur. |
 | Tableau de bord | Page d’accueil après connexion, adaptée au profil ; données fictives au premier sprint. |

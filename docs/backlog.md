@@ -34,9 +34,10 @@ Les lots L2 à L5 sont des regroupements fonctionnels proposés, sans durée ni 
 | [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | L3 puis L4 | US-14, US-17 ; Q-06, Q-13 | À arbitrer |
 | [US-17](user-stories.md#us-17) | Ajout de membres | E3 | P1 | L3 | US-14 ; Q-07 | À arbitrer |
 | [US-18](user-stories.md#us-18) | Retrait de membres | E3 | P1 | L3 | US-17 ; Q-07, Q-27 | À arbitrer |
-| [US-19](user-stories.md#us-19) | Tâches Kanban | E3 | P1 | L3 | US-14, US-17 ; Q-01, Q-26 | À arbitrer |
-| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | L4 | US-14, US-19, US-24, US-25 ; Q-03, Q-06, Q-12 | À arbitrer |
-| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | L4 | US-20 ; Q-03, Q-12 | À arbitrer ; acteur non fixé |
+| [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable facultatif | E3 | P1 | L3 | US-14, US-17 ; Q-01, Q-26 | À arbitrer sur le cycle de vie |
+| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | L4 | US-14, US-19, US-24, US-25 ; Q-03, Q-06, Q-12 | Équivalence décidée ; autres actions à arbitrer |
+| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | L4 | US-20 ; Q-03, Q-12 | Droits de lecture décidés ; autres actions à arbitrer |
+| [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | L4 | US-14 à US-21 | À préparer |
 | [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | L4 | US-05, US-14, US-17 ; Q-22, Q-27 | À arbitrer |
 | [US-23](user-stories.md#us-23) | Modification de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
 | [US-24](user-stories.md#us-24) | Annulation de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
@@ -78,7 +79,7 @@ Ces éléments ne sont pas des besoins utilisateurs supplémentaires et n’impo
 | §1 Contexte | Cadrage, TEC-01, TEC-05 |
 | §2 Connexion et droits | US-01 à US-03, US-15, US-29 |
 | §3 Inventaire | US-05 à US-13, US-25, US-27 |
-| §4 Projets | US-14 à US-21, US-29 |
+| §4 Projets | US-14 à US-21, US-29, US-31 |
 | §5 Réservations | US-22 à US-26 |
 | §6 Accueil et notifications | US-04, US-27, US-28 |
 | §7 Premier sprint | US-01, US-02, US-04, US-30 ; tranche S1 de US-29 |

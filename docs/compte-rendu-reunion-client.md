@@ -24,17 +24,19 @@ Pour le prototype et le premier sprint, cet environnement est simulé, sans int�
 
 La connexion utilise un **identifiant et un mot de passe**. L’identifiant peut être une adresse courriel.
 
-Il n’y a pas d’inscription ni de création manuelle de comptes. L’application crée automatiquement chaque utilisateur à sa première connexion avec le **rôle standard**. Aux connexions suivantes, elle retrouve son compte et conserve son rôle.
+Il n’y a pas d’inscription ni de création manuelle de comptes. L’application crée automatiquement chaque utilisateur à sa première connexion avec le **rôle utilisateur**. Aux connexions suivantes, elle retrouve son compte et conserve son rôle.
 
-Le compte administrateur est prédéfini avec l’identifiant **`admin`** et constitue l’exception au rôle standard attribué aux nouveaux utilisateurs. Son rôle ne peut pas être transféré.
+Le compte administrateur est prédéfini avec l’identifiant **`admin`** et constitue l’exception au rôle utilisateur attribué aux nouveaux utilisateurs. Son rôle ne peut pas être transféré.
 
 ### 2.2. Profils
 
-Trois profils sont prévus : **administrateur**, **gestionnaire** et **utilisateur standard**. Il existe un seul administrateur et au maximum **un gestionnaire à un instant donné**.
+Trois profils sont prévus : **administrateur**, **gestionnaire** et **utilisateur**. Il existe un seul administrateur et au maximum **un gestionnaire à un instant donné**.
 
-L’administrateur peut attribuer le rôle de gestionnaire à un utilisateur standard et lui rendre ensuite le rôle standard. Il gère également les principales données de l’application.
+L’administrateur est également désigné par **admin**. Pour chaque projet, on distingue l’utilisateur **créateur**, **membre** ou **simple** (ni créateur ni membre). Un utilisateur simple peut consulter un projet public sans le modifier ; il n’accède pas à un projet privé. Ces distinctions sont propres au projet et ne constituent pas des profils globaux supplémentaires.
 
-| Fonctionnalité | Administrateur | Gestionnaire | Utilisateur standard |
+L’administrateur peut attribuer le rôle de gestionnaire à un utilisateur et lui rendre ensuite le rôle utilisateur. Il gère également les principales données de l’application.
+
+| Fonctionnalité | Administrateur | Gestionnaire | Utilisateur |
 | --- | --- | --- | --- |
 | Consulter l’inventaire actif | Oui | Oui | Oui |
 | Créer, modifier ou supprimer du matériel | Oui | Oui | Non prévu |
@@ -48,6 +50,8 @@ L’administrateur peut attribuer le rôle de gestionnaire à un utilisateur sta
 | Modifier un projet, ses tâches et ses réservations | Oui, même sans être membre | Non | Si membre |
 | Ajouter des membres à un projet | Oui, même sans être membre | Non | Si membre |
 | Clôturer ou archiver un projet | Oui, même sans être membre | Non | Si créateur ; autres cas à préciser |
+| Consulter un projet archivé | Tous | Non | Selon la visibilité : public pour tous, privé si créateur ou membre |
+| Consulter l’historique d’un projet | Tous | Non | Si le projet est consultable |
 | Supprimer un projet | Oui, modalités à préciser | Non | À préciser |
 | Attribuer ou retirer le rôle de gestionnaire | Oui | Non prévu | Non prévu |
 
@@ -107,13 +111,13 @@ L’historique des réservations permet de retrouver **qui a réservé quoi, qua
 - le projet associé ;
 - la trace d’une éventuelle annulation, y compris après suppression du matériel.
 
-Les réservations passées ou annulées restent conservées. L’historique du matériel actif et de ses réservations est accessible uniquement à l’administrateur et au gestionnaire. Les utilisateurs standards n’y ont pas accès, même pour leurs projets. Les règles de confidentialité s’appliquent aux informations affichées.
+Les réservations passées ou annulées restent conservées. L’historique du matériel actif et de ses réservations est accessible uniquement à l’administrateur et au gestionnaire. Les utilisateurs n’y ont pas accès, même pour leurs projets. Les règles de confidentialité s’appliquent aux informations affichées.
 
 ## 4. Gestion des projets
 
 ### 4.1. Création et visibilité
 
-L’administrateur et les utilisateurs standards peuvent créer des projets. Les informations minimales sont le **nom**, la **description** et le **niveau de visibilité**. Les dates de début et de fin du projet sont facultatives.
+L’administrateur et les utilisateurs peuvent créer des projets. Les informations minimales sont le **nom**, la **description** et le **niveau de visibilité**. Les dates de début et de fin du projet sont facultatives.
 
 Deux niveaux de visibilité sont retenus :
 
@@ -142,15 +146,15 @@ L’administrateur dispose de ces droits sur tous les projets et peut également
 
 Chaque projet possède un tableau **Kanban**, inspiré du fonctionnement de Trello. Les colonnes envisagées sont **À faire**, **En cours** et **Fait** ; leur caractère fixe ou personnalisable reste à préciser.
 
-Chaque tâche comporte un **titre** et une **description**. Aucun responsable, aucune échéance et aucune priorité ne sont prévus.
+Chaque tâche comporte un **titre** et une **description**. Elle peut avoir un **responsable facultatif**, choisi parmi les membres du projet. Aucune échéance ni priorité ne sont prévues.
 
 ### 4.4. Clôture et archivage
 
-Le **créateur et l’administrateur** peuvent clôturer ou archiver un projet. Cette action libère immédiatement les matériels réservés pour ce projet. La trace des affectations reste conservée dans l’historique de l’inventaire et des réservations.
+Le **créateur et l’administrateur** peuvent clôturer ou archiver un projet. **Clôture et archivage désignent la même action et produisent le même état.** Cette action libère immédiatement les matériels réservés pour ce projet. La trace des affectations reste conservée dans l’historique de l’inventaire et des réservations.
 
-L’archive du projet conserve ses informations, ses participants, les matériels associés et les tâches réalisées. Ces données sont conservées **indéfiniment pour le moment**, aucune durée limite n’étant définie.
+L’archive du projet conserve ses informations, ses participants, les matériels associés et les tâches réalisées. Ces données sont conservées **indéfiniment pour le moment**, aucune durée limite n’étant définie. Un projet archivé reste consultable selon sa visibilité : un projet public reste visible par tous les utilisateurs, tandis qu’un projet privé reste visible par l’administrateur, son créateur et ses membres. Le gestionnaire demeure exclu de tous les projets.
 
-Aucun journal des modifications des projets n’est prévu. La traçabilité détaillée concerne l’inventaire et les réservations.
+Les modifications d’un projet sont conservées dans un historique avec leur date et leur auteur. Cet historique couvre au minimum la création, les changements d’informations et de visibilité, les changements de membres, les modifications des tâches et la clôture/archivage. Il est consultable par les personnes autorisées à consulter le projet, y compris après archivage.
 
 ## 5. Affectation et réservation du matériel
 
@@ -180,7 +184,7 @@ Lorsqu’un matériel est supprimé, les membres des projets qui l’utilisent a
 
 Le premier sprint porte sur les fondations de l’application et prévoit :
 
-- une **connexion fonctionnelle** selon les règles de la section 2, avec création automatique des utilisateurs standards et compte `admin` prédéfini ;
+- une **connexion fonctionnelle** selon les règles de la section 2, avec création automatique des utilisateurs et compte `admin` prédéfini ;
 - les **maquettes** de l’organisation générale, de la navigation, de la page d’accueil, de la consultation des projets et de l’inventaire ;
 - un **tableau de bord accessible après connexion**, alimenté par des données fictives.
 
@@ -191,7 +195,7 @@ L’environnement Intradef est simulé et la connexion est gérée par l’appli
 ### 8.1. Points à éclaircir avec le client
 
 - **Kanban :** les colonnes « À faire », « En cours » et « Fait » sont-elles fixes ou personnalisables ?
-- **Changement de rôle :** que deviennent les participations d’un utilisateur nommé gestionnaire ? Sont-elles conservées et masquées jusqu’à son retour au rôle standard, ou supprimées ?
+- **Changement de rôle :** que deviennent les participations d’un utilisateur nommé gestionnaire ? Sont-elles conservées et masquées jusqu’à son retour au rôle utilisateur, ou supprimées ?
 - **Réouverture des projets :** peut-on rouvrir un projet après sa clôture ou son archivage ?
 
 ### 8.2. Autres précisions attendues
@@ -200,13 +204,13 @@ L’environnement Intradef est simulé et la connexion est gérée par l’appli
 | --- | --- |
 | Réunion et validation | Date, participants, rédacteur, personne chargée de valider le compte rendu et date de validation. |
 | Administration | Périmètre des « principales données » gérées par l’administrateur au-delà des fonctions décrites et éventuels droits des autres profils sur ces données. |
-| Droits sur les projets | Droits des utilisateurs standards sur la suppression et le choix ou le changement de visibilité ; éventuel droit de clôture ou d’archivage pour les membres autres que le créateur. |
+| Droits sur les projets | Droits des utilisateurs sur la suppression et le choix ou le changement de visibilité ; éventuel droit de clôture ou d’archivage pour les membres autres que le créateur. |
 | Membres | Personnes autorisées à retirer un membre en plus de l’administrateur ; sélection des utilisateurs à ajouter, notamment avant leur première connexion. |
 | Identification du matériel | Règles d’unicité des identifiants techniques renseignés et distinction entre type de matériel, catégorie et exemplaire. Une référence constructeur n’est pas présumée unique par exemplaire. |
 | Matériel non individualisé | Signalement d’une indisponibilité ou rupture ; éventuelle association informative à un projet, sans réservation ni quantité précise. |
 | Catégories | Liste initiale à prévoir. |
 | Exports | Colonnes et informations à inclure dans les fichiers Excel et PDF. |
-| Archives des projets | Droits de consultation, différence de fonctionnement entre clôture et archivage, modalités de suppression d’un projet. |
+| Archives des projets | Modifications encore permises, modalités de suppression et réouverture d’un projet. La clôture est équivalente à l’archivage et la consultation suit la visibilité. |
 | Réservations | Incidence des changements de dates d’un projet sur les réservations existantes et traitement des conflits éventuels. |
 | Tableau de bord | Informations et actions à présenter pour chaque profil. |
 | Notifications | Contenu et présentation des notifications dans l’application. |

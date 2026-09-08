@@ -10,10 +10,10 @@ Démontrer une connexion fonctionnelle dans l’environnement simulé, ouvrir un
 
 | Livrable | Stories | Résultat attendu |
 | --- | --- | --- |
-| Connexion fonctionnelle | [US-01](user-stories.md#us-01), [US-02](user-stories.md#us-02) | Identifiant/mot de passe, création automatique du standard à la première connexion validée, compte `admin` prédéfini, rôle conservé ensuite. |
+| Connexion fonctionnelle | [US-01](user-stories.md#us-01), [US-02](user-stories.md#us-02) | Identifiant/mot de passe, création automatique de l’utilisateur à la première connexion validée, compte `admin` prédéfini, rôle conservé ensuite. |
 | Maquettes | [US-30](user-stories.md#us-30) | Organisation générale, connexion, navigation, accueil, consultation des projets et inventaire. |
 | Tableau de bord | [US-04](user-stories.md#us-04) | Accès après connexion, données fictives, contenu adapté au profil et accès direct à l’inventaire pour l’administrateur. |
-| Vérification des droits du périmètre | Tranche S1 de [US-29](user-stories.md#us-29) | Aucun projet pour le gestionnaire ; aucune donnée de projet privé inaccessible au standard. |
+| Vérification des droits du périmètre | Tranche S1 de [US-29](user-stories.md#us-29) | Aucun projet pour le gestionnaire ; aucune donnée de projet privé inaccessible à l’utilisateur. |
 
 L’interface de changement des rôles (US-03) n’est pas incluse par défaut : Q-20 doit trancher. La matrice des trois profils reste à prendre en compte dans les maquettes et la démonstration ; le mode de préparation du rôle gestionnaire doit être convenu dans les données de simulation.
 
@@ -47,7 +47,7 @@ Les maquettes et la rédaction des scénarios peuvent avancer avant ces réponse
 ## Démonstration proposée
 
 1. Présenter les maquettes et les différences de navigation entre profils.
-2. Se connecter avec un utilisateur simulé reconnu mais encore absent de SUIVI ; constater la création du rôle standard et l’ouverture de l’accueil.
+2. Se connecter avec un utilisateur simulé reconnu mais encore absent de SUIVI ; constater la création du rôle utilisateur et l’ouverture de l’accueil.
 3. Revenir avec le même compte ; constater qu’aucun doublon n’est créé et que le rôle est conservé.
 4. Se connecter avec `admin` ; montrer son profil et l’accès direct à l’inventaire.
 5. Avec le scénario gestionnaire convenu, montrer l’absence totale de projets, y compris dans les données fournies à l’écran.
