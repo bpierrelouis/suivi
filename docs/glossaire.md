@@ -8,8 +8,8 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Administrateur / admin | Rôle unique du compte `admin`, non transférable ; gère tous les projets et l’inventaire. |
 | Gestionnaire | Rôle attribué à au plus un utilisateur ; gère l’inventaire sans accès ni participation aux projets. |
 | Utilisateur | Rôle attribué automatiquement à la première connexion, hors compte administrateur. |
-| Utilisateur simple | Pour un projet donné, utilisateur ni créateur ni membre : consultation seulement si le projet est public, aucun accès s’il est privé. Ce n’est pas un rôle global distinct. |
-| Créateur | Utilisateur à l’origine d’un projet ; peut le clôturer ou l’archiver. Ce n’est pas un rôle global. |
+| Utilisateur simple | Pour un projet donné, utilisateur non membre : consultation seulement si le projet est public, aucun accès s’il est privé. Ce n’est pas un rôle global distinct. |
+| Responsable du projet | Membre à l’origine du projet ; peut notamment le clôturer ou l’archiver. Ce n’est pas un rôle global. |
 | Membre / participant | Utilisateur ajouté à un projet, avec effet immédiat et droits de collaboration. |
 | Inventaire actif | Ensemble des matériels qui n’ont pas été supprimés/archivés. |
 | Matériel | Fiche décrivant un équipement individualisé ou un ensemble non individualisé. |
@@ -29,10 +29,10 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Annulation | Arrêt d’une réservation, libérant sa période sans effacer sa trace. |
 | Projet | Espace de collaboration avec nom, description, visibilité, membres, tâches et réservations. |
 | NP / public | Visibilité permettant la consultation par tous les utilisateurs sauf le gestionnaire. N’accorde pas automatiquement de droit de modification. |
-| Secret / privé | Visibilité limitée à l’administrateur, au créateur et aux membres. « Secret » est ici un libellé de visibilité applicative. |
+| Secret / privé | Visibilité limitée à l’administrateur et aux membres du projet, dont son responsable. « Secret » est ici un libellé de visibilité applicative. |
 | Réservé | Mention remplaçant le nom d’un projet inaccessible lorsqu’une réservation doit être signalée. |
 | Kanban | Tableau de suivi des tâches par colonnes ; À faire, En cours et Fait sont envisagées. |
-| Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable facultatif choisi parmi les membres ; sans priorité ni échéance. |
+| Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable de tâche facultatif choisi parmi les membres ; sans priorité ni échéance. |
 | Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels et ne peut pas être annulée par une réouverture. |
 | Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet, sans possibilité de réouverture. |
 | Suppression de matériel | Archivage irréversible de sa fiche, conservée avec son historique pour l’administrateur. Annule les réservations en cours/futures. |

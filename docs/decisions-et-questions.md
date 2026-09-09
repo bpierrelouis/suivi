@@ -1,17 +1,18 @@
 # SUIVI — Registre des questions et décisions
 
-**État au 8 septembre 2026 :** les réponses du compte rendu servent de référence ; les questions ci-dessous restent ouvertes sauf lorsqu’une décision est enregistrée comme appliquée. La terminologie des rôles a été confirmée par l’utilisateur : **administrateur (admin)**, **gestionnaire** et **utilisateur**, avec les situations **créateur**, **membre** et **simple** selon le projet.
+**État au 9 septembre 2026 :** les réponses du compte rendu servent de référence ; les questions ci-dessous restent ouvertes sauf lorsqu’une décision est enregistrée comme appliquée. La terminologie des rôles a été confirmée par l’utilisateur : **administrateur (admin)**, **gestionnaire** et **utilisateur**, avec les situations **responsable**, **membre** et **simple** selon le projet. Le responsable est obligatoirement membre de son projet.
 
 ## Décisions appliquées
 
 | ID | Décision | Incidence | État |
 | --- | --- | --- | --- |
 | D-01 | Les modifications d’un projet sont conservées dans un historique daté et attribué à leur auteur. | US-31, RG-30, données et recette. | Appliquée |
-| D-02 | Une tâche peut avoir un responsable facultatif choisi parmi les membres du projet. | US-19, RG-19, données, parcours et recette. | Appliquée |
+| D-02 | Une tâche peut avoir un responsable de tâche facultatif choisi parmi les membres du projet. | US-19, RG-19, données, parcours et recette. | Appliquée |
 | D-03 | Clôture et archivage d’un projet sont équivalents : même action, même état et mêmes effets. | US-20, RG-20, glossaire, parcours et recette. | Appliquée |
 | D-04 | Un projet archivé reste consultable selon sa visibilité, comme un projet actif. Le gestionnaire reste exclu de tous les projets. | US-21, US-31, RG-21, matrice des droits et recette. | Appliquée |
 | D-05 | Un projet clôturé/archivé ne peut pas être rouvert. | US-20, US-21, RG-20, données, parcours et recette. | Appliquée |
 | D-06 | Le calendrier des disponibilités et des réservations est retenu. Ses profils, vues, périodes et actions restent à préciser. | US-26, RG-31, backlog, parcours et recette. | Appliquée |
+| D-07 | La notion de « créateur du projet » est remplacée par « responsable du projet ». Le responsable est obligatoirement membre du projet. | Cadrage, DCU, DCLAM, US-14 à US-22, règles, données, parcours et recette. | Appliquée |
 
 Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous-questions nécessaires à leur application. Q-22 à Q-27 sont des précisions issues de la rédaction des stories, distinctes des demandes explicites du client.
 
@@ -20,11 +21,11 @@ Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous
 | ID | Question / décision attendue | Incidence | Moment proposé |
 | --- | --- | --- | --- |
 | Q-01 | Les colonnes Kanban sont-elles fixes ou personnalisables ? Confirmer leurs libellés. | US-19, données du tableau. | Avant réalisation du Kanban. |
-| Q-02 | Lors d’une nomination comme gestionnaire, les adhésions antérieures sont-elles conservées et masquées ou supprimées ? Comment traiter les projets créés, réservations, notifications et le retour au rôle utilisateur ? Faut-il retirer le gestionnaire actuel avant toute nouvelle nomination ? | US-03, US-17, US-27, US-29. | Avant changement de rôle. |
+| Q-02 | Lors d’une nomination comme gestionnaire, les adhésions antérieures sont-elles conservées et masquées ou supprimées ? Comment traiter les projets sous sa responsabilité, réservations, notifications et le retour au rôle utilisateur ? Faut-il retirer le gestionnaire actuel avant toute nouvelle nomination ? | US-03, US-17, US-27, US-29. | Avant changement de rôle. |
 | Q-03 | Décidé en D-05 : un projet clôturé/archivé ne peut pas être rouvert. | US-20, US-21 et matrice des droits. | Close et appliquée |
 | Q-04 | Renseigner date de réunion, participants, rédacteur, personne validant le compte rendu et date de validation. | Statut de la source et acceptation du cadrage. | Avant engagement du périmètre. |
 | Q-05 | Quelles « principales données » l’administrateur gère-t-il en plus des fonctions décrites ? Quels droits pour les autres profils ? | Périmètre éventuel supplémentaire. | Avant ajout de fonctions d’administration. |
-| Q-06 | Quels droits pour l’utilisateur sur suppression, choix/changement de visibilité et clôture/archivage par les membres non créateurs ? Comment appliquer une visibilité obligatoire à la création tant que les droits de choix sont indéfinis ? | US-14, US-16, US-20 ; matrice des droits. | Avant gestion des projets. |
+| Q-06 | Quels droits pour l’utilisateur sur suppression, choix/changement de visibilité et clôture/archivage par les membres autres que le responsable ? Comment appliquer une visibilité obligatoire à la création tant que les droits de choix sont indéfinis ? | US-14, US-16, US-20 ; matrice des droits. | Avant gestion des projets. |
 | Q-07 | Qui peut retirer un membre, en plus de l’administrateur ? Comment sélectionner les utilisateurs à ajouter, notamment ceux jamais connectés ? Quel effet du retrait sur les réservations qu’ils ont créées ? | US-17, US-18 ; cohérence avec absence de création manuelle. | Avant gestion des membres. |
 | Q-08 | Quelles règles d’unicité pour les identifiants techniques ? Comment distinguer type, catégorie et exemplaire ? | US-06, US-07, US-09 ; dictionnaire. | Avant modèle d’inventaire. |
 | Q-09 | Comment signaler une rupture/indisponibilité du non-individualisé ? Une association informative à un projet est-elle souhaitée ? | US-07 et éventuelle story supplémentaire ; aucune réservation ni quantité précise. | Avant traitement du non-individualisé. |
@@ -32,7 +33,7 @@ Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous
 | Q-11 | Confirmer Excel/PDF, colonnes et informations exportées. L’export complet inclut-il des archives pour l’administrateur ? | US-13 ; confidentialité des fichiers. | Avant exports. |
 | Q-12 | Quelles modifications restent possibles après archivage et comment fonctionne la suppression d’un projet ? La consultation selon la visibilité et l’équivalence clôture/archivage sont décidées en D-03/D-04. | US-20, US-21 ; pas de suppression physique présumée. | Avant cycle de vie des projets. |
 | Q-13 | Un changement des dates du projet modifie-t-il les réservations existantes ? Si oui, comment traiter les conflits ? | US-16, US-23. | Avant liaison dates projet/réservations. |
-| Q-14 | Quelles informations et actions figurent au tableau de bord de chaque profil ? « Mes projets » inclut-il uniquement participations/créations ou aussi les projets publics consultables ? | US-04, US-30. | Pendant conception S1. |
+| Q-14 | Quelles informations et actions figurent au tableau de bord de chaque profil ? « Mes projets » inclut-il uniquement participations/responsabilités ou aussi les projets publics consultables ? | US-04, US-30. | Pendant conception S1. |
 | Q-15 | Contenu, présentation, regroupement et durée de conservation des notifications ? Marquage lu explicite ou à l’ouverture ? Retour à non lu ? Quel contenu reste visible après perte d’accès au projet ? | US-27, US-28. | Avant notifications. |
 | Q-16 | Le calendrier est retenu en D-06. Pour quels profils, matériels, vues, périodes et actions doit-il être disponible ? | US-26. | Modalités à fixer avant réalisation. |
 | Q-17 | Application par navigateur ou installée ? Quels PC, navigateurs éventuels, serveurs et contraintes Intradef ? | TEC-01, TEC-05 ; aucune pile choisie. | Mode du prototype avant S1 ; cible avant déploiement. |
@@ -51,8 +52,8 @@ Ces questions ne constituent pas des changements décidés du besoin.
 | Q-23 | Comment choisir le mode individualisé/non individualisé tout en gardant le nom seul champ obligatoire saisi ? Quelle valeur par défaut ? Peut-on changer le mode avec des réservations existantes ? | US-06, US-07, modèle matériel. | Avant création/modification de matériel. |
 | Q-24 | Quelle gestion des sessions, déconnexion/expiration, secrets, sauvegardes et restauration technique ? Quels objectifs mesurables de performance et de disponibilité ? Comment garantir la cohérence des opérations composées et gérer leurs échecs ? | EX-03 à EX-08, TEC-03 à TEC-05 ; travail technique à spécifier. | Sécurité du prototype avant S1 ; exploitation avant cible. |
 | Q-25 | Confirmer les critères de recherche envisagés, les tris, la combinaison des catégories et la période de référence de « disponible ». | US-09, maquettes et recherche de créneaux. | Avant filtres ; disponibilité avant L4. |
-| Q-26 | Confirmer création, modification, déplacement et éventuelle suppression des tâches ; champs obligatoires hors responsable facultatif décidé en D-02, ordre et comportement des tâches non terminées à l’archivage. | US-19, US-20, dictionnaire. | Avant Kanban. |
-| Q-27 | Le créateur devient-il automatiquement membre ? Peut-il être retiré, quitter le projet ou perdre les droits de collaboration tout en gardant consultation et clôture ? | US-14, US-18, US-20, US-22 ; droits contextuels. | Avant création/membres. |
+| Q-26 | Confirmer création, modification, déplacement et éventuelle suppression des tâches ; champs obligatoires hors responsable de tâche facultatif décidé en D-02, ordre et comportement des tâches non terminées à l’archivage. | US-19, US-20, dictionnaire. | Avant Kanban. |
+| Q-27 | Décidé en D-07 : le responsable est obligatoirement membre. Reste à préciser le transfert de responsabilité et les conditions empêchant son retrait ou son départ tant qu'aucun remplaçant n'est désigné. | US-18, US-20 ; droits contextuels. | Avant retrait ou remplacement du responsable. |
 
 ## Désaccord entre sources visuelles et textuelles
 

@@ -49,18 +49,18 @@ Aucun champ quantité précise pour le non-individualisé ni localisation physiq
 | Nom | Minimum requis, texte | Avec description et visibilité. |
 | Description | Minimum requis, texte | Format/longueur non définis. |
 | Visibilité | Minimum requis, NP/public ou Secret/privé | Droits de l’utilisateur sur choix et changement à préciser en Q-06. |
-| Créateur | Requis métier, référence utilisateur | Droit de consultation privée et de clôture/archivage ; adhésion comme membre à confirmer. |
+| Responsable | Requis métier, référence utilisateur | Utilisateur à l’origine du projet, obligatoirement membre ; droit de clôture/archivage. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
 | État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. |
 | Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
 
 ## Participation à un projet
 
-Les notions **créateur**, **membre** et **simple** décrivent la relation d’un utilisateur à un projet. Le créateur est identifié par le projet, le membre par une participation ; l’utilisateur simple n’est ni créateur ni membre du projet concerné. Il ne s’agit pas de valeurs supplémentaires du rôle global administrateur/gestionnaire/utilisateur.
+Les notions **responsable**, **membre** et **simple** décrivent la relation d’un utilisateur à un projet. Le responsable est identifié par le projet et possède obligatoirement une participation de membre ; l’utilisateur simple ne possède aucune participation au projet concerné. Il ne s’agit pas de valeurs supplémentaires du rôle global administrateur/gestionnaire/utilisateur.
 
 Association entre un projet et un utilisateur. L’ajout produit ses effets immédiatement. Un projet peut avoir plusieurs membres et un utilisateur participer à plusieurs projets ; le gestionnaire ne peut pas participer. L’administrateur exerce ses droits sans avoir besoin d’une association.
 
-**Proposition :** une seule participation active par couple utilisateur/projet. Le sort de l’association lors d’un changement de rôle ou du retrait du créateur est ouvert en Q-02/Q-27. Ne pas fusionner les notions de créateur et de membre avant cet arbitrage.
+**Proposition :** une seule participation active par couple utilisateur/projet. Le sort de l’association lors d’un changement de rôle reste ouvert en Q-02. Le responsable étant membre, son retrait ou son remplacement doit préserver la présence d’un responsable membre selon Q-27.
 
 ## Tâche
 
@@ -69,7 +69,7 @@ Association entre un projet et un utilisateur. L’ajout produit ses effets imm�
 | Identifiant interne et projet | Proposition de référence, automatiques | Une tâche appartient à un projet. |
 | Titre / description | Présents selon le compte rendu | Règles de saisie obligatoire et valeurs vides à confirmer en Q-26. |
 | Colonne / état Kanban | Nécessaire au suivi, valeurs à confirmer | À faire, En cours, Fait envisagés ; personnalisation Q-01. |
-| Responsable | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
+| Responsable de la tâche | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
 | Ordre dans la colonne | Proposition seulement | À retenir si nécessaire au parcours validé, Q-26. |
 
 Aucune date d’échéance ni priorité. Suppression de tâche et conservation des tâches non terminées lors de l’archivage : Q-26.
@@ -127,7 +127,7 @@ La suppression du matériel ne doit pas entraîner une suppression de son histor
 
 | Relation | Cardinalité / contrainte métier |
 | --- | --- |
-| Utilisateur → projets créés | Un créateur par projet ; plusieurs projets possibles par créateur. |
+| Utilisateur → projets sous responsabilité | Un responsable par projet ; plusieurs projets possibles par responsable. Le responsable possède aussi une participation de membre au projet. |
 | Utilisateur ↔ projet | Plusieurs participations possibles des deux côtés ; règles de rôle applicables. |
 | Projet → tâches | Zéro à plusieurs tâches ; une tâche appartient à un projet. |
 | Matériel ↔ catégorie | Zéro à plusieurs de chaque côté. |

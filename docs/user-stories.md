@@ -4,7 +4,7 @@
 
 Chaque story est rattachée aux [règles de gestion](regles-de-gestion.md). Les `Q-xx` renvoient aux [arbitrages](decisions-et-questions.md). Les précisions nouvelles sont marquées « proposition » et restent à valider. Les autorisations se vérifient aussi lors d’un accès direct aux données, selon l’architecture retenue.
 
-Les trois rôles de l’application sont **administrateur (admin)**, **gestionnaire** et **utilisateur**. Pour un projet donné, on distingue l’utilisateur **créateur**, **membre** ou **simple** (ni créateur ni membre). Ces distinctions dépendent du projet, pas d’un rôle global supplémentaire.
+Les trois rôles de l’application sont **administrateur (admin)**, **gestionnaire** et **utilisateur**. Pour un projet donné, on distingue l’utilisateur **responsable**, **membre** ou **simple**. Le responsable est obligatoirement membre ; l’utilisateur simple ne l’est pas. Ces distinctions dépendent du projet, pas d’un rôle global supplémentaire.
 
 ## E1 — Accès et accueil
 
@@ -170,10 +170,10 @@ En tant qu’administrateur ou gestionnaire, je veux exporter l’inventaire com
 
 En tant qu’administrateur ou utilisateur, je veux créer un projet afin d’organiser un travail du laboratoire.
 
-**Référence :** §4.1 ; RG-15, RG-16. **Arbitrages :** Q-06, Q-27.
+**Référence :** §4.1 ; RG-15, RG-16. **Arbitrage :** Q-06.
 
 - CA1 : la création recueille nom, description et visibilité ; les dates de début et de fin restent facultatives.
-- CA2 : l’utilisateur à l’origine du projet est identifié comme créateur ; son adhésion automatique comme membre reste à confirmer en Q-27.
+- CA2 : l’utilisateur à l’origine du projet est identifié comme responsable et devient obligatoirement membre du projet.
 - CA3 : le projet suit les droits NP/public ou Secret/privé ; les modalités du choix par un utilisateur sont fixées en Q-06.
 - CA4 : le gestionnaire ne peut pas créer de projet.
 
@@ -184,7 +184,7 @@ En tant qu’administrateur ou utilisateur, je veux consulter les projets auxque
 
 **Référence :** §2.2 et §4.1 ; RG-05, RG-16, RG-17.
 
-- CA1 : un utilisateur consulte les projets publics ainsi que les projets privés dont il est créateur ou membre ; les autres projets privés sont inaccessibles.
+- CA1 : un utilisateur consulte les projets publics ainsi que les projets privés dont il est membre ; le responsable est inclus parmi les membres. Les autres projets privés sont inaccessibles.
 - CA2 : l’administrateur consulte tous les projets actifs sans obligation d’adhésion.
 - CA3 : le gestionnaire ne reçoit ni liste ni détail de projet, public ou privé.
 - CA4 : consulter un projet public sans être membre n’accorde aucun droit de modification.
@@ -218,11 +218,11 @@ En tant que membre ou administrateur, je veux ajouter un utilisateur à un proje
 
 En tant qu’administrateur, je veux retirer un membre afin de gérer la composition des projets.
 
-**Référence :** §4.2 ; RG-18. **Arbitrages :** Q-07, Q-27.
+**Référence :** §4.2 ; RG-18. **Arbitrages :** Q-07, Q-27 pour le responsable.
 
 - CA1 : l’administrateur peut retirer un membre d’un projet sans en être lui-même membre.
-- CA2 : après retrait d’un utilisateur qui n’est pas créateur, l’appartenance ne donne plus de droits ; un projet privé devient inaccessible sauf autre droit applicable.
-- CA3 : les droits éventuels de retrait des autres profils, le retrait du créateur et l’effet sur les réservations existantes doivent être décidés en Q-07/Q-27.
+- CA2 : après retrait d’un membre qui n’est pas responsable, l’appartenance ne donne plus de droits ; un projet privé devient inaccessible sauf autre droit applicable.
+- CA3 : les droits éventuels de retrait des autres profils, le transfert ou retrait du responsable et l’effet sur les réservations existantes doivent être décidés en Q-07/Q-27.
 
 <a id="us-19"></a>
 ### US-19 — Gérer les tâches en Kanban
@@ -231,7 +231,7 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 
 **Référence :** §4.3 ; RG-18, RG-19. **Arbitrages :** Q-01, Q-26.
 
-- CA1 : chaque tâche présente un titre et une description ; un responsable facultatif peut être choisi parmi les membres du projet, modifié ou retiré ; aucune échéance ni priorité n’est demandée.
+- CA1 : chaque tâche présente un titre et une description ; un responsable de tâche facultatif peut être choisi parmi les membres du projet, modifié ou retiré ; aucune échéance ni priorité n’est demandée.
 - CA2 : **proposition de détail du suivi** : un membre ou l’administrateur crée/modifie une tâche et la déplace entre colonnes ; ces opérations et l’éventuelle suppression sont à confirmer en Q-26.
 - CA3 : les colonnes et leur caractère fixe/personnalisable suivent Q-01 ; À faire, En cours et Fait sont la proposition initiale.
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
@@ -239,11 +239,11 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 <a id="us-20"></a>
 ### US-20 — Clôturer ou archiver un projet
 
-En tant que créateur ou administrateur, je veux terminer un projet afin de libérer son matériel et conserver ses éléments.
+En tant que responsable du projet ou administrateur, je veux terminer un projet afin de libérer son matériel et conserver ses éléments.
 
 **Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-06 et Q-12 pour les droits des autres membres, les modifications et la suppression.
 
-- CA1 : le créateur et l’administrateur peuvent déclencher la clôture ou l’archivage ; ces deux termes désignent la même action et le même état. Les droits des autres membres restent à préciser.
+- CA1 : le responsable et l’administrateur peuvent déclencher la clôture ou l’archivage ; ces deux termes désignent la même action et le même état. Les droits des autres membres restent à préciser.
 - CA2 : les matériels réservés pour le projet sont immédiatement libérés, y compris pour les périodes futures ; la trace des affectations est conservée.
 - CA3 : l’archive conserve informations, participants, matériels associés et tâches réalisées, sans échéance de suppression définie.
 - CA4 : un projet archivé ne peut pas être rouvert ; les modifications ultérieures et la suppression suivent Q-12.
@@ -256,7 +256,7 @@ En tant qu’utilisateur, je veux retrouver les projets archivés auxquels leur 
 **Référence :** §4.4 et §8.2 ; RG-21. **Arbitrage :** Q-12 pour les actions possibles après archivage.
 
 - CA1 : les informations, participants, matériels associés et tâches réalisées restent conservés indéfiniment pour le moment.
-- CA2 : un projet public archivé reste consultable par tous les utilisateurs ; un projet privé archivé reste consultable par l’administrateur, son créateur et ses membres ; le gestionnaire reste exclu des projets.
+- CA2 : un projet public archivé reste consultable par tous les utilisateurs ; un projet privé archivé reste consultable par l’administrateur et ses membres, dont le responsable ; le gestionnaire reste exclu des projets.
 - CA3 : l’historique des modifications du projet reste consultable selon les mêmes droits.
 - CA4 : aucune action de réouverture n’est disponible ; les actions de modification et de suppression nécessitent un arbitrage puis, si retenues, des stories complémentaires.
 
@@ -279,7 +279,7 @@ En tant que personne autorisée à consulter un projet, je veux consulter son hi
 
 En tant que membre ou administrateur, je veux réserver un matériel individualisé afin d’en disposer pour mon projet pendant une période donnée.
 
-**Référence :** §5 ; RG-17, RG-22 à RG-24, RG-26. **Arbitrages :** Q-22, Q-27. Hors premier sprint.
+**Référence :** §5 ; RG-17, RG-22 à RG-24, RG-26. **Arbitrage :** Q-22. Hors premier sprint.
 
 - CA1 : un membre réserve pour son projet, l’administrateur pour tout projet ; le gestionnaire, l’utilisateur non membre et le matériel non individualisé sont exclus.
 - CA2 : début et fin comprennent chacun date et heure ; seules les minutes 00 et 30 sont acceptées. Une valeur manquante empêche la validation.
@@ -382,7 +382,7 @@ En tant qu’administrateur, gestionnaire ou utilisateur, je veux disposer de ma
 
 **Référence :** §7 ; RG-05, RG-28, RG-29. **Arbitrages :** Q-14, Q-17, Q-20.
 
-- CA1 : les maquettes couvrent connexion, navigation générale, accueil, consultation des projets et inventaire, avec les différences entre administrateur, gestionnaire et utilisateur ; les parcours utilisateur distinguent créateur, membre et simple pour le projet concerné.
+- CA1 : les maquettes couvrent connexion, navigation générale, accueil, consultation des projets et inventaire, avec les différences entre administrateur, gestionnaire et utilisateur ; les parcours utilisateur distinguent responsable, membre et simple pour le projet concerné.
 - CA2 : la version proposée corrige l’accès aux projets montré dans la maquette gestionnaire existante ; aucun projet n’y est accessible.
-- CA3 : les actions proposées suivent les droits du profil et les qualités de créateur ou de membre ; un utilisateur simple reste en consultation sur les projets publics.
+- CA3 : les actions proposées suivent les droits du profil et les qualités de responsable ou de membre ; un utilisateur simple reste en consultation sur les projets publics.
 - CA4 : les retours sur les maquettes et les parcours sont consignés ; la date et les modalités de validation doivent être fixées en Q-20.

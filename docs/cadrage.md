@@ -22,11 +22,11 @@ Pour le rôle utilisateur, les droits dépendent aussi de sa relation avec chaqu
 
 | Situation dans le projet | Droits et limites |
 | --- | --- |
-| Créateur | Utilisateur à l’origine du projet ; peut le consulter, le clôturer ou l’archiver. L’adhésion automatique comme membre reste à préciser en Q-27. |
+| Responsable du projet | Membre à l’origine du projet ; peut le consulter, le gérer, le clôturer ou l’archiver. |
 | Membre | Utilisateur ajouté au projet ; peut modifier ses informations, gérer ses tâches et réservations et ajouter des membres, selon les règles définies. |
-| Simple | Utilisateur ni créateur ni membre du projet ; peut consulter ce projet s’il est public, sans le modifier. N’accède pas au projet privé. |
+| Simple | Utilisateur non membre du projet ; peut consulter ce projet s’il est public, sans le modifier. N’accède pas au projet privé. |
 
-Ces situations sont propres à chaque projet : un utilisateur peut être créateur d’un projet, membre d’un autre et simple sur un troisième. Elles ne créent pas de rôles globaux supplémentaires.
+Ces situations sont propres à chaque projet : un utilisateur peut être responsable d’un projet, membre d’un autre et simple sur un troisième. Le responsable est toujours membre de son projet. Ces situations ne créent pas de rôles globaux supplémentaires.
 
 La [matrice des droits](regles-de-gestion.md#matrice-des-droits) détaille les autorisations.
 

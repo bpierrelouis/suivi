@@ -13,6 +13,9 @@
 | [Premier sprint](sprint-01.md) | Objectif, travaux, démonstration et conditions de réalisation. |
 | [Règles de gestion et droits](regles-de-gestion.md) | Contraintes métier et matrice des autorisations. |
 | [Dictionnaire de données](dictionnaire-donnees.md) | Entités, informations attendues et relations conceptuelles. |
+| [Diagramme de cas d'utilisation](dcu.md) | Acteurs, objectifs métier et relations UML par domaine fonctionnel. |
+| [Spécification des DCU](annexes/specification-dcu.md) | Règles de construction et de validation des diagrammes de cas d'utilisation. |
+| [Diagramme de classes d'analyse métier](dclam.md) | Classes métier, attributs, opérations, cardinalités et contraintes. |
 | [Parcours et maquettes](parcours-et-maquettes.md) | Navigation cible et écarts des maquettes existantes. |
 | [Plan de recette](plan-de-recette.md) | Scénarios de validation et jeux de données proposés. |
 | [Questions et décisions](decisions-et-questions.md) | Arbitrages nécessaires avant réalisation des fonctions concernées. |

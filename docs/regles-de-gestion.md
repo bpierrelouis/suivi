@@ -30,13 +30,13 @@
 
 | ID | Règle |
 | --- | --- |
-| RG-15 | L’administrateur et l’utilisateur créent un projet avec nom, description et visibilité. Les dates de début et de fin sont facultatives. Les droits de l’utilisateur sur le choix/changement de visibilité restent à préciser, Q-06. |
-| RG-16 | NP/public est consultable par tous sauf le gestionnaire. Secret/privé est consultable par l’administrateur, le créateur et les membres. « Secret » désigne une visibilité privée dans l’application. |
+| RG-15 | L’administrateur et l’utilisateur créent un projet avec nom, description et visibilité. L’utilisateur à l’origine du projet en devient le responsable et un membre. Les dates de début et de fin sont facultatives. Les droits de l’utilisateur sur le choix/changement de visibilité restent à préciser, Q-06. |
+| RG-16 | NP/public est consultable par tous sauf le gestionnaire. Secret/privé est consultable par l’administrateur et les membres du projet, dont son responsable. « Secret » désigne une visibilité privée dans l’application. |
 | RG-17 | Pour une réservation liée à un projet inaccessible, afficher « Réservé » à la place du nom du projet. Ne pas divulguer ses informations via inventaire, recherche, historique ou export. |
 | RG-18 | L’ajout d’un membre est immédiat, sans invitation à accepter. Les membres peuvent modifier les informations, gérer les tâches et les réservations et ajouter des membres. L’administrateur peut aussi retirer des membres. Les autres droits de retrait restent ouverts, Q-07. |
-| RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
-| RG-20 | Créateur et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres restent à arbitrer. Un projet archivé ne peut pas être rouvert. |
-| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur, le créateur et les membres ; le gestionnaire n’accède à aucun projet. Modifications et suppression : Q-12. |
+| RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable de tâche facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
+| RG-20 | Responsable du projet et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres restent à arbitrer. Un projet archivé ne peut pas être rouvert. |
+| RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur et les membres, dont le responsable ; le gestionnaire n’accède à aucun projet. Modifications et suppression : Q-12. |
 | RG-30 | Toute modification d’un projet est historisée avec sa date et son auteur. L’historique couvre au minimum la création, les informations et la visibilité, les membres, les tâches et la clôture/archivage. Il suit les droits de consultation du projet, y compris après archivage. |
 
 ## Réservations et notifications
@@ -55,7 +55,7 @@
 
 ## Matrice des droits
 
-Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour un projet donné, l’utilisateur peut être créateur, membre ou simple (ni créateur ni membre). Un utilisateur simple peut consulter un projet public sans le modifier et ne peut pas accéder à un projet privé. Ces situations ne constituent pas des rôles globaux supplémentaires. « À préciser » signifie qu’un arbitrage est nécessaire.
+Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour un projet donné, l’utilisateur peut être responsable, membre ou simple. Le responsable est obligatoirement membre ; l’utilisateur simple ne l’est pas. Un utilisateur simple peut consulter un projet public sans le modifier et ne peut pas accéder à un projet privé. Ces situations ne constituent pas des rôles globaux supplémentaires. « À préciser » signifie qu’un arbitrage est nécessaire.
 
 | Action | Administrateur | Gestionnaire | Utilisateur |
 | --- | --- | --- | --- |
@@ -68,14 +68,14 @@ Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour 
 | Restaurer un matériel | Non | Non | Non |
 | Créer un projet | Oui | Non | Oui, modalités de visibilité à préciser |
 | Lire un projet public | Oui | Non | Oui |
-| Lire un projet privé | Oui | Non | Créateur ou membre |
+| Lire un projet privé | Oui | Non | Membre, dont responsable |
 | Modifier les informations du projet | Oui, sans adhésion | Non | Membre |
 | Choisir/changer la visibilité | Oui | Non | À préciser, Q-06 |
 | Gérer tâches et réservations | Oui, sans adhésion | Non | Membre |
 | Ajouter un membre | Oui | Non | Membre |
 | Retirer un membre | Oui | Non | À préciser, Q-07 |
-| Clôturer/archiver un projet | Oui | Non | Créateur ; autres membres à préciser |
-| Consulter un projet archivé | Oui | Non | Selon la visibilité : public pour tous, privé si créateur ou membre |
+| Clôturer/archiver un projet | Oui | Non | Responsable ; autres membres à préciser |
+| Consulter un projet archivé | Oui | Non | Selon la visibilité : public pour tous, privé si membre |
 | Consulter l’historique d’un projet | Oui | Non | Si le projet est consultable |
 | Supprimer un projet | Oui, modalités à préciser | Non | À préciser |
 | Rouvrir un projet | Non | Non | Non |

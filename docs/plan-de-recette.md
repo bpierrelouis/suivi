@@ -12,7 +12,7 @@ Consigner version testée, environnement, date, testeur et arbitrages applicable
 | --- | --- |
 | Compte `admin` | Administrateur unique ; secret configuré selon Q-21. |
 | Compte G | Gestionnaire unique, préparé selon le mécanisme convenu ; aucune participation opérationnelle à un projet. |
-| Comptes A, B, C | Rôle utilisateur ; A créateur et membre de P-PUB/P-PRIV, B membre, C utilisateur simple sur ces projets. La double qualité d’A est préparée explicitement sans présumer de Q-27. |
+| Comptes A, B, C | Rôle utilisateur ; A responsable et donc membre de P-PUB/P-PRIV, B membre, C utilisateur simple sur ces projets. |
 | Identifiant D reconnu par la simulation, absent de SUIVI | Première connexion, création automatique puis reconnexion. |
 | P-PUB | Projet public accessible à C en lecture seule. |
 | P-PRIV | Projet privé accessible à A/B/admin, inaccessible à C/G. |
@@ -70,7 +70,7 @@ Combiner des critères convenus et vérifier résultats/tri, puis retirer les fi
 
 ### REC-07 — Visibilité et modification des projets
 
-**Stories :** US-14 à US-16, US-29. **Préconditions :** Q-06/Q-27 et effet des dates Q-13 décidés pour les fonctions testées.
+**Stories :** US-14 à US-16, US-29. **Préconditions :** Q-06 et effet des dates Q-13 décidés pour les fonctions testées.
 
 Créer un projet avec nom, description et visibilité sans dates ; vérifier les champs minimums. C consulte P-PUB mais ne le modifie pas et n’accède pas à P-PRIV. A/B modifient leurs projets selon leurs droits ; admin agit sans être membre. G ne peut lister, consulter, créer ou modifier aucun projet. Vérifier les changements de visibilité selon Q-06 et les changements de dates selon Q-13 sans laisser de conflit de réservation non traité.
 
@@ -78,13 +78,13 @@ Créer un projet avec nom, description et visibilité sans dates ; vérifier les
 
 **Stories :** US-17, US-18, US-29. **Préconditions :** Q-07/Q-27 décidés.
 
-Faire ajouter C à P-PRIV par B : accès immédiat sans invitation, puis droits de collaboration. Admin retire C : perte des droits de membre et de l’accès privé, puisqu’il n’est pas créateur. Vérifier le traitement des réservations existantes selon Q-07. Refuser l’ajout de G et l’ajout de membres par un extérieur. Vérifier séparément les règles retenues pour créateur et utilisateurs jamais connectés.
+Faire ajouter C à P-PRIV par B : accès immédiat sans invitation, puis droits de collaboration. Admin retire C : perte des droits de membre et de l’accès privé, puisqu’il n’est pas responsable. Vérifier le traitement des réservations existantes selon Q-07. Refuser l’ajout de G et l’ajout de membres par un extérieur. Vérifier séparément le transfert ou retrait du responsable selon Q-27 et le cas des utilisateurs jamais connectés.
 
 ### REC-09 — Kanban
 
 **Stories :** US-19. **Préconditions :** Q-01/Q-26 décidés.
 
-Vérifier titre, description, responsable facultatif, colonnes et opérations convenues : création, modification, déplacement, éventuelle suppression si retenue. Affecter un membre du projet comme responsable, changer ce responsable puis le retirer ; refuser un utilisateur qui n’est pas membre. A/B/admin peuvent agir selon leurs droits ; C sur P-PUB reste en lecture ; G et les extérieurs à P-PRIV ne voient pas son tableau. Aucune échéance ni priorité n’est requise. Vérifier la personnalisation seulement si elle a été retenue.
+Vérifier titre, description, responsable de tâche facultatif, colonnes et opérations convenues : création, modification, déplacement, éventuelle suppression si retenue. Affecter un membre du projet comme responsable de tâche, changer ce responsable puis le retirer ; refuser un utilisateur qui n’est pas membre. A/B/admin peuvent agir selon leurs droits ; C sur P-PUB reste en lecture ; G et les extérieurs à P-PRIV ne voient pas son tableau. Aucune échéance ni priorité n’est requise. Vérifier la personnalisation seulement si elle a été retenue.
 
 ### REC-10 — Création de réservation et horaires
 
@@ -128,7 +128,7 @@ Pour un matériel actif, admin accède à son historique et aux projets ; G acc�
 
 **Stories :** US-20, US-21, US-31. **Préconditions :** Q-06/Q-12/Q-26 décidés pour les comportements encore ouverts.
 
-Clôturer puis, dans un autre jeu, archiver un projet comme créateur et comme admin non membre. Vérifier que les deux libellés produisent exactement le même état et les mêmes effets : matériels immédiatement libérés et affectations conservées. L’archive conserve les informations, participants, matériels associés, tâches réalisées et historique des modifications. Un utilisateur simple accède à l’archive publique, mais pas à l’archive privée ; le créateur, les membres et l’admin accèdent à l’archive privée ; le gestionnaire n’accède à aucune archive projet. Vérifier dans l’historique la date, l’auteur et la nature des modifications, y compris la clôture/archivage. Vérifier qu’aucune interface ni requête directe ne permet de rouvrir le projet. Tester modification et suppression uniquement selon les décisions retenues.
+Clôturer puis, dans un autre jeu, archiver un projet comme responsable et comme admin non membre. Vérifier que les deux libellés produisent exactement le même état et les mêmes effets : matériels immédiatement libérés et affectations conservées. L’archive conserve les informations, participants, matériels associés, tâches réalisées et historique des modifications. Un utilisateur simple accède à l’archive publique, mais pas à l’archive privée ; le responsable, les membres et l’admin accèdent à l’archive privée ; le gestionnaire n’accède à aucune archive projet. Vérifier dans l’historique la date, l’auteur et la nature des modifications, y compris la clôture/archivage. Vérifier qu’aucune interface ni requête directe ne permet de rouvrir le projet. Tester modification et suppression uniquement selon les décisions retenues.
 
 ### REC-16 — Notifications personnelles
 
@@ -154,7 +154,7 @@ Pour chaque case de la matrice des droits, vérifier un accès autorisé et les 
 
 **Stories :** US-30. **Périmètre :** S1.
 
-Parcourir connexion, accueil, inventaire et projets pour les trois rôles : administrateur, gestionnaire et utilisateur. Pour l’utilisateur, examiner les situations créateur, membre et simple sur un projet. Vérifier les différences de lecture/modification, l’absence de projets pour le gestionnaire et la clarté des libellés. Consigner les retours, les écrans acceptés et ceux à reprendre. L’existence des anciennes images ne suffit pas à valider ce scénario.
+Parcourir connexion, accueil, inventaire et projets pour les trois rôles : administrateur, gestionnaire et utilisateur. Pour l’utilisateur, examiner les situations responsable, membre et simple sur un projet. Vérifier les différences de lecture/modification, l’absence de projets pour le gestionnaire et la clarté des libellés. Consigner les retours, les écrans acceptés et ceux à reprendre. L’existence des anciennes images ne suffit pas à valider ce scénario.
 
 ## Suivi d’exécution
 

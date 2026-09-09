@@ -29,16 +29,16 @@ Les lots L2 à L5 sont des regroupements fonctionnels proposés, sans durée ni 
 | [US-11](user-stories.md#us-11) | Archives du matériel | E2 | P1 | L2 puis L4 | US-10, US-12 ; US-25 en L4 | À préparer |
 | [US-12](user-stories.md#us-12) | Historique du matériel actif | E2 | P1 | L2 | US-06, US-07 | À préparer |
 | [US-13](user-stories.md#us-13) | Exports de l’inventaire | E2 | P2 | L5 | US-09, US-29 ; Q-11 | À arbitrer ; formats envisagés |
-| [US-14](user-stories.md#us-14) | Création de projet | E3 | P1 | L3 | US-01 ; Q-06, Q-27 | À arbitrer |
+| [US-14](user-stories.md#us-14) | Création de projet | E3 | P1 | L3 | US-01 ; Q-06 | À arbitrer |
 | [US-15](user-stories.md#us-15) | Consultation des projets | E3 | P1 | L3 | US-14 | À préparer |
 | [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | L3 puis L4 | US-14, US-17 ; Q-06, Q-13 | À arbitrer |
 | [US-17](user-stories.md#us-17) | Ajout de membres | E3 | P1 | L3 | US-14 ; Q-07 | À arbitrer |
 | [US-18](user-stories.md#us-18) | Retrait de membres | E3 | P1 | L3 | US-17 ; Q-07, Q-27 | À arbitrer |
-| [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable facultatif | E3 | P1 | L3 | US-14, US-17 ; Q-01, Q-26 | À arbitrer sur le cycle de vie |
+| [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable de tâche facultatif | E3 | P1 | L3 | US-14, US-17 ; Q-01, Q-26 | À arbitrer sur le cycle de vie |
 | [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | L4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12 | Équivalence et absence de réouverture décidées ; autres actions à arbitrer |
 | [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | L4 | US-20 ; Q-12 | Droits de lecture et absence de réouverture décidés ; autres actions à arbitrer |
 | [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | L4 | US-14 à US-21 | À préparer |
-| [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | L4 | US-05, US-14, US-17 ; Q-22, Q-27 | À arbitrer |
+| [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | L4 | US-05, US-14, US-17 ; Q-22 | À arbitrer |
 | [US-23](user-stories.md#us-23) | Modification de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
 | [US-24](user-stories.md#us-24) | Annulation de réservation | E4 | P1 | L4 | US-22 ; Q-22 | À arbitrer |
 | [US-25](user-stories.md#us-25) | Historique des réservations | E4 | P1 | L4 | US-22, US-23, US-24 | À préparer |

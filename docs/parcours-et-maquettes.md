@@ -37,11 +37,11 @@ Une réservation peut apparaître comme « Réservé », avec les informations d
 
 ## Utilisateur
 
-Pour chaque projet, distinguer l’utilisateur **créateur**, **membre** ou **simple**. Un utilisateur simple n’est ni créateur ni membre ; il accède uniquement à la consultation des projets publics.
+Pour chaque projet, distinguer l’utilisateur **responsable**, **membre** ou **simple**. Le responsable est membre du projet ; un utilisateur simple ne l’est pas et accède uniquement à la consultation des projets publics.
 
 Accueil → inventaire actif → recherche et détail en consultation. Pas d’export, de modification ni d’historique du matériel.
 
-Accueil/navigation projets → projets actifs ou archivés, publics ou privés autorisés → détail et historique des modifications. Un public non membre reste en lecture, y compris après archivage. Un membre accède aux modifications, aux tâches, à l’ajout de membres et aux réservations tant que le projet est actif. Le créateur dispose du droit de clôture/archivage ; ses autres droits contextuels dépendent de l’adhésion à préciser en Q-27.
+Accueil/navigation projets → projets actifs ou archivés, publics ou privés autorisés → détail et historique des modifications. Un public non membre reste en lecture, y compris après archivage. Un membre accède aux modifications, aux tâches, à l’ajout de membres et aux réservations tant que le projet est actif. Le responsable, obligatoirement membre, dispose en plus du droit de clôture/archivage.
 
 Depuis un projet accessible en modification → sélection d’un exemplaire → période complète → validation sans conflit → réservation visible. Modification/annulation possibles par les autres membres du même projet. L’utilisateur ne reçoit pas pour autant l’accès à l’historique des réservations de l’inventaire.
 
@@ -54,7 +54,7 @@ Depuis un projet accessible en modification → sélection d’un exemplaire →
 | Suppression matériel | **Proposition :** confirmation expliquant l’archivage irréversible et l’annulation des réservations ; résultat sans perte d’historique. |
 | Historique / archives matériel | Événements date/auteur ; archivés réservés à l’administrateur ; projets masqués au gestionnaire. |
 | Projet et membres | Visibilité, informations requises, dates facultatives, ajout immédiat et actions autorisées. |
-| Kanban | Titre/description, responsable facultatif parmi les membres et colonnes convenues ; états vide/erreur ; pas de priorité ni d’échéance. |
+| Kanban | Titre/description, responsable de tâche facultatif parmi les membres et colonnes convenues ; états vide/erreur ; pas de priorité ni d’échéance. |
 | Réservation | Début/fin obligatoires, minutes 00/30, valeurs projet comme défauts, message de conflit. |
 | Clôture/archivage projet | Expliquer la libération du matériel avant confirmation ; les deux libellés produisent le même état. Afficher l’archive et l’historique selon la visibilité du projet. |
 | Notifications | Liste personnelle, lu/non lu individuel et contenu conforme aux droits actuels. |
