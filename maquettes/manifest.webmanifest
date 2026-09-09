@@ -1,0 +1,16 @@
+{
+  "name": "StockFlow — Inventaire & Projets",
+  "short_name": "StockFlow",
+  "description": "Suivi des usages, inventaires et vie des projets.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0e17",
+  "theme_color": "#0f172a",
+  "orientation": "any",
+  "lang": "fr",
+  "icons": [
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

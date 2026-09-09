@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hors ligne — StockFlow</title>
+<link rel="stylesheet" href="assets/css/variables.css" />
+<link rel="stylesheet" href="assets/css/base.css" />
+<style>
+  .offline-screen { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+  .offline-box { max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .offline-box h1 { font-size: 18px; font-weight: 700; }
+  .offline-box p { color: var(--text-muted); font-size: 14px; }
+  .offline-box button {
+    height: 40px; padding: 0 18px; border-radius: 8px; border: none;
+    background: var(--accent); color: #fff; font-weight: 600; font-size: 14px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="offline-screen">
+    <div class="offline-box">
+      <svg aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M2 8.82a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0" stroke-dasharray="2 2"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>
+        <circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      <h1>Pas de connexion</h1>
+      <p>Cette page n'a pas encore été mise en cache. Reconnecte-toi pour y accéder, ou reviens à un écran déjà visité.</p>
+      <button onclick="location.reload()">Réessayer</button>
+    </div>
+  </div>
+</body>
+</html>

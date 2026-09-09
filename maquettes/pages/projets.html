@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Projets — StockFlow</title>
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="../assets/icons/icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" href="../assets/css/variables.css" />
+<link rel="stylesheet" href="../assets/css/base.css" />
+<link rel="stylesheet" href="../assets/css/layout.css" />
+<link rel="stylesheet" href="../assets/css/components.css" />
+</head>
+<body data-root-prefix="../">
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+<div class="stack-banners">
+  <div class="pwa-banner" id="pwa-install-banner">
+    <div class="pwa-banner__text"><strong>Installer StockFlow</strong><span>Accède à l'app depuis ton écran d'accueil, même hors ligne.</span></div>
+    <button class="btn btn-secondary btn-sm" data-pwa-dismiss>Plus tard</button>
+    <button class="btn btn-primary btn-sm" data-pwa-install>Installer</button>
+  </div>
+  <div class="pwa-banner pwa-banner--offline" id="pwa-offline-banner">
+    <div class="pwa-banner__text"><strong>Mode hors ligne</strong><span>Les données affichées peuvent ne pas être à jour.</span></div>
+  </div>
+</div>
+
+<div class="sidebar-scrim"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      StockFlow
+      <button class="iconbtn" style="margin-left:auto; border:none; background:transparent; color:#94a3b8;" data-menu-close aria-label="Fermer le menu">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar__nav" aria-label="Navigation principale">
+      <a class="navlink" href="dashboard.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="12" width="8" height="9" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg>
+        Tableau de bord
+      </a>
+      <a class="navlink" href="projets.html" aria-current="page">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+        Projets
+      </a>
+      <a class="navlink" href="inventaire.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
+        Inventaire
+      </a>
+      <a class="navlink" href="utilisateurs.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
+        Utilisateurs
+      </a>
+      <a class="navlink" href="parametres.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.6 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+        Paramètres
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <button class="userchip" data-menu-close>
+        <span class="userchip__avatar">AS</span>
+        <span class="userchip__meta">
+          <span class="userchip__name">Alexandre S.</span>
+          <span class="userchip__role">Administrateur</span>
+        </span>
+      </button>
+      <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn topbar__menu-btn" data-menu-open aria-label="Ouvrir le menu">
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="searchbox hide-mobile">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="search-projets" aria-label="Rechercher un projet" placeholder="Rechercher un projet…" />
+      </div>
+      <div class="topbar__spacer"></div>
+      <div class="topbar__actions">
+        <button class="iconbtn" data-theme-toggle data-theme-icon aria-label="Basculer le thème">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <div>
+          <h1>Tous les projets</h1>
+          <p id="projets-count">7 projets · triés par statut</p>
+        </div>
+        <button class="btn btn-primary" data-modal-open="modal-projet" data-modal-title="Nouveau projet">
+          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Nouveau projet
+        </button>
+      </div>
+
+      <div class="card card-pad">
+        <div class="table-wrap">
+          <table class="table" id="projets-table">
+            <thead><tr><th scope="col">Projet</th><th scope="col">Référence</th><th scope="col">Responsable</th><th scope="col">Échéance</th><th scope="col">Statut</th><th scope="col"></th></tr></thead>
+            <tbody id="projets-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Nouveau / Modifier projet -->
+<div class="modal-scrim" id="modal-projet">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-projet-title">
+    <div class="modal__header">
+      <div>
+        <h2 data-modal-title id="modal-projet-title">Nouveau projet</h2>
+        <p>Renseigne les informations du projet</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form data-mock-form>
+      <div class="modal__body">
+        <div class="form-grid">
+          <div class="form-field span-2">
+            <label for="projet-nom">Nom du projet</label>
+            <input id="projet-nom" type="text" placeholder="Ex. Refonte entrepôt Nord" required />
+          </div>
+          <div class="form-field">
+            <label for="projet-ref">Référence</label>
+            <input id="projet-ref" type="text" placeholder="PRJ-2050" />
+          </div>
+          <div class="form-field">
+            <label for="projet-responsable">Responsable</label>
+            <select id="projet-responsable"><option>Camille Doré</option><option>Yanis Belkacem</option><option>Léa Fournier</option><option>Marc Vidal</option></select>
+          </div>
+          <div class="form-field">
+            <label for="projet-echeance">Échéance</label>
+            <input id="projet-echeance" type="date" />
+          </div>
+          <div class="form-field">
+            <label for="projet-statut">Statut</label>
+            <select id="projet-statut"><option>En attente</option><option>Actif</option><option>Clôturé</option></select>
+          </div>
+          <div class="form-field span-2">
+            <label for="projet-description">Description</label>
+            <textarea id="projet-description" placeholder="Objectifs, périmètre, contraintes du projet…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/modal.js"></script>
+<script src="../assets/js/pwa.js"></script>
+<script>
+  const statutTone = { "Actif": "success", "En attente": "warning", "Clôturé": "neutral" };
+  const groupes = ["En cours", "En attente", "Clôturés"];
+
+  function renderProjets(filter) {
+    const q = (filter || "").toLowerCase();
+    const body = document.getElementById("projets-body");
+    let html = "";
+    let total = 0;
+    groupes.forEach((g) => {
+      const rows = StockFlowData.projets.filter((p) => p.groupe === g && (p.nom.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)));
+      if (!rows.length) return;
+      total += rows.length;
+      html += `<tr class="group-row"><td colspan="6">${g} (${rows.length})</td></tr>`;
+      html += rows.map((p) => `
+        <tr>
+          <td data-label="Projet"><a href="projet-detail.html?id=${p.id}" style="font-weight:600; color:var(--text);">${p.nom}</a></td>
+          <td data-label="Référence" class="cell-muted">${p.id}</td>
+          <td data-label="Responsable">${p.responsable}</td>
+          <td data-label="Échéance" class="cell-muted">${p.echeance}</td>
+          <td data-label="Statut"><span class="badge badge-${statutTone[p.statut]}">${p.statut}</span></td>
+          <td class="cell-actions"><a href="projet-detail.html?id=${p.id}" class="btn btn-secondary btn-sm">Consulter</a></td>
+        </tr>`).join("");
+    });
+    body.innerHTML = html || `<tr><td colspan="6" class="cell-muted" style="text-align:center; padding:24px;">Aucun projet ne correspond à la recherche.</td></tr>`;
+    document.getElementById("projets-count").textContent = `${total} projet${total > 1 ? "s" : ""} · triés par statut`;
+  }
+  renderProjets("");
+  document.getElementById("search-projets").addEventListener("input", (e) => renderProjets(e.target.value));
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Connexion — StockFlow</title>
+<meta name="description" content="StockFlow — suivi des usages, inventaires et vie des projets." />
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/icons/icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" href="assets/css/variables.css" />
+<link rel="stylesheet" href="assets/css/base.css" />
+<link rel="stylesheet" href="assets/css/components.css" />
+</head>
+<body data-root-prefix="">
+  <div class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+        StockFlow
+      </div>
+
+      <div class="card card-pad">
+        <div class="auth-title" style="margin-bottom: 20px;">
+          <h1>Connexion</h1>
+          <p>Accède à ton espace de gestion</p>
+        </div>
+
+        <form id="login-form" style="display:flex; flex-direction:column; gap:16px;">
+          <div class="form-field">
+            <label for="email">Identifiant</label>
+            <input id="email" type="email" placeholder="alexandre@labo.fr" value="alexandre.s@labo.fr" required />
+          </div>
+          <div class="form-field">
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" placeholder="••••••••" value="demoDemo123" required />
+          </div>
+          <div class="flex items-center" style="justify-content: space-between; font-size: 13px;">
+            <label class="checkline"><input type="checkbox" /> Se souvenir de moi</label>
+            <a href="#">Mot de passe oublié ?</a>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+        </form>
+      </div>
+
+      <p class="auth-foot">Espace Admin — démo StockFlow · Intradef simulé</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      window.location.href = "pages/dashboard.html";
+    });
+  </script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/pwa.js"></script>
+</body>
+</html>

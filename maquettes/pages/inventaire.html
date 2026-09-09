@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Inventaire — StockFlow</title>
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="../assets/icons/icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" href="../assets/css/variables.css" />
+<link rel="stylesheet" href="../assets/css/base.css" />
+<link rel="stylesheet" href="../assets/css/layout.css" />
+<link rel="stylesheet" href="../assets/css/components.css" />
+</head>
+<body data-root-prefix="../">
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+<div class="stack-banners">
+  <div class="pwa-banner" id="pwa-install-banner">
+    <div class="pwa-banner__text"><strong>Installer StockFlow</strong><span>Accède à l'app depuis ton écran d'accueil, même hors ligne.</span></div>
+    <button class="btn btn-secondary btn-sm" data-pwa-dismiss>Plus tard</button>
+    <button class="btn btn-primary btn-sm" data-pwa-install>Installer</button>
+  </div>
+  <div class="pwa-banner pwa-banner--offline" id="pwa-offline-banner">
+    <div class="pwa-banner__text"><strong>Mode hors ligne</strong><span>Les données affichées peuvent ne pas être à jour.</span></div>
+  </div>
+</div>
+
+<div class="sidebar-scrim"></div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      StockFlow
+      <button class="iconbtn" style="margin-left:auto; border:none; background:transparent; color:#94a3b8;" data-menu-close aria-label="Fermer le menu">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="sidebar__nav" aria-label="Navigation principale">
+      <a class="navlink" href="dashboard.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="12" width="8" height="9" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg>
+        Tableau de bord
+      </a>
+      <a class="navlink" href="projets.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+        Projets
+      </a>
+      <a class="navlink" href="inventaire.html" aria-current="page">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
+        Inventaire
+      </a>
+      <a class="navlink" href="utilisateurs.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
+        Utilisateurs
+      </a>
+      <a class="navlink" href="parametres.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.6 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+        Paramètres
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <button class="userchip" data-menu-close>
+        <span class="userchip__avatar">AS</span>
+        <span class="userchip__meta">
+          <span class="userchip__name">Alexandre S.</span>
+          <span class="userchip__role">Administrateur</span>
+        </span>
+      </button>
+      <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn topbar__menu-btn" data-menu-open aria-label="Ouvrir le menu">
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="searchbox hide-mobile">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="search-inventaire" aria-label="Rechercher une référence" placeholder="Rechercher une référence…" />
+      </div>
+      <div class="topbar__spacer"></div>
+      <div class="topbar__actions">
+        <button class="iconbtn" data-theme-toggle data-theme-icon aria-label="Basculer le thème">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <div>
+          <h1>Inventaire</h1>
+          <p id="inv-count">468 références de stock à jour</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13m0 0-4-4m4 4 4-4M4 20h16"/></svg>
+            Exporter
+          </button>
+          <button class="btn btn-primary" data-modal-open="modal-article" data-modal-title="Nouvel article">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Nouvel article
+          </button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__filters">
+          <select class="field-select" id="filter-categorie" aria-label="Filtrer par catégorie">
+            <option value="">Catégorie : Toutes</option>
+            <option>Matières premières</option>
+            <option>Composants</option>
+            <option>Consommables</option>
+          </select>
+          <select class="field-select" id="filter-statut" aria-label="Filtrer par statut">
+            <option value="">Statut : Tous</option>
+            <option>En stock</option>
+            <option>Stock bas</option>
+            <option>Rupture</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card card-pad">
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th scope="col">Référence</th><th scope="col">Désignation</th><th scope="col">Catégorie</th><th scope="col">Emplacement</th><th scope="col">Stock</th><th scope="col">Seuil</th><th scope="col">Statut</th><th scope="col"></th></tr></thead>
+            <tbody id="inv-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Nouvel / Modifier article -->
+<div class="modal-scrim" id="modal-article">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-article-title">
+    <div class="modal__header">
+      <div>
+        <h2 data-modal-title id="modal-article-title">Nouvel article</h2>
+        <p>Renseigne la fiche de l'article</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form data-mock-form>
+      <div class="modal__body">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="article-ref">Référence</label>
+            <input id="article-ref" type="text" placeholder="REF-1080" required />
+          </div>
+          <div class="form-field">
+            <label for="article-designation">Désignation</label>
+            <input id="article-designation" type="text" placeholder="Tôle acier galvanisée 2mm" required />
+          </div>
+          <div class="form-field">
+            <label for="article-categorie">Catégorie</label>
+            <select id="article-categorie"><option>Matières premières</option><option>Composants</option><option>Consommables</option></select>
+          </div>
+          <div class="form-field">
+            <label for="article-fournisseur">Fournisseur</label>
+            <input id="article-fournisseur" type="text" placeholder="Aciers du Nord" />
+          </div>
+          <div class="form-field">
+            <label for="article-emplacement">Emplacement</label>
+            <select id="article-emplacement"><option>Nord</option><option>Sud</option></select>
+          </div>
+          <div class="form-field">
+            <label for="article-allee">Allée / Travée</label>
+            <input id="article-allee" type="text" placeholder="Allée A2" />
+          </div>
+          <div class="form-field">
+            <label for="article-stock">Quantité en stock</label>
+            <input id="article-stock" type="number" placeholder="0" />
+          </div>
+          <div class="form-field">
+            <label for="article-seuil">Seuil d'alerte</label>
+            <input id="article-seuil" type="number" placeholder="0" />
+          </div>
+        </div>
+        <div class="alert">
+          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+          Une quantité sous le seuil déclenche automatiquement une alerte de réapprovisionnement.
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn-danger">Supprimer l'article</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/modal.js"></script>
+<script src="../assets/js/pwa.js"></script>
+<script>
+  const stockTone = { "En stock": "success", "Stock bas": "warning", "Rupture": "danger" };
+  const categories = ["Matières premières", "Composants", "Consommables"];
+
+  function renderInventaire() {
+    const q = document.getElementById("search-inventaire").value.toLowerCase();
+    const cat = document.getElementById("filter-categorie").value;
+    const statut = document.getElementById("filter-statut").value;
+    const body = document.getElementById("inv-body");
+    let html = "";
+    let total = 0;
+
+    categories.forEach((c) => {
+      if (cat && cat !== c) return;
+      const rows = StockFlowData.inventaire.filter((i) =>
+        i.categorie === c &&
+        (!statut || i.statut === statut) &&
+        (i.designation.toLowerCase().includes(q) || i.ref.toLowerCase().includes(q))
+      );
+      if (!rows.length) return;
+      total += rows.length;
+      html += `<tr class="group-row"><td colspan="8">${c} (${rows.length})</td></tr>`;
+      html += rows.map((i) => `
+        <tr>
+          <td data-label="Référence" class="cell-muted">${i.ref}</td>
+          <td data-label="Désignation" style="font-weight:600;">${i.designation}</td>
+          <td data-label="Catégorie" class="cell-muted">${i.categorie}</td>
+          <td data-label="Emplacement" class="cell-muted">${i.emplacement}</td>
+          <td data-label="Stock">${i.stock}</td>
+          <td data-label="Seuil" class="cell-muted">${i.seuil}</td>
+          <td data-label="Statut"><span class="badge badge-${stockTone[i.statut]}">${i.statut}</span></td>
+          <td class="cell-actions"><button class="btn btn-secondary btn-sm" data-modal-open="modal-article" data-modal-title="Modifier l'article">Modifier</button></td>
+        </tr>`).join("");
+    });
+
+    body.innerHTML = html || `<tr><td colspan="8" class="cell-muted" style="text-align:center; padding:24px;">Aucun article ne correspond aux filtres.</td></tr>`;
+    document.getElementById("inv-count").textContent = `${total} référence${total > 1 ? "s" : ""} affichée${total > 1 ? "s" : ""}`;
+  }
+  ["search-inventaire", "filter-categorie", "filter-statut"].forEach((id) =>
+    document.getElementById(id).addEventListener("input", renderInventaire)
+  );
+  renderInventaire();
+</script>
+</body>
+</html>
