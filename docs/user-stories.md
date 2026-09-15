@@ -163,6 +163,18 @@ En tant qu’administrateur ou gestionnaire, je veux exporter l’inventaire com
 - CA3 : l’export du gestionnaire ne contient aucune information de projet inaccessible ; « Réservé » remplace le nom concerné.
 - CA4 : un utilisateur ne peut déclencher ni récupérer un export réservé à un autre profil.
 
+<a id="us-33"></a>
+### US-33 — Gérer les pièces jointes d’un matériel
+
+En tant qu’administrateur ou gestionnaire, je veux joindre des documents à une fiche matériel afin de conserver ses justificatifs, notamment une facture ou un bon de commande.
+
+**Référence :** retour client après le premier sprint ; RG-32. **Arbitrage :** Q-29.
+
+- CA1 : l’administrateur et le gestionnaire peuvent ajouter une ou plusieurs pièces jointes à une fiche matériel active.
+- CA2 : chaque pièce jointe conserve au minimum son nom de fichier, sa date d’ajout et son auteur ; le document peut être consulté ou téléchargé depuis la fiche.
+- CA3 : l’administrateur et le gestionnaire peuvent retirer une pièce jointe ; un utilisateur qui consulte l’inventaire ne peut ni ajouter ni retirer de document.
+- CA4 : les droits de consultation et de téléchargement de l’utilisateur, les types de fichiers autorisés, la taille maximale, le contrôle de sécurité et le devenir des pièces jointes lors de l’archivage suivent Q-29.
+
 ## E3 — Projets et collaboration
 
 <a id="us-14"></a>
@@ -235,6 +247,7 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 - CA2 : **proposition de détail du suivi** : un membre ou l’administrateur crée/modifie une tâche et la déplace entre colonnes ; ces opérations et l’éventuelle suppression sont à confirmer en Q-26.
 - CA3 : les colonnes et leur caractère fixe/personnalisable suivent Q-01 ; À faire, En cours et Fait sont la proposition initiale.
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
+- CA5 : la fiche descriptive du projet fournit un accès direct à son Kanban, sans retour obligatoire à la liste des projets.
 
 <a id="us-20"></a>
 ### US-20 — Clôturer ou archiver un projet
@@ -271,6 +284,20 @@ En tant que personne autorisée à consulter un projet, je veux consulter son hi
 - CA2 : l’historique couvre la création, les changements d’informations et de visibilité, les changements de membres, les modifications des tâches et la clôture/archivage.
 - CA3 : l’historique est accessible aux personnes autorisées à consulter le projet et reste disponible après archivage selon la visibilité du projet.
 - CA4 : le gestionnaire ne peut pas consulter cet historique, puisqu’il n’accède à aucun projet.
+
+<a id="us-32"></a>
+### US-32 — Rédiger et exporter la documentation d’un projet
+
+En tant que membre ou administrateur, je veux rédiger la documentation d’un projet en Markdown et l’exporter en DOCX afin de maintenir un document de référence réutilisable hors de SUIVI.
+
+**Référence :** retour client après le premier sprint ; RG-33. **Arbitrage :** Q-28.
+
+- CA1 : chaque projet possède un document de référence unique, comparable à un `README.md`, dont le contenu source est conservé en Markdown.
+- CA2 : un membre du projet ou l’administrateur peut modifier et enregistrer ce contenu ; une personne disposant seulement du droit de consultation peut le lire sans le modifier.
+- CA3 : l’éditeur propose un aperçu lisible du rendu Markdown et conserve le contenu enregistré lors d’une nouvelle consultation.
+- CA4 : une personne autorisée à consulter le projet peut exporter la version enregistrée au format DOCX ; le fichier reprend le titre du projet et la structure du document Markdown.
+- CA5 : la documentation suit la visibilité du projet et reste inaccessible au gestionnaire ainsi qu’aux utilisateurs sans accès au projet.
+- CA6 : le périmètre Markdown, la gestion des images ou pièces intégrées, l’historisation et les règles de mise en forme du DOCX suivent Q-28.
 
 ## E4 — Réservations et traçabilité
 

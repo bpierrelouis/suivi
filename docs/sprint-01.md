@@ -1,6 +1,6 @@
-# SUIVI — Préparation du premier sprint
+# SUIVI — Premier sprint
 
-**Statut :** proposition de préparation, pas sprint engagé. Durée, échéance, équipe, capacité, responsable de validation et date de démonstration : **à renseigner** en Q-04/Q-20.
+**Statut :** terminé selon le retour de l’équipe du 15 septembre 2026. La connexion, les maquettes et les tableaux de bord ont été réalisés et présentés au client. La date exacte de la réunion, les participants et la trace détaillée de recette restent à renseigner en Q-04/Q-20.
 
 ## Objectif
 

@@ -33,6 +33,17 @@ Aucun nom, prénom, courriel distinct ou annuaire éditable n’est imposé par 
 
 Aucun champ quantité précise pour le non-individualisé ni localisation physique. Une réservation concerne un exemplaire, pas un type ou une catégorie.
 
+## Pièce jointe de matériel
+
+| Information | Obligation / forme conceptuelle | Règle |
+| --- | --- | --- |
+| Identifiant interne et matériel | Propositions, automatiques | Une pièce jointe appartient à une fiche matériel. |
+| Nom de fichier | Requis métier, texte | Affiché lors de la consultation ou du téléchargement. |
+| Contenu et type de fichier | Requis métier | Types autorisés, taille maximale, stockage et contrôle de sécurité à préciser en Q-29. |
+| Date d’ajout et auteur | Requis métier | Assurent la traçabilité minimale de la pièce jointe. |
+
+Le devenir des pièces jointes à l’archivage du matériel et la conservation d’une trace après retrait suivent Q-29.
+
 ## Catégorie et association matériel–catégorie
 
 | Information | Obligation / forme conceptuelle | Règle |
@@ -53,6 +64,17 @@ Aucun champ quantité précise pour le non-individualisé ni localisation physiq
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
 | État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. |
 | Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
+
+## Documentation de projet
+
+| Information | Obligation / forme conceptuelle | Règle |
+| --- | --- | --- |
+| Projet | Requis, référence unique | Un document de référence principal par projet. |
+| Contenu source | Requis métier, Markdown | Comparable à un `README.md` ; syntaxe prise en charge à préciser en Q-28. |
+| Dernière modification | Date, heure et auteur | Mise à jour lors de chaque enregistrement. |
+| Export DOCX | Résultat généré | Reprend le titre du projet et la structure de la version Markdown enregistrée. |
+
+La documentation suit les droits de lecture et de modification du projet. L’historisation des versions, les images intégrées et les règles détaillées de conversion DOCX restent ouvertes en Q-28.
 
 ## Participation à un projet
 
@@ -130,7 +152,9 @@ La suppression du matériel ne doit pas entraîner une suppression de son histor
 | Utilisateur → projets sous responsabilité | Un responsable par projet ; plusieurs projets possibles par responsable. Le responsable possède aussi une participation de membre au projet. |
 | Utilisateur ↔ projet | Plusieurs participations possibles des deux côtés ; règles de rôle applicables. |
 | Projet → tâches | Zéro à plusieurs tâches ; une tâche appartient à un projet. |
+| Projet → documentation | Un document Markdown de référence, exportable en DOCX. |
 | Matériel ↔ catégorie | Zéro à plusieurs de chaque côté. |
+| Matériel → pièces jointes | Zéro à plusieurs documents ; contraintes et conservation selon Q-29. |
 | Matériel → réservations | Plusieurs réservations dans le temps, aucune pour le non-individualisé. |
 | Projet → réservations | Zéro à plusieurs ; chaque réservation concerne un seul projet. |
 | Réservation → réservant | Un auteur de création ; les autres membres peuvent ensuite agir. |

@@ -25,6 +25,7 @@
 | RG-12 | Supprimer un matériel annule ses réservations en cours et futures, conserve leur trace et notifie les membres des projets concernés. |
 | RG-13 | Les créations, modifications et suppressions de matériel portent une date et un auteur. L’identification du matériel, la date et l’auteur de sa suppression sont conservés. |
 | RG-14 | Seuls l’administrateur et le gestionnaire consultent l’historique du matériel actif et de ses réservations. Le gestionnaire ne voit pas les informations des projets ; l’utilisateur n’a aucun accès à ces historiques, même pour ses projets. |
+| RG-32 | L’administrateur et le gestionnaire peuvent ajouter, consulter, télécharger et retirer les pièces jointes d’un matériel. Chaque pièce conserve son nom, sa date d’ajout et son auteur. Les droits de consultation de l’utilisateur, les contraintes de fichier et le traitement lors de l’archivage restent à préciser, Q-29. |
 
 ## Projets
 
@@ -34,10 +35,11 @@
 | RG-16 | NP/public est consultable par tous sauf le gestionnaire. Secret/privé est consultable par l’administrateur et les membres du projet, dont son responsable. « Secret » désigne une visibilité privée dans l’application. |
 | RG-17 | Pour une réservation liée à un projet inaccessible, afficher « Réservé » à la place du nom du projet. Ne pas divulguer ses informations via inventaire, recherche, historique ou export. |
 | RG-18 | L’ajout d’un membre est immédiat, sans invitation à accepter. Les membres peuvent modifier les informations, gérer les tâches et les réservations et ajouter des membres. L’administrateur peut aussi retirer des membres. Les autres droits de retrait restent ouverts, Q-07. |
-| RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable de tâche facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. |
+| RG-19 | Chaque tâche possède un titre et une description et peut avoir un responsable de tâche facultatif choisi parmi les membres du projet. Aucune échéance ni priorité. Les colonnes À faire, En cours et Fait sont envisagées ; leur personnalisation reste à arbitrer, Q-01. Le détail du cycle de vie des tâches est suivi en Q-26. Le Kanban est accessible directement depuis la description du projet. |
 | RG-20 | Responsable du projet et administrateur peuvent clôturer ou archiver un projet ; clôture et archivage sont une même action produisant le même état. Les matériels réservés sont immédiatement libérés et la trace des affectations conservée. Les droits des autres membres restent à arbitrer. Un projet archivé ne peut pas être rouvert. |
 | RG-21 | Une archive de projet conserve informations, participants, matériels associés et tâches réalisées, indéfiniment pour le moment. Elle reste consultable selon la visibilité du projet : public pour tous les utilisateurs, privé pour l’administrateur et les membres, dont le responsable ; le gestionnaire n’accède à aucun projet. Modifications et suppression : Q-12. |
 | RG-30 | Toute modification d’un projet est historisée avec sa date et son auteur. L’historique couvre au minimum la création, les informations et la visibilité, les membres, les tâches et la clôture/archivage. Il suit les droits de consultation du projet, y compris après archivage. |
+| RG-33 | Chaque projet possède une documentation source en Markdown, de type `README.md`, modifiable par ses membres et l’administrateur, lisible par toute personne autorisée à consulter le projet et exportable au format DOCX. La documentation suit la visibilité du projet ; détails en Q-28. |
 
 ## Réservations et notifications
 
@@ -65,6 +67,8 @@ Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour 
 | Exporter l’inventaire | Oui | Oui, projets masqués | Non |
 | Consulter l’historique actif | Oui | Oui, projets masqués | Non |
 | Consulter matériel archivé et historique | Oui | Non | Non |
+| Ajouter/retirer une pièce jointe de matériel | Oui | Oui | Non |
+| Consulter/télécharger une pièce jointe de matériel actif | Oui | Oui | À préciser, Q-29 |
 | Restaurer un matériel | Non | Non | Non |
 | Créer un projet | Oui | Non | Oui, modalités de visibilité à préciser |
 | Lire un projet public | Oui | Non | Oui |
@@ -72,6 +76,8 @@ Les trois rôles sont administrateur (admin), gestionnaire et utilisateur. Pour 
 | Modifier les informations du projet | Oui, sans adhésion | Non | Membre |
 | Choisir/changer la visibilité | Oui | Non | À préciser, Q-06 |
 | Gérer tâches et réservations | Oui, sans adhésion | Non | Membre |
+| Modifier la documentation du projet | Oui, sans adhésion | Non | Membre |
+| Lire/exporter la documentation du projet | Oui | Non | Si le projet est consultable |
 | Ajouter un membre | Oui | Non | Membre |
 | Retirer un membre | Oui | Non | À préciser, Q-07 |
 | Clôturer/archiver un projet | Oui | Non | Responsable ; autres membres à préciser |

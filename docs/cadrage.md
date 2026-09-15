@@ -36,6 +36,8 @@ La [matrice des droits](regles-de-gestion.md#matrice-des-droits) détaille les a
 - Inventaire individualisé ou non individualisé, catégories multiples facultatives, recherche, filtres et tri.
 - Archivage irréversible du matériel, historique daté et attribué à un auteur.
 - Projets publics ou privés, membres ajoutés immédiatement, tâches en Kanban avec responsable facultatif et historique des modifications.
+- Documentation de projet en Markdown, de type `README.md`, avec export DOCX ; accès direct au Kanban depuis la description du projet.
+- Pièces jointes sur les fiches matériel, notamment factures et bons de commande.
 - Réservations du matériel individualisé par créneaux de trente minutes, sans conflit entre projets.
 - Calendrier des disponibilités et des réservations, dans le respect des droits d’accès.
 - Libération du matériel lors des annulations, de la suppression du matériel et de la clôture, équivalente à l’archivage du projet.
@@ -43,9 +45,9 @@ La [matrice des droits](regles-de-gestion.md#matrice-des-droits) détaille les a
 
 Les formats et le contenu des exports restent à valider. Le calendrier est retenu ; son périmètre d’affichage et ses actions restent à préciser.
 
-## Premier incrément
+## Incréments
 
-Le [premier sprint](sprint-01.md) comprend une connexion fonctionnelle, des maquettes et un tableau de bord alimenté par des données fictives. Les réservations en sont exclues. Les lots ultérieurs du backlog sont une proposition d’ordre de réalisation.
+Le [premier sprint](sprint-01.md) est terminé avec une connexion fonctionnelle, des maquettes et des tableaux de bord alimentés par des données fictives. Après la réunion client, les [prochains sprints](prochains-sprints.md) placent les projets avant l’inventaire. Les réservations et les fonctions qui en dépendent viennent ensuite, puis le calendrier et les exports.
 
 ## Éléments exclus ou non spécifiés
 

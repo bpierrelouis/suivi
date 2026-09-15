@@ -49,7 +49,7 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | User story / US | Besoin exprimé du point de vue d’un acteur avec un objectif et des critères d’acceptation. |
 | Epic | Groupe de stories portant un objectif fonctionnel commun. |
 | Backlog produit | Liste ordonnée des besoins et travaux ; priorités et état sont tenus dans le backlog. |
-| Sprint | Période de travail avec objectif et périmètre convenus ; durée du premier sprint non définie. |
+| Sprint | Période de travail avec objectif et périmètre convenus ; S1 est terminé, les durées et dates de S2 à S5 restent à planifier. |
 | Critère d’acceptation | Condition observable permettant de vérifier une story. |
 | Recette | Vérification des comportements attendus, avec résultats et anomalies consignés. |
 | Dépendance | Élément à réaliser ou décision à obtenir avant un autre élément. |

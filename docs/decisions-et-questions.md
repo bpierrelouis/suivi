@@ -13,6 +13,11 @@
 | D-05 | Un projet clôturé/archivé ne peut pas être rouvert. | US-20, US-21, RG-20, données, parcours et recette. | Appliquée |
 | D-06 | Le calendrier des disponibilités et des réservations est retenu. Ses profils, vues, périodes et actions restent à préciser. | US-26, RG-31, backlog, parcours et recette. | Appliquée |
 | D-07 | La notion de « créateur du projet » est remplacée par « responsable du projet ». Le responsable est obligatoirement membre du projet. | Cadrage, DCU, DCLAM, US-14 à US-22, règles, données, parcours et recette. | Appliquée |
+| D-08 | Après le premier sprint, le périmètre Projets passe avant le périmètre Inventaire. | Backlog et contenu des sprints 2 et 3. | Appliquée |
+| D-09 | Chaque projet reçoit un éditeur de documentation Markdown de type `README.md`, avec export DOCX. | US-32, RG-33, données et recette. | Appliquée ; modalités Q-28 |
+| D-10 | Le Kanban est accessible depuis la description du projet. | US-19, RG-19, parcours et recette. | Appliquée |
+| D-11 | Une fiche matériel peut recevoir des documents, notamment une facture ou un bon de commande. | US-33, RG-32, données et recette. | Appliquée ; modalités Q-29 |
+| D-12 | Le premier sprint est terminé avec la connexion, les maquettes et les tableaux de bord, puis présenté au client. | Sprint 1 et backlog. | Déclarée par l’équipe ; recette détaillée à consigner |
 
 Q-01 à Q-21 reprennent les points à préciser de la source, avec quelques sous-questions nécessaires à leur application. Q-22 à Q-27 sont des précisions issues de la rédaction des stories, distinctes des demandes explicites du client.
 
@@ -51,9 +56,11 @@ Ces questions ne constituent pas des changements décidés du besoin.
 | Q-22 | Confirmer fin strictement après début et bornes de créneau, par exemple `[début, fin[` autorisant un enchaînement à la même heure. Interdire aussi les chevauchements au sein d’un même projet ? Autoriser la saisie dans le passé et quelles modifications après fin/annulation ? Quel fuseau et traitement des changements d’heure ? Quel détail conserver pour les modifications, auteurs/motifs d’annulation et libérations à la clôture ? | US-22 à US-26, EX-06, recette de concurrence et historique. | Avant réservations. |
 | Q-23 | Comment choisir le mode individualisé/non individualisé tout en gardant le nom seul champ obligatoire saisi ? Quelle valeur par défaut ? Peut-on changer le mode avec des réservations existantes ? | US-06, US-07, modèle matériel. | Avant création/modification de matériel. |
 | Q-24 | Quelle gestion des sessions, déconnexion/expiration, secrets, sauvegardes et restauration technique ? Quels objectifs mesurables de performance et de disponibilité ? Comment garantir la cohérence des opérations composées et gérer leurs échecs ? | EX-03 à EX-08, TEC-03 à TEC-05 ; travail technique à spécifier. | Sécurité du prototype avant S1 ; exploitation avant cible. |
-| Q-25 | Confirmer les critères de recherche envisagés, les tris, la combinaison des catégories et la période de référence de « disponible ». | US-09, maquettes et recherche de créneaux. | Avant filtres ; disponibilité avant L4. |
+| Q-25 | Confirmer les critères de recherche envisagés, les tris, la combinaison des catégories et la période de référence de « disponible ». | US-09, maquettes et recherche de créneaux. | Avant filtres ; disponibilité avant S4. |
 | Q-26 | Confirmer création, modification, déplacement et éventuelle suppression des tâches ; champs obligatoires hors responsable de tâche facultatif décidé en D-02, ordre et comportement des tâches non terminées à l’archivage. | US-19, US-20, dictionnaire. | Avant Kanban. |
 | Q-27 | Décidé en D-07 : le responsable est obligatoirement membre. Reste à préciser le transfert de responsabilité et les conditions empêchant son retrait ou son départ tant qu'aucun remplaçant n'est désigné. | US-18, US-20 ; droits contextuels. | Avant retrait ou remplacement du responsable. |
+| Q-28 | Quelles syntaxes Markdown l’éditeur prend-il en charge ? Les images et fichiers intégrés sont-ils autorisés ? Faut-il conserver des versions ? Quelles règles de styles, pagination et nommage appliquer à l’export DOCX ? | US-32, RG-33, données et recette. | Avant réalisation de l’éditeur et de l’export. |
+| Q-29 | L’utilisateur peut-il consulter et télécharger les pièces jointes ? Quels types et tailles autoriser ? Quels contrôles de sécurité appliquer ? Les pièces sont-elles conservées avec le matériel archivé et faut-il tracer leur retrait ? | US-33, RG-32, données et recette. | Avant réalisation des pièces jointes. |
 
 ## Désaccord entre sources visuelles et textuelles
 

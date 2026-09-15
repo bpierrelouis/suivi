@@ -7,7 +7,8 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 ## Fonctionnalités prévues
 
 - Inventaire du matériel organisé par catégories.
-- Projets publics ou privés avec suivi des tâches en Kanban et historique des modifications.
+- Projets publics ou privés avec suivi des tâches en Kanban, documentation Markdown exportable en DOCX et historique des modifications.
+- Pièces jointes associées aux matériels, notamment factures et bons de commande.
 - Affectation et réservation du matériel par projet.
 - Calendrier des disponibilités et des réservations.
 - Gestion des droits : un administrateur, un gestionnaire et des utilisateurs.
@@ -15,7 +16,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 
 ## État du projet
 
-Le projet est en phase de cadrage. Le premier sprint prévoit des maquettes, une connexion fonctionnelle et un tableau de bord avec des données fictives. L’environnement Intradef sera simulé, avec une connexion gérée par l’application.
+Le premier sprint est terminé avec les maquettes, la connexion fonctionnelle et les tableaux de bord. Après la réunion client, la gestion des projets passe avant celle de l’inventaire dans les prochains sprints. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
 
 Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
 
@@ -29,6 +30,7 @@ Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories,
 - [User stories et critères d’acceptation](docs/user-stories.md).
 - [Backlog produit et proposition de lots](docs/backlog.md).
 - [Premier sprint](docs/sprint-01.md).
+- [Contenu des prochains sprints](docs/prochains-sprints.md).
 - [Questions et décisions à valider](docs/decisions-et-questions.md).
 
-La documentation dérivée est une proposition de travail datée du 3 septembre 2026. Les priorités et le découpage restent à valider ; ils ne constituent pas un engagement de livraison. Aucun développement fonctionnel n’est présent dans ce dépôt à ce stade.
+La documentation a été actualisée le 15 septembre 2026 après la réunion de fin du premier sprint. Le contenu des prochains sprints formalise les priorités fonctionnelles sans engager de durée ni de date de livraison.

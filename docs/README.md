@@ -1,6 +1,6 @@
 # SUIVI — Dossier documentaire
 
-**Mise à jour :** 3 septembre 2026. **Statut :** proposition de cadrage à relire et valider.
+**Mise à jour :** 15 septembre 2026. **Statut :** dossier actualisé après la réunion de fin du premier sprint.
 
 ## Documents
 
@@ -11,6 +11,7 @@
 | [User stories](user-stories.md) | Besoins utilisateurs et critères d’acceptation vérifiables. |
 | [Backlog produit](backlog.md) | Priorités proposées, dépendances, lots et état des éléments. |
 | [Premier sprint](sprint-01.md) | Objectif, travaux, démonstration et conditions de réalisation. |
+| [Prochains sprints](prochains-sprints.md) | Ordre validé après S1 et contenu proposé des sprints 2 à 5. |
 | [Règles de gestion et droits](regles-de-gestion.md) | Contraintes métier et matrice des autorisations. |
 | [Dictionnaire de données](dictionnaire-donnees.md) | Entités, informations attendues et relations conceptuelles. |
 | [Diagramme de cas d'utilisation](dcu.md) | Acteurs, objectifs métier et relations UML par domaine fonctionnel. |

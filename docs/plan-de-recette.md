@@ -64,7 +64,7 @@ Avec les trois profils, ouvrir l’accueil après connexion : données fictives 
 
 ### REC-06 — Recherche et confidentialité des filtres
 
-**Stories :** US-09, US-29. **Précondition :** Q-25 décidé ; critères de réservation testés en L4.
+**Stories :** US-09, US-29. **Précondition :** Q-25 décidé ; critères de réservation testés en S4.
 
 Combiner des critères convenus et vérifier résultats/tri, puis retirer les filtres et vérifier une recherche vide. Avec C/G, rechercher le nom ou une référence de P-PRIV : aucune suggestion, donnée ou possibilité de filtre ne divulgue ce projet. Le matériel réservé peut rester visible avec « Réservé » et les seules informations autorisées. Vérifier la disponibilité sur la période convenue.
 
@@ -156,8 +156,20 @@ Pour chaque case de la matrice des droits, vérifier un accès autorisé et les 
 
 Parcourir connexion, accueil, inventaire et projets pour les trois rôles : administrateur, gestionnaire et utilisateur. Pour l’utilisateur, examiner les situations responsable, membre et simple sur un projet. Vérifier les différences de lecture/modification, l’absence de projets pour le gestionnaire et la clarté des libellés. Consigner les retours, les écrans acceptés et ceux à reprendre. L’existence des anciennes images ne suffit pas à valider ce scénario.
 
+### REC-20 — Documentation Markdown et export DOCX
+
+**Stories :** US-32, US-29. **Périmètre :** S2, après Q-28.
+
+Depuis un projet autorisé, enregistrer un document Markdown contenant au minimum des titres, paragraphes et listes, puis rouvrir la fiche et vérifier la conservation du contenu et son aperçu. Exporter la version enregistrée en DOCX et vérifier le titre du projet, la structure et l’absence de contenu non rendu. Un membre et l’administrateur peuvent modifier ; un lecteur autorisé peut consulter et exporter sans modifier. Le gestionnaire et un utilisateur extérieur à un projet privé ne peuvent ni lire, ni exporter, ni cibler directement sa documentation.
+
+### REC-21 — Pièces jointes d’un matériel
+
+**Stories :** US-33, US-29. **Périmètre :** S3, après Q-29.
+
+Avec l’administrateur puis le gestionnaire, joindre une facture et un bon de commande à une fiche active. Vérifier le nom, la date et l’auteur, puis consulter et télécharger les fichiers. Retirer une pièce jointe et vérifier le comportement de conservation décidé. Avec un utilisateur, vérifier le droit ou le refus de consultation et de téléchargement décidé en Q-29, ainsi que le refus d’ajout et de retrait. Tester aussi les refus portant sur le type, la taille et le contenu, puis le devenir des pièces lors de l’archivage.
+
 ## Suivi d’exécution
 
 Pour chaque scénario exécuté, renseigner une ligne contenant : ID REC et critères US vérifiés, version, environnement, date, testeur, jeu de données, résultat attendu/observé, preuve, anomalies et décision du validateur. Résultats possibles : **non exécuté**, **réussi**, **échoué**, **bloqué par un arbitrage**.
 
-Tous les scénarios de ce document sont actuellement **non exécutés**. Un test bloqué par une question ouverte ne doit pas être noté réussi. La recette finale d’une story couvre tous ses critères, y compris ceux complétés dans un lot ultérieur. Les seuils de performance et les contrôles d’exploitation feront l’objet de scénarios distincts après Q-18/Q-24.
+Les résultats détaillés de S1 n’ont pas encore été reportés dans ce document ; les scénarios des sprints suivants sont **non exécutés**. Un test bloqué par une question ouverte ne doit pas être noté réussi. La recette finale d’une story couvre tous ses critères, y compris ceux complétés dans un sprint ultérieur. Les seuils de performance et les contrôles d’exploitation feront l’objet de scénarios distincts après Q-18/Q-24.
