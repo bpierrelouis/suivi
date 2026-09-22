@@ -249,7 +249,7 @@
 .tab-panel.is-active { display: block; }
 
 /* ---------- Kanban board ---------- */
-.kanban { display: flex; gap: var(--space-4); overflow-x: auto; padding-bottom: var(--space-2); align-items: flex-start; margin: 2rem 0 0 2rem; }
+.kanban { display: flex; gap: var(--space-4); overflow-x: auto; padding-bottom: var(--space-2); align-items: flex-start; }
 .kanban-col { flex: 0 0 272px; display: flex; flex-direction: column; gap: var(--space-3); }
 .kanban-col__head { display: flex; align-items: center; gap: var(--space-2); padding: 0 2px; }
 .kanban-col__title { font-size: 13px; font-weight: 700; }
@@ -274,10 +274,6 @@
   width: 22px; height: 22px; border-radius: 50%; background: var(--info-soft); color: var(--info);
   font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
 }
-
-
-/* ---------- Documentation ---------- */
-.document { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); }
 
 /* ---------- Login ---------- */
 .auth-screen {

@@ -111,19 +111,26 @@
 
       <div class="tabs" data-tabs>
         <button class="tab" data-tab="apercu" aria-selected="true">Vue d'ensemble</button>
-        <button class="tab" data-tab="kanban" aria-selected="false">Kanban</button>
         <button class="tab" data-tab="historique" aria-selected="false">Historique</button>
+        <button class="tab" data-tab="documentation" aria-selected="false">Documentation</button>
       </div>
 
       <div data-tab-panel="apercu" class="tab-panel is-active">
+
         <div class="card card-pad">
           <h2 style="font-size:15px; font-weight:700; margin-bottom:8px;">Description</h2>
           <p class="text-muted" style="font-size:14px; line-height:1.6;">Réorganisation complète des zones de stockage et mise à jour du plan d'implantation de l'entrepôt Nord, avec balisage des zones et cartographie des flux de picking.</p>
         </div>
+
+        <div class="kanban" id="kanban-board"></div>
+
       </div>
 
-      <div data-tab-panel="kanban" class="tab-panel">
-        <div class="kanban" id="kanban-board"></div>
+      <div data-tab-panel="documentation" class="tab-panel">
+        <div class="card card-pad">
+          <h2 style="font-size:15px; font-weight:700; margin-bottom:8px;">Documentation</h2>
+          <p class="text-muted" style="font-size:14px; line-height:1.6;">Documents et ressources liées au projet.</p>
+        </div>
       </div>
 
       <div data-tab-panel="historique" class="tab-panel">
@@ -190,24 +197,30 @@
       <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
+
+
   <div class="panel__body">
     <div class="form-field">
       <label for="panel-title">Nom de la tâche</label>
       <input id="panel-title" type="text" data-panel-field="title" readonly />
     </div>
+
     <div class="form-grid">
       <div class="form-field">
         <span id="panel-tag-label" class="field-label">Étiquette</span>
         <div data-panel-field="tag" aria-labelledby="panel-tag-label"></div>
       </div>
+
       <div class="form-field">
         <label for="panel-due">Échéance</label>
         <input id="panel-due" type="text" data-panel-field="due" readonly />
       </div>
+
       <div class="form-field span-2">
         <label for="panel-assignee">Assigné à</label>
         <input id="panel-assignee" type="text" data-panel-field="assignee" readonly />
       </div>
+
       <div class="form-field span-2">
         <label for="panel-description">Description</label>
         <textarea id="panel-description" readonly placeholder="Réorganisation complète des zones de stockage et mise à jour du plan d'implantation."></textarea>
