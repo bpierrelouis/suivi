@@ -247,7 +247,8 @@ En tant que membre ou administrateur, je veux gérer les tâches d’un projet d
 - CA2 : **proposition de détail du suivi** : un membre ou l’administrateur crée/modifie une tâche et la déplace entre colonnes ; ces opérations et l’éventuelle suppression sont à confirmer en Q-26.
 - CA3 : les colonnes et leur caractère fixe/personnalisable suivent Q-01 ; À faire, En cours et Fait sont la proposition initiale.
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
-- CA5 : la fiche descriptive du projet fournit un accès direct à son Kanban, sans retour obligatoire à la liste des projets.
+- CA5 : le Kanban est affiché dans l’onglet Description de la fiche projet ; il ne nécessite ni onglet Kanban distinct ni retour à la liste des projets.
+- CA6 : lorsque la dernière tâche non terminée passe à l’état terminé, le système déclenche automatiquement la clôture du projet selon US-20. Un projet sans tâche ne se clôture pas automatiquement.
 
 <a id="us-20"></a>
 ### US-20 — Clôturer ou archiver un projet
@@ -257,9 +258,10 @@ En tant que responsable du projet ou administrateur, je veux terminer un projet 
 **Référence :** §4.4 ; RG-20, RG-21, RG-26. **Arbitrages :** Q-06 et Q-12 pour les droits des autres membres, les modifications et la suppression.
 
 - CA1 : le responsable et l’administrateur peuvent déclencher la clôture ou l’archivage ; ces deux termes désignent la même action et le même état. Les droits des autres membres restent à préciser.
-- CA2 : les matériels réservés pour le projet sont immédiatement libérés, y compris pour les périodes futures ; la trace des affectations est conservée.
-- CA3 : l’archive conserve informations, participants, matériels associés et tâches réalisées, sans échéance de suppression définie.
-- CA4 : un projet archivé ne peut pas être rouvert ; les modifications ultérieures et la suppression suivent Q-12.
+- CA2 : lorsque la dernière tâche non terminée passe à l’état terminé, le système clôture automatiquement le projet. La création d’un projet sans tâche ne déclenche pas cette règle.
+- CA3 : les matériels réservés pour le projet sont immédiatement libérés, y compris pour les périodes futures ; la trace des affectations est conservée.
+- CA4 : l’archive conserve informations, participants, matériels associés et tâches réalisées, sans échéance de suppression définie.
+- CA5 : un projet archivé ne peut pas être rouvert ; les modifications ultérieures et la suppression suivent Q-12.
 
 <a id="us-21"></a>
 ### US-21 — Consulter les archives des projets

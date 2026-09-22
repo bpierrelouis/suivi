@@ -229,7 +229,8 @@ Le client demande de faire passer la gestion des **projets avant l’inventaire*
 Les besoins complémentaires suivants sont retenus :
 
 - chaque projet possède un éditeur de documentation en Markdown, comparable à un `README.md`, avec une fonction d’export au format DOCX ;
-- le Kanban du projet est accessible directement depuis sa description ;
+- le Kanban du projet est intégré dans l’onglet Description, sans onglet Kanban distinct ;
+- lorsque la dernière tâche non terminée d’un projet passe à l’état terminé, le projet passe automatiquement en clôture, donc en archive ; un projet sans tâche reste actif ;
 - une fiche matériel permet de joindre des documents, notamment une facture ou un bon de commande.
 
 Les règles détaillées de l’éditeur, de la conversion DOCX et des pièces jointes restent à préciser dans Q-28 et Q-29. Le contenu des sprints 2 à 5 est formalisé dans les [prochains sprints](prochains-sprints.md).

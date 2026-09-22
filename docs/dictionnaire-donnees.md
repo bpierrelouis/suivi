@@ -62,7 +62,7 @@ Le devenir des pièces jointes à l’archivage du matériel et la conservation 
 | Visibilité | Minimum requis, NP/public ou Secret/privé | Droits de l’utilisateur sur choix et changement à préciser en Q-06. |
 | Responsable | Requis métier, référence utilisateur | Utilisateur à l’origine du projet, obligatoirement membre ; droit de clôture/archivage. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
-| État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. |
+| État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. Le passage de la dernière tâche non terminée à l’état terminé déclenche automatiquement cette transition ; un projet sans tâche reste actif. |
 | Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
 
 ## Documentation de projet
@@ -94,7 +94,7 @@ Association entre un projet et un utilisateur. L’ajout produit ses effets imm�
 | Responsable de la tâche | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
 | Ordre dans la colonne | Proposition seulement | À retenir si nécessaire au parcours validé, Q-26. |
 
-Aucune date d’échéance ni priorité. Suppression de tâche et conservation des tâches non terminées lors de l’archivage : Q-26.
+Aucune date d’échéance ni priorité. Quand la dernière tâche non terminée passe à l’état terminé, le projet associé passe automatiquement à l’état archivé. Suppression de tâche et conservation des tâches non terminées lors d’une clôture manuelle : Q-26.
 
 ## Historique des modifications d’un projet
 

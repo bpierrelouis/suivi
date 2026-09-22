@@ -35,8 +35,8 @@ Les sprints S2 à S5 décrivent la suite fonctionnelle, sans durée ni date. Les
 | [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | S2 puis S4 | US-14, US-17 ; Q-06, Q-13 | À arbitrer |
 | [US-17](user-stories.md#us-17) | Ajout de membres | E3 | P1 | S2 | US-14 ; Q-07 | À arbitrer |
 | [US-18](user-stories.md#us-18) | Retrait de membres | E3 | P1 | S2 | US-17 ; Q-07, Q-27 | À arbitrer |
-| [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable de tâche facultatif | E3 | P1 | S2 | US-14, US-17 ; Q-01, Q-26 | Accès depuis la description décidé ; cycle de vie à arbitrer |
-| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | S4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12 | Équivalence et absence de réouverture décidées ; autres actions à arbitrer |
+| [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable de tâche facultatif | E3 | P1 | S2 | US-14, US-17 ; Q-01, Q-26 | Intégration dans l’onglet Description et déclenchement de clôture décidés ; autres détails du cycle de vie à arbitrer |
+| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | S4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12, Q-26 | Équivalence, clôture automatique sur dernière tâche terminée et absence de réouverture décidées ; autres actions à arbitrer |
 | [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | S4 | US-20 ; Q-12 | Droits de lecture et absence de réouverture décidés ; autres actions à arbitrer |
 | [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | S4 | US-14 à US-21 | À préparer |
 | [US-32](user-stories.md#us-32) | Documentation Markdown et export DOCX | E3 | P1 | S2 | US-14, US-15 ; Q-28 | Nouveau besoin client ; modalités à arbitrer |
@@ -86,6 +86,6 @@ Ces éléments ne sont pas des besoins utilisateurs supplémentaires et n’impo
 | §6 Accueil et notifications | US-04, US-27, US-28 |
 | §7 Premier sprint | US-01, US-02, US-04, US-30 ; tranche S1 de US-29 |
 | §8 Points à préciser | Registre Q-01 à Q-21, complété par Q-22 à Q-29 |
-| §9 Retour client après S1 | D-08 à D-12, US-19, US-32, US-33 et prochains sprints |
+| §9 Retour client après S1 | D-08 à D-13, US-19, US-20, US-32, US-33 et prochains sprints |
 
 Les décisions sur la suppression de projet, l’administration supplémentaire, l’import ou la personnalisation pourront produire de nouvelles stories si elles sont retenues. Leur présence dans le registre ne les engage pas au développement.

@@ -35,12 +35,12 @@ La [matrice des droits](regles-de-gestion.md#matrice-des-droits) détaille les a
 - Connexion applicative simulant un environnement externe, création automatique au premier accès et conservation du rôle.
 - Inventaire individualisé ou non individualisé, catégories multiples facultatives, recherche, filtres et tri.
 - Archivage irréversible du matériel, historique daté et attribué à un auteur.
-- Projets publics ou privés, membres ajoutés immédiatement, tâches en Kanban avec responsable facultatif et historique des modifications.
-- Documentation de projet en Markdown, de type `README.md`, avec export DOCX ; accès direct au Kanban depuis la description du projet.
+- Projets publics ou privés, membres ajoutés immédiatement, tâches en Kanban avec responsable facultatif et historique des modifications. Le Kanban est intégré à l’onglet Description du projet.
+- Documentation de projet en Markdown, de type `README.md`, avec export DOCX.
 - Pièces jointes sur les fiches matériel, notamment factures et bons de commande.
 - Réservations du matériel individualisé par créneaux de trente minutes, sans conflit entre projets.
 - Calendrier des disponibilités et des réservations, dans le respect des droits d’accès.
-- Libération du matériel lors des annulations, de la suppression du matériel et de la clôture, équivalente à l’archivage du projet.
+- Clôture automatique du projet lorsque sa dernière tâche non terminée passe à l’état terminé ; la clôture reste équivalente à l’archivage et libère le matériel réservé.
 - Tableau de bord selon le profil et notifications internes avec état de lecture individuel.
 
 Les formats et le contenu des exports restent à valider. Le calendrier est retenu ; son périmètre d’affichage et ses actions restent à préciser.

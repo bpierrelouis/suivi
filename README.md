@@ -7,7 +7,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 ## Fonctionnalités prévues
 
 - Inventaire du matériel organisé par catégories.
-- Projets publics ou privés avec suivi des tâches en Kanban, documentation Markdown exportable en DOCX et historique des modifications.
+- Projets publics ou privés avec Kanban intégré à l’onglet Description, clôture automatique lorsque la dernière tâche en cours passe à l’état terminé, documentation Markdown exportable en DOCX et historique des modifications.
 - Pièces jointes associées aux matériels, notamment factures et bons de commande.
 - Affectation et réservation du matériel par projet.
 - Calendrier des disponibilités et des réservations.

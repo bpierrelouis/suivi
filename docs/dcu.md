@@ -137,6 +137,8 @@ flowchart LR
     style ACTEURS fill:none,stroke:none
 ```
 
+Le Kanban est présenté dans l’onglet Description de la fiche projet, sans onglet Kanban distinct. Le passage de la dernière tâche non terminée à l’état terminé déclenche automatiquement l’archivage du projet ; il s’agit d’une conséquence métier interne du cas « Déplacer une tâche », pas d’un cas d’utilisation supplémentaire. Un projet sans tâche reste actif.
+
 Le gestionnaire ne figure pas dans ce diagramme, car il n'accède à aucun projet. Le membre hérite de l'utilisateur, le responsable du projet hérite du membre et l'administrateur hérite du responsable. Le responsable est donc toujours membre de son projet. Chaque niveau récupère les associations du niveau précédent. L'administrateur conserve uniquement son lien direct supplémentaire vers le retrait d'un membre.
 
 ## DCU 4 — Réservations

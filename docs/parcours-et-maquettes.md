@@ -41,7 +41,7 @@ Pour chaque projet, distinguer l’utilisateur **responsable**, **membre** ou **
 
 Accueil → inventaire actif → recherche et détail en consultation. Pas d’export, de modification ni d’historique du matériel.
 
-Accueil/navigation projets → projets actifs ou archivés, publics ou privés autorisés → détail et historique des modifications. Un public non membre reste en lecture, y compris après archivage. Un membre accède aux modifications, aux tâches, à l’ajout de membres et aux réservations tant que le projet est actif. Le responsable, obligatoirement membre, dispose en plus du droit de clôture/archivage.
+Accueil/navigation projets → projets actifs ou archivés, publics ou privés autorisés → détail et historique des modifications. Un public non membre reste en lecture, y compris après archivage. Un membre accède aux modifications, aux tâches, à l’ajout de membres et aux réservations tant que le projet est actif. Le Kanban est intégré dans l’onglet Description du projet. Le responsable, obligatoirement membre, dispose en plus du droit de clôture/archivage. Lorsque la dernière tâche non terminée passe à l’état terminé, le projet est automatiquement clôturé/archivé.
 
 Depuis un projet accessible en modification → sélection d’un exemplaire → période complète → validation sans conflit → réservation visible. Modification/annulation possibles par les autres membres du même projet. L’utilisateur ne reçoit pas pour autant l’accès à l’historique des réservations de l’inventaire.
 
@@ -54,9 +54,9 @@ Depuis un projet accessible en modification → sélection d’un exemplaire →
 | Suppression matériel | **Proposition :** confirmation expliquant l’archivage irréversible et l’annulation des réservations ; résultat sans perte d’historique. |
 | Historique / archives matériel | Événements date/auteur ; archivés réservés à l’administrateur ; projets masqués au gestionnaire. |
 | Projet et membres | Visibilité, informations requises, dates facultatives, ajout immédiat et actions autorisées. |
-| Kanban | Titre/description, responsable de tâche facultatif parmi les membres et colonnes convenues ; états vide/erreur ; pas de priorité ni d’échéance. |
+| Description et Kanban | La description et le Kanban sont réunis dans le même onglet. Le tableau affiche titre/description, responsable de tâche facultatif parmi les membres et colonnes convenues ; états vide/erreur ; pas de priorité ni d’échéance. Il signale qu’achever la dernière tâche clôture automatiquement le projet. |
 | Réservation | Début/fin obligatoires, minutes 00/30, valeurs projet comme défauts, message de conflit. |
-| Clôture/archivage projet | Expliquer la libération du matériel avant confirmation ; les deux libellés produisent le même état. Afficher l’archive et l’historique selon la visibilité du projet. |
+| Clôture/archivage projet | Expliquer la libération du matériel avant confirmation manuelle ; les deux libellés produisent le même état. Lors du passage de la dernière tâche à l’état terminé, afficher le déclenchement automatique de la clôture et ses effets. Afficher ensuite l’archive et l’historique selon la visibilité du projet. |
 | Notifications | Liste personnelle, lu/non lu individuel et contenu conforme aux droits actuels. |
 | Export | À concevoir après arbitrage des formats, colonnes et périmètres. |
 | Calendrier | Fonction retenue ; afficher disponibilités et réservations dans le respect des droits. Vues, périodes et actions à préciser en Q-16. |

@@ -211,10 +211,11 @@ classDiagram
 - Chaque projet possède exactement un responsable. Ce responsable est obligatoirement relié au projet par une participation de membre.
 - Une seule participation active est proposée par couple utilisateur–projet.
 - Une tâche appartient à un seul projet ; son responsable de tâche facultatif doit être membre de ce projet.
+- Le passage de la dernière tâche non terminée à l’état terminé archive automatiquement son projet ; un projet sans tâche reste actif.
 - Une réservation concerne exactement un matériel individualisé, un projet et son réservant. Son début et sa fin sont obligatoires et alignés sur des minutes `00` ou `30`.
 - Deux réservations en vigueur de projets différents ne peuvent pas se chevaucher pour le même matériel.
 - Archiver un matériel conserve son historique et ses réservations, mais annule les réservations en cours et futures.
-- Archiver un projet conserve ses membres, tâches, réservations et événements, libère ses réservations et interdit toute réouverture.
+- Archiver un projet, manuellement ou par achèvement de sa dernière tâche, conserve ses membres, tâches, réservations et événements, libère ses réservations et interdit toute réouverture.
 - L'état lu/non lu d'une notification appartient à chaque destinataire, jamais à la notification globalement.
 
 Les attributs `ordre` d'une tâche, le détail des annulations et les états calculés d'une réservation restent des propositions de conception soumises aux arbitrages Q-22 et Q-26.

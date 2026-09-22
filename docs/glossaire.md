@@ -33,7 +33,7 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | Réservé | Mention remplaçant le nom d’un projet inaccessible lorsqu’une réservation doit être signalée. |
 | Kanban | Tableau de suivi des tâches par colonnes ; À faire, En cours et Fait sont envisagées. |
 | Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable de tâche facultatif choisi parmi les membres ; sans priorité ni échéance. |
-| Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels et ne peut pas être annulée par une réouverture. |
+| Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels et ne peut pas être annulée par une réouverture. Elle est déclenchée manuellement par un profil autorisé ou automatiquement lorsque la dernière tâche non terminée passe à l’état terminé ; un projet sans tâche reste actif. |
 | Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet, sans possibilité de réouverture. |
 | Suppression de matériel | Archivage irréversible de sa fiche, conservée avec son historique pour l’administrateur. Annule les réservations en cours/futures. |
 | Suppression de projet | Action dont les modalités et certains droits restent à définir ; ne pas l’assimiler à la suppression du matériel. |

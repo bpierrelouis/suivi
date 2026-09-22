@@ -8,7 +8,7 @@ Le premier sprint est terminé avec la connexion, les maquettes et les tableaux 
 
 - le périmètre **Projets** passe avant le périmètre **Inventaire** ;
 - chaque projet dispose d’une documentation rédigée en Markdown, de type `README.md`, avec export au format DOCX ;
-- le Kanban est accessible directement depuis la description du projet ;
+- le Kanban est intégré dans l’onglet Description du projet ;
 - une fiche matériel peut recevoir des pièces jointes, notamment une facture ou un bon de commande.
 
 Cette réorganisation reprend les domaines du support client du 14 septembre 2026, mais inverse les lots Projets et Inventaire présentés sur sa diapositive 8. Aucun identifiant existant de user story, règle, scénario ou question n’est renuméroté.
@@ -22,7 +22,7 @@ Cette réorganisation reprend les domaines du support client du 14 septembre 202
 | Rôle gestionnaire | [US-03](user-stories.md#us-03) | Attribution ou retrait du rôle par l’administrateur, avec exclusion immédiate de tous les projets. |
 | Création et consultation | [US-14](user-stories.md#us-14), [US-15](user-stories.md#us-15) | Création avec nom, description et visibilité ; consultation conforme aux droits public/privé. |
 | Modification et membres | [US-16](user-stories.md#us-16), [US-17](user-stories.md#us-17), [US-18](user-stories.md#us-18) | Informations du projet et composition modifiables par les profils autorisés. |
-| Kanban depuis la description | [US-19](user-stories.md#us-19) | Accès direct au Kanban depuis la description du projet ; gestion des tâches, colonnes et responsable facultatif. |
+| Kanban dans la description | [US-19](user-stories.md#us-19) | Kanban intégré à l’onglet Description du projet ; gestion des tâches, colonnes et responsable facultatif. La dernière tâche terminée déclenche la clôture automatique définie pour le cycle de vie du projet. |
 | Documentation du projet | [US-32](user-stories.md#us-32) | Édition d’un document Markdown propre au projet, aperçu lisible et export DOCX. |
 | Confidentialité | Tranche de [US-29](user-stories.md#us-29) | Aucun projet privé ni document associé n’est divulgué à une personne non autorisée ; le gestionnaire reste exclu. |
 
@@ -31,7 +31,7 @@ Les arbitrages Q-01, Q-02, Q-06, Q-07, Q-26 à Q-28 doivent être résolus avant
 ### Démonstration attendue
 
 1. Créer un projet public puis un projet privé et vérifier leur visibilité avec les profils prévus.
-2. Ouvrir un projet depuis le tableau de bord, consulter sa description puis accéder au Kanban sans repasser par une autre liste.
+2. Ouvrir un projet depuis le tableau de bord et utiliser le Kanban directement dans l’onglet Description, sans ouvrir un onglet Kanban distinct.
 3. Ajouter un membre, créer une tâche, la déplacer et lui affecter ou retirer un responsable.
 4. Rédiger la documentation du projet en Markdown, vérifier son aperçu puis produire un fichier DOCX.
 5. Vérifier qu’un utilisateur non autorisé et le gestionnaire ne peuvent pas lire ou modifier le projet, son Kanban ou sa documentation.
@@ -62,6 +62,8 @@ La suppression et les archives du matériel restent au Sprint 4, car leur recett
 **Objectif :** relier les projets à l’inventaire en garantissant la cohérence des réservations et des archives.
 
 Ce sprint regroupe US-10, US-11, US-20 à US-25, US-27, US-28 et US-31, ainsi que les tranches restantes de US-09 et US-29. Il couvre les réservations sans chevauchement, leur modification et leur annulation, l’archivage des projets et matériels, les historiques et les notifications.
+
+Pour le cycle de vie d’un projet, terminer sa dernière tâche non terminée déclenche automatiquement la clôture/archivage. La recette doit vérifier les mêmes effets qu’une clôture manuelle, notamment la libération du matériel, la conservation des traces et l’impossibilité de rouvrir le projet.
 
 ## Sprint 5 — Calendrier et exports
 
