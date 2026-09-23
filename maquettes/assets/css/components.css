@@ -327,6 +327,46 @@
   top: var(--space-3);
 }
 
+/* ---------- Documentation (Markdown) ---------- */
+.markdown-preview { font-size: 14px; line-height: 1.65; color: var(--text); }
+.markdown-preview h1 { font-size: 20px; font-weight: 700; margin: 0 0 var(--space-3); }
+.markdown-preview h2 { font-size: 16px; font-weight: 700; margin: var(--space-5) 0 var(--space-2); }
+.markdown-preview h3 { font-size: 14px; font-weight: 700; margin: var(--space-4) 0 var(--space-2); }
+.markdown-preview p { margin: 0 0 var(--space-3); }
+.markdown-preview ul { margin: 0 0 var(--space-3); padding-left: 20px; }
+.markdown-preview li { margin-bottom: 4px; }
+.markdown-preview code { background: var(--bg); border-radius: 4px; padding: 1px 6px; font-size: 13px; }
+.markdown-preview pre { background: var(--bg); border-radius: var(--radius-sm); padding: var(--space-3); overflow-x: auto; margin: 0 0 var(--space-3); }
+.markdown-preview pre code { background: none; padding: 0; }
+.markdown-preview a { color: var(--accent); }
+
+.doc-editor {
+  width: 100%; min-height: 320px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+  background: var(--surface); color: var(--text);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 13px; line-height: 1.6; padding: var(--space-3);
+  resize: vertical; outline: none;
+}
+.doc-editor:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* ---------- Membres ---------- */
+.member-row {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+}
+.member-row:last-child { border-bottom: none; }
+.member-row__avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--info-soft); color: var(--info);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.member-row__meta { flex: 1; min-width: 0; }
+.member-row__name { font-size: 14px; font-weight: 600; }
+.member-row__email { font-size: 12px; color: var(--text-muted); }
+
 /* ---------- Utility ---------- */
 .flex { display: flex; }
 .items-center { align-items: center; }

@@ -1,6 +1,6 @@
 {
-  "name": "StockFlow — Inventaire & Projets",
-  "short_name": "StockFlow",
+  "name": "SUIVI — Inventaire & Projets",
+  "short_name": "SUIVI",
   "description": "Suivi des usages, inventaires et vie des projets.",
   "start_url": "./index.html",
   "scope": "./",

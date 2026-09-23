@@ -22,5 +22,5 @@ app.use("/api", authRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
-  console.log(`API StockFlow disponible sur http://localhost:${port}`);
+  console.log(`API SUIVI disponible sur http://localhost:${port}`);
 });

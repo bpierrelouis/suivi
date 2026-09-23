@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: stockflow_dev
-      POSTGRES_DB: stockflow
+      POSTGRES_DB: SUIVI
     ports:
       - "5433:5432"
     volumes:

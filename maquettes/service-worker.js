@@ -1,4 +1,4 @@
-const CACHE_NAME = "stockflow-shell-v1";
+const CACHE_NAME = "SUIVI-shell-v1";
 
 const APP_SHELL = [
   "./index.html",

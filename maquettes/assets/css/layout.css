@@ -107,8 +107,6 @@
   z-index: 20;
 }
 
-.topbar__menu-btn { display: none; }
-
 .searchbox {
   display: flex;
   align-items: center;
@@ -151,29 +149,9 @@
   margin: 0 auto;
 }
 
-/* ---------- Mobile overlay sidebar ---------- */
-.sidebar-scrim {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(4, 8, 16, 0.5);
-  z-index: 39;
-}
-.sidebar-scrim.is-open { display: block; }
-
 /* ---------- Responsive breakpoints ---------- */
+/* La sidebar reste affichée en permanence, à toutes les tailles d'écran : pas de tiroir à ouvrir/fermer. */
 @media (max-width: 1023px) {
-  .sidebar {
-    position: fixed;
-    left: 0; top: 0;
-    z-index: 40;
-    transform: translateX(-100%);
-    transition: transform 0.2s var(--ease);
-    box-shadow: var(--shadow-lg);
-  }
-  .sidebar.is-open { transform: translateX(0); }
-
-  .topbar__menu-btn { display: flex; }
-
   .content { padding: var(--space-4); }
 
   .searchbox { max-width: none; }

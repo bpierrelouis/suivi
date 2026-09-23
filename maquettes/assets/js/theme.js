@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = "stockflow-theme";
+  const STORAGE_KEY = "SUIVI-theme";
   const root = document.documentElement;
 
   function apply(theme) {

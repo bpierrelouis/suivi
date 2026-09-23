@@ -31,7 +31,7 @@ export default function Dashboard() {
         <div className="page-header">
           <div>
             <h1>Tableau de bord</h1>
-            <p>Vue d'ensemble de l'activité — labo StockFlow</p>
+            <p>Vue d'ensemble de l'activité — labo SUIVI</p>
           </div>
         </div>
 

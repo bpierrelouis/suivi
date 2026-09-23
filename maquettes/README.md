@@ -1,4 +1,4 @@
-# Prototype StockFlow — PWA responsive (rôle Admin)
+# Prototype SUIVI — PWA responsive (rôle Admin)
 
 Prototype codé en HTML/CSS/JS (sans framework, sans backend) pour valider la structure de navigation et le comportement responsive de l'application avant développement. Données en dur dans `assets/js/data.js` (réinitialisées à chaque rechargement).
 

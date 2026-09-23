@@ -1,4 +1,4 @@
--- Données de test StockFlow.
+-- Données de test SUIVI.
 -- mot_de_passe : placeholders (pas de vrais hachages) — le hachage réel arrivera avec la fonctionnalité d'authentification.
 
 INSERT INTO utilisateurs (identifiant, mot_de_passe, role) VALUES

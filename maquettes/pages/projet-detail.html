@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Refonte entrepôt Nord — StockFlow</title>
+<title>Refonte entrepôt Nord — SUIVI</title>
 <meta name="theme-color" content="#0f172a" />
 <link rel="manifest" href="../manifest.webmanifest" />
 <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
@@ -19,7 +19,7 @@
 
 <div class="stack-banners">
   <div class="pwa-banner" id="pwa-install-banner">
-    <div class="pwa-banner__text"><strong>Installer StockFlow</strong><span>Accède à l'app depuis ton écran d'accueil, même hors ligne.</span></div>
+    <div class="pwa-banner__text"><strong>Installer SUIVI</strong><span>Accède à l'app depuis ton écran d'accueil, même hors ligne.</span></div>
     <button class="btn btn-secondary btn-sm" data-pwa-dismiss>Plus tard</button>
     <button class="btn btn-primary btn-sm" data-pwa-install>Installer</button>
   </div>
@@ -28,17 +28,13 @@
   </div>
 </div>
 
-<div class="sidebar-scrim"></div>
 <div class="panel-scrim"></div>
 
 <div class="app">
   <aside class="sidebar">
     <div class="sidebar__brand">
       <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-      StockFlow
-      <button class="iconbtn" style="margin-left:auto; border:none; background:transparent; color:#94a3b8;" data-menu-close aria-label="Fermer le menu">
-        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
+      SUIVI
     </div>
     <nav class="sidebar__nav" aria-label="Navigation principale">
       <a class="navlink" href="dashboard.html">
@@ -63,7 +59,7 @@
       </a>
     </nav>
     <div class="sidebar__footer">
-      <button class="userchip" data-menu-close>
+      <button class="userchip">
         <span class="userchip__avatar">AS</span>
         <span class="userchip__meta">
           <span class="userchip__name">Alexandre S.</span>
@@ -79,9 +75,6 @@
 
   <div class="main">
     <header class="topbar">
-      <button class="iconbtn topbar__menu-btn" data-menu-open aria-label="Ouvrir le menu">
-        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
       <a href="projets.html" class="hide-mobile" style="font-size:13px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
         <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
         Projets
@@ -98,19 +91,20 @@
       <div class="page-header">
         <div>
           <div class="flex items-center gap-2" style="margin-bottom:6px;">
-            <h1 style="font-size:20px;">Refonte entrepôt Nord</h1>
-            <span class="badge badge-success">Actif</span>
+            <h1 style="font-size:20px;" id="project-title">Projet</h1>
+            <span class="badge badge-success" id="project-status-badge">Actif</span>
           </div>
-          <p>PRJ-2041 · Responsable Camille Doré · Échéance 12 oct. 2026</p>
+          <p id="project-meta"></p>
         </div>
-        <button class="btn btn-primary" data-modal-open="modal-tache" data-modal-title="Nouvelle tâche">
+        <button class="btn btn-primary" id="project-header-action" data-modal-open="modal-tache" data-modal-title="Nouvelle tâche">
           <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          Nouvelle tâche
+          <span>Nouvelle tâche</span>
         </button>
       </div>
 
       <div class="tabs" data-tabs>
         <button class="tab" data-tab="apercu" aria-selected="true">Vue d'ensemble</button>
+        <button class="tab" data-tab="membres" aria-selected="false">Membres</button>
         <button class="tab" data-tab="historique" aria-selected="false">Historique</button>
         <button class="tab" data-tab="documentation" aria-selected="false">Documentation</button>
       </div>
@@ -119,17 +113,44 @@
 
         <div class="card card-pad">
           <h2 style="font-size:15px; font-weight:700; margin-bottom:8px;">Description</h2>
-          <p class="text-muted" style="font-size:14px; line-height:1.6;">Réorganisation complète des zones de stockage et mise à jour du plan d'implantation de l'entrepôt Nord, avec balisage des zones et cartographie des flux de picking.</p>
+          <p class="text-muted" style="font-size:14px; line-height:1.6;" id="project-description"></p>
         </div>
 
         <div class="kanban" id="kanban-board"></div>
 
       </div>
 
+      <div data-tab-panel="membres" class="tab-panel">
+        <div class="card card-pad">
+          <div class="flex items-center" style="justify-content:space-between; margin-bottom:8px;">
+            <h2 style="font-size:15px; font-weight:700;">Membres du projet</h2>
+          </div>
+          <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Le gestionnaire ne peut pas être membre d'un projet.</p>
+          <div id="membres-list"></div>
+        </div>
+      </div>
+
       <div data-tab-panel="documentation" class="tab-panel">
         <div class="card card-pad">
-          <h2 style="font-size:15px; font-weight:700; margin-bottom:8px;">Documentation</h2>
-          <p class="text-muted" style="font-size:14px; line-height:1.6;">Documents et ressources liées au projet.</p>
+          <div class="flex items-center" style="justify-content:space-between; margin-bottom:12px;">
+            <h2 style="font-size:15px; font-weight:700;">Documentation</h2>
+            <button class="btn btn-secondary btn-sm" data-doc-export>
+              <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0-4-4m4 4 4-4M4 20h16"/></svg>
+              Exporter en DOCX
+            </button>
+          </div>
+
+          <div id="doc-view">
+            <div class="markdown-preview" id="doc-preview"></div>
+          </div>
+
+          <div id="doc-edit" style="display:none; flex-direction:column; gap:12px;">
+            <textarea class="doc-editor" id="doc-textarea" spellcheck="false"></textarea>
+            <div class="flex items-center gap-2" style="justify-content:flex-end;">
+              <button class="btn btn-secondary" data-doc-cancel>Annuler</button>
+              <button class="btn btn-primary" data-doc-save>Enregistrer</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -176,8 +197,37 @@
           </div>
           <div class="form-field span-2">
             <label for="tache-assigne">Assigné à</label>
-            <select id="tache-assigne"><option>Camille Doré</option><option>Yanis Belkacem</option><option>Léa Fournier</option><option>Marc Vidal</option></select>
+            <select id="tache-assigne"><option value="">Aucun responsable</option></select>
           </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Ajouter un membre -->
+<div class="modal-scrim" id="modal-membre">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-membre-title">
+    <div class="modal__header">
+      <div>
+        <h2 data-modal-title id="modal-membre-title">Ajouter un membre</h2>
+        <p>L'ajout donne immédiatement accès au projet, y compris s'il est privé.</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form data-mock-form id="form-ajouter-membre">
+      <div class="modal__body">
+        <div class="form-field">
+          <label for="membre-utilisateur">Utilisateur</label>
+          <select id="membre-utilisateur"></select>
+          <span class="hint">Le gestionnaire n'apparaît pas dans cette liste : il ne peut pas être membre d'un projet.</span>
         </div>
       </div>
       <div class="modal__footer">
@@ -197,7 +247,6 @@
       <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
-
 
   <div class="panel__body">
     <div class="form-field">
@@ -234,12 +283,30 @@
 
 <script src="../assets/js/theme.js"></script>
 <script src="../assets/js/data.js"></script>
+<script>
+  // Détermine le projet affiché à partir de l'URL (?id=PRJ-XXXX) — retombe sur le premier
+  // projet de la liste si l'id est absent ou inconnu. Doit s'exécuter avant kanban.js,
+  // qui lit window.PROJET_REF dès son chargement.
+  const paramsUrl = new URLSearchParams(window.location.search);
+  const idDemande = paramsUrl.get("id");
+  window.PROJET = StockFlowData.projets.find((p) => p.id === idDemande) || StockFlowData.projets[0];
+  window.PROJET_REF = window.PROJET.id;
+
+  document.title = `${window.PROJET.nom} — SUIVI`;
+  document.getElementById("project-title").textContent = window.PROJET.nom;
+  document.getElementById("project-meta").textContent =
+    `${window.PROJET.id} · Responsable ${window.PROJET.responsable} · Échéance ${window.PROJET.echeance}`;
+  document.getElementById("project-description").textContent = window.PROJET.description;
+</script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/modal.js"></script>
 <script src="../assets/js/kanban.js"></script>
 <script src="../assets/js/pwa.js"></script>
+<script src="../assets/js/markdown.js"></script>
 <script>
-  document.getElementById("historique-body").innerHTML = StockFlowData.historique.map((h) => `
+  const PROJET_REF = window.PROJET_REF;
+
+  document.getElementById("historique-body").innerHTML = StockFlowData.historique.filter((h) => h.ref === PROJET_REF).map((h) => `
     <tr>
       <td data-label="Date" class="cell-muted">${h.date}</td>
       <td data-label="Référence" class="cell-muted">${h.ref}</td>
@@ -247,6 +314,172 @@
       <td data-label="Responsable">${h.responsable}</td>
       <td data-label="Statut"><span class="badge badge-${h.statut === "Actif" ? "success" : h.statut === "En attente" ? "warning" : "neutral"}">${h.statut}</span></td>
     </tr>`).join("");
+
+  /* ---------- Membres ---------- */
+  function utilisateurParId(id) {
+    return StockFlowData.utilisateurs.find((u) => u.id === id);
+  }
+  function initiales(nom) {
+    return nom.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
+  }
+
+  function renderMembres() {
+    const membres = StockFlowData.projetMembres[PROJET_REF] || [];
+    document.getElementById("membres-list").innerHTML = membres.map((m) => {
+      const u = utilisateurParId(m.userId);
+      if (!u) return "";
+      return `
+        <div class="member-row">
+          <span class="member-row__avatar">${initiales(u.nom)}</span>
+          <span class="member-row__meta">
+            <span class="member-row__name">${u.nom}</span><br>
+            <span class="member-row__email">${u.email}</span>
+          </span>
+          <span class="badge ${m.role === "Créateur" ? "badge-info" : "badge-neutral"}">${m.role}</span>
+          <button class="btn btn-secondary btn-sm" data-retirer-membre="${u.id}" style="margin-left:12px;" ${m.role === "Créateur" ? "disabled title=\"Le créateur ne peut pas être retiré\"" : ""}>Retirer</button>
+        </div>`;
+    }).join("") || `<p class="text-muted" style="font-size:13px;">Aucun membre pour l'instant.</p>`;
+  }
+
+  function utilisateursDisponibles() {
+    const membres = StockFlowData.projetMembres[PROJET_REF] || [];
+    const dejaMembres = new Set(membres.map((m) => m.userId));
+    return StockFlowData.utilisateurs.filter((u) => u.role !== "Gestionnaire" && !dejaMembres.has(u.id));
+  }
+
+  function renderSelectMembre() {
+    const options = utilisateursDisponibles().map((u) => `<option value="${u.id}">${u.nom} (${u.email})</option>`).join("");
+    document.getElementById("membre-utilisateur").innerHTML = options || `<option value="">Aucun utilisateur disponible</option>`;
+  }
+
+  function renderSelectTacheAssigne() {
+    const membres = (StockFlowData.projetMembres[PROJET_REF] || [])
+      .map((m) => utilisateurParId(m.userId))
+      .filter(Boolean);
+    const options = membres.map((u) => `<option value="${u.id}">${u.nom}</option>`).join("");
+    document.getElementById("tache-assigne").innerHTML = `<option value="">Aucun responsable</option>${options}`;
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[data-modal-open="modal-membre"]')) renderSelectMembre();
+    if (e.target.closest('[data-modal-open="modal-tache"]')) renderSelectTacheAssigne();
+
+    const retirer = e.target.closest("[data-retirer-membre]");
+    if (retirer && !retirer.disabled) {
+      const userId = retirer.getAttribute("data-retirer-membre");
+      StockFlowData.projetMembres[PROJET_REF] = (StockFlowData.projetMembres[PROJET_REF] || []).filter((m) => m.userId !== userId);
+      renderMembres();
+    }
+  });
+
+  document.getElementById("form-ajouter-membre").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const userId = document.getElementById("membre-utilisateur").value;
+    if (!userId) return;
+    StockFlowData.projetMembres[PROJET_REF] = StockFlowData.projetMembres[PROJET_REF] || [];
+    StockFlowData.projetMembres[PROJET_REF].push({ userId, role: "Membre" });
+    renderMembres();
+  });
+
+  renderMembres();
+
+  /* ---------- Documentation (US-32) ---------- */
+  function docSource() {
+    return StockFlowData.documentation[PROJET_REF] || "";
+  }
+  function renderDocPreview() {
+    document.getElementById("doc-preview").innerHTML = renderMarkdown(docSource()) || `<p class="text-muted">Aucune documentation rédigée pour ce projet.</p>`;
+  }
+  function ouvrirEditionDoc() {
+    document.getElementById("doc-textarea").value = docSource();
+    document.getElementById("doc-view").style.display = "none";
+    document.getElementById("doc-edit").style.display = "flex";
+  }
+  function fermerEditionDoc() {
+    document.getElementById("doc-edit").style.display = "none";
+    document.getElementById("doc-view").style.display = "block";
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-doc-cancel]")) fermerEditionDoc();
+    if (e.target.closest("[data-doc-save]")) {
+      StockFlowData.documentation[PROJET_REF] = document.getElementById("doc-textarea").value;
+      renderDocPreview();
+      fermerEditionDoc();
+    }
+    if (e.target.closest("[data-doc-export]")) {
+      alert("Export DOCX — non disponible dans cette maquette (US-32, mise en forme à trancher en Q-28).");
+    }
+  });
+
+  renderDocPreview();
+
+  /* ---------- Bouton d'en-tête contextuel selon l'onglet actif ---------- */
+  const headerAction = document.getElementById("project-header-action");
+  const HEADER_ACTIONS = {
+    apercu: { label: "Nouvelle tâche", modal: "modal-tache", title: "Nouvelle tâche" },
+    membres: { label: "Ajouter un membre", modal: "modal-membre", title: "Ajouter un membre" },
+    documentation: { label: "Modifier la documentation", action: ouvrirEditionDoc },
+    historique: null,
+  };
+
+  function updateHeaderAction(tab) {
+    const config = HEADER_ACTIONS[tab];
+    if (!config) {
+      headerAction.style.display = "none";
+      return;
+    }
+    headerAction.style.display = "inline-flex";
+    headerAction.querySelector("span").textContent = config.label;
+    if (config.modal) {
+      headerAction.setAttribute("data-modal-open", config.modal);
+      headerAction.setAttribute("data-modal-title", config.title);
+      headerAction.onclick = null;
+    } else {
+      headerAction.removeAttribute("data-modal-open");
+      headerAction.removeAttribute("data-modal-title");
+      headerAction.onclick = config.action;
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    const tab = e.target.closest("[data-tab]");
+    if (tab) updateHeaderAction(tab.getAttribute("data-tab"));
+  });
+
+  updateHeaderAction("apercu");
+
+  /* ---------- Statut du projet dérivé du Kanban ----------
+     En attente : toutes les tâches sont encore en "À faire".
+     Actif       : au moins une tâche est sortie de "À faire".
+     Clôturé     : toutes les tâches sont en "Terminé".
+     (Projet sans aucune tâche : "En attente" par défaut.) */
+  function calculerStatutProjet(kanbanData) {
+    const total = Object.values(kanbanData).reduce((n, col) => n + col.tasks.length, 0);
+    if (total === 0) return "En attente";
+    if (kanbanData["termine"].tasks.length === total) return "Clôturé";
+    if (kanbanData["a-faire"].tasks.length === total) return "En attente";
+    return "Actif";
+  }
+
+  const STATUT_TONE = { "Actif": "success", "En attente": "warning", "Clôturé": "neutral" };
+  const STATUT_GROUPE = { "Actif": "En cours", "En attente": "En attente", "Clôturé": "Clôturés" };
+
+  window.onKanbanChange = function (kanbanData) {
+    const statut = calculerStatutProjet(kanbanData);
+    const badge = document.getElementById("project-status-badge");
+    badge.className = `badge badge-${STATUT_TONE[statut]}`;
+    badge.textContent = statut;
+
+    const projet = StockFlowData.projets.find((p) => p.id === PROJET_REF);
+    if (projet) {
+      projet.statut = statut;
+      projet.groupe = STATUT_GROUPE[statut];
+    }
+  };
+
+  // kanban.js a déjà fait son premier rendu avant que ce hook n'existe : on resynchronise ici.
+  window.onKanbanChange(StockFlowData.kanbanParProjet[PROJET_REF]);
 </script>
 </body>
 </html>

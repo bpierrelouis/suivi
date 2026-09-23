@@ -2,7 +2,8 @@
   const board = document.getElementById("kanban-board");
   if (!board) return;
 
-  const data = window.StockFlowData.kanban;
+  const data = window.StockFlowData.kanbanParProjet[window.PROJET_REF];
+  if (!data) return;
   const panelTitle = document.querySelector("[data-panel-field='title']");
   const panelTag = document.querySelector("[data-panel-field='tag']");
   const panelDue = document.querySelector("[data-panel-field='due']");
@@ -78,6 +79,8 @@
         render();
       });
     });
+
+    if (typeof window.onKanbanChange === "function") window.onKanbanChange(data);
   }
 
   render();

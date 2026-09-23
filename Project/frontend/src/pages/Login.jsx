@@ -32,7 +32,7 @@ export default function Login() {
             <rect width="24" height="24" rx="6" fill="#2563eb" />
             <path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
-          StockFlow
+          SUIVI
         </div>
 
         <div className="card card-pad">
@@ -61,7 +61,7 @@ export default function Login() {
           </Form>
         </div>
 
-        <p className="auth-foot">Espace Admin — démo StockFlow · Intradef simulé</p>
+        <p className="auth-foot">Espace Admin — démo SUIVI · Intradef simulé</p>
       </div>
     </div>
   );

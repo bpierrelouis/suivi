@@ -1,4 +1,4 @@
--- Schéma initial StockFlow — voir docs/dictionnaire-donnees.md pour le détail métier.
+-- Schéma initial SUIVI — voir docs/dictionnaire-donnees.md pour le détail métier.
 -- Volontairement absent de ce schéma (questions ouvertes non arbitrées) : type de matériel (Q-08),
 -- quantité/localisation du matériel non individualisé, notifications, réservations.
 

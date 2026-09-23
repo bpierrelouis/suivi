@@ -14,7 +14,7 @@ export default function AppLayout() {
         <aside class="sidebar">
             <div class="sidebar__brand">
                 <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-                StockFlow
+                SUIVI
                 <button class="iconbtn hide-mobile" style="display:none"></button>
                 <button class="iconbtn" style="margin-left:auto; border:none; background:transparent; color:#94a3b8;" data-menu-close aria-label="Fermer le menu">
                 <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
