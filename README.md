@@ -26,6 +26,7 @@ Les maquettes de l’application sont disponibles dans le [projet Figma](https:/
 
 Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories, le backlog, les règles métier, les droits, le dictionnaire de données, le glossaire et la préparation de la recette.
 
+- [Stack technique initiale et décisions d’architecture](docs/stack-technique.md).
 - [Compte rendu de réunion client](docs/compte-rendu-reunion-client.md) — source des besoins.
 - [User stories et critères d’acceptation](docs/user-stories.md).
 - [Backlog produit et proposition de lots](docs/backlog.md).

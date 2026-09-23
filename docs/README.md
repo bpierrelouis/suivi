@@ -6,6 +6,7 @@
 
 | Document | Utilisation |
 | --- | --- |
+| [Stack technique initiale](stack-technique.md) | Architecture, choix techniques, conteneurs, sécurité et ordre de mise en place. |
 | [Compte rendu client](compte-rendu-reunion-client.md) | Source des besoins et des points non résolus. |
 | [Cadrage fonctionnel](cadrage.md) | Objectifs, acteurs, périmètre et exigences transverses. |
 | [User stories](user-stories.md) | Besoins utilisateurs et critères d’acceptation vérifiables. |
@@ -36,4 +37,4 @@ Les identifiants `US-xx` désignent les stories, `RG-xx` les règles, `REC-xx` l
 
 À chaque arbitrage client, renseigner la décision, son auteur et sa date dans le registre, puis modifier ensemble les stories, règles, données et scénarios concernés. Ne marquer une story terminée qu’après vérification de ses critères et consignation du résultat de recette. Les numéros existants sont conservés même si un élément est abandonné.
 
-Les images dans `Maquette Simple/` sont des supports existants ; leurs écarts sont consignés dans le document de parcours. Le compte rendu et ces images sont conservés comme sources.
+Les images dans `prototype_maquettes/` sont des supports existants ; leurs écarts sont consignés dans le document de parcours. Le compte rendu et ces images sont conservés comme sources.

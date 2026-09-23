@@ -65,7 +65,7 @@ Ces questions ne constituent pas des changements décidés du besoin.
 
 ## Désaccord entre sources visuelles et textuelles
 
-La [maquette gestionnaire](Maquette%20Simple/CRUD%20GEST.png) présente un accès « CRUD Projet ». Le compte rendu consolidé §2.2 exclut tout accès du gestionnaire aux projets. La documentation dérivée suit ce dernier. L’image reste conservée comme source à corriger dans US-30 ; aucun nouvel accord client n’est déduit de cette correction documentaire.
+La [maquette gestionnaire](prototype_maquettes/gestionnaire_inventory.png) présente un accès « CRUD Projet ». Le compte rendu consolidé §2.2 exclut tout accès du gestionnaire aux projets. La documentation dérivée suit ce dernier. L’image reste conservée comme source à corriger dans US-30 ; aucun nouvel accord client n’est déduit de cette correction documentaire.
 
 Les éléments de connexion visibles dans les esquisses, tels qu’une option de mémorisation ou un lien de récupération, ne suffisent pas à spécifier une fonction. Leur éventuelle réalisation nécessite une décision en Q-19/Q-24.
 

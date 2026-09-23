@@ -6,9 +6,9 @@
 
 | Support | Observation | Correction / précision attendue |
 | --- | --- | --- |
-| [Administrateur](Maquette%20Simple/CRUD%20ADMIN.png) | Connexion, accueil avec projets, accès inventaire et zones de modales CRUD. | Détailler les actions, droits, confirmations et erreurs ; les modales sont actuellement des zones à compléter. |
-| [Gestionnaire](Maquette%20Simple/CRUD%20GEST.png) | Connexion, inventaire et navigation vers une zone « CRUD Projet ». | Retirer tout accès aux projets conformément au compte rendu §2.2 ; masquer leurs informations dans les réservations visibles. |
-| [Utilisateur](Maquette%20Simple/CRUD%20USER.png) | Connexion, projets et consultation d’un tableau, avec zone de modale. | Clarifier les libellés projet/inventaire et distinguer consultation publique et modification réservée aux membres. |
+| [Administrateur](prototype_maquettes/admin_dashboard.png) | Connexion, accueil avec projets, accès inventaire et zones de modales CRUD. | Détailler les actions, droits, confirmations et erreurs ; les modales sont actuellement des zones à compléter. |
+| [Gestionnaire](prototype_maquettes/gestionnaire_inventory.png) | Connexion, inventaire et navigation vers une zone « CRUD Projet ». | Retirer tout accès aux projets conformément au compte rendu §2.2 ; masquer leurs informations dans les réservations visibles. |
+| [Utilisateur](prototype_maquettes/utilisateur_projects.png) | Connexion, projets et consultation d’un tableau, avec zone de modale. | Clarifier les libellés projet/inventaire et distinguer consultation publique et modification réservée aux membres. |
 
 Le mot CRUD dans une image n’accorde pas automatiquement création, modification et suppression au profil représenté. Les images ne spécifient pas les fonctions supplémentaires éventuellement suggérées par un lien ou une case de connexion.
 
