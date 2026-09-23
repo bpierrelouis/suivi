@@ -9,6 +9,7 @@ const global = {
   stubs: {
     AppLayout: { template: "<main><slot /></main>" },
     RouterLink: { template: "<a><slot /></a>" },
+    RouterView: { template: "<div />" },
   },
 };
 
@@ -26,6 +27,7 @@ describe("ProjectsView", () => {
           statut: "actif",
           responsable: { identifiant: "lea.fournier@demo.local" },
           nombreMembres: 1,
+          relation: "membre",
         },
       ],
     });
@@ -36,7 +38,7 @@ describe("ProjectsView", () => {
     expect(api).toHaveBeenCalledWith("/projets");
     expect(wrapper.text()).toContain("Modernisation du laboratoire");
     expect(wrapper.text()).toContain("Privé");
-    expect(wrapper.text()).toContain("lea.fournier@demo.local");
+    expect(wrapper.text()).toContain("Membre");
   });
 
   it("présente un message clair lorsque le chargement échoue", async () => {

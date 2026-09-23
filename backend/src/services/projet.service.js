@@ -6,7 +6,14 @@ import {
   visibleProjetFilter,
 } from "../policies/projet-access.policy.js";
 
-function toSummary(projet) {
+function projectRelation(projet, viewer) {
+  if (viewer.role === "administrateur") return "administrateur";
+  if (projet.responsable.id === viewer.id) return "responsable";
+  if (projet.participations.some(({ utilisateurId, utilisateur: membre }) => (utilisateurId || membre?.id) === viewer.id)) return "membre";
+  return "lecteur";
+}
+
+function toSummary(projet, utilisateur) {
   return {
     id: projet.id,
     nom: projet.nom,
@@ -17,6 +24,7 @@ function toSummary(projet) {
     dateFin: projet.dateFin,
     responsable: projet.responsable,
     nombreMembres: projet._count.participations,
+    relation: projectRelation(projet, utilisateur),
   };
 }
 
@@ -26,7 +34,7 @@ function toDetail(projet, utilisateur) {
     || projet.participations.some(({ utilisateur: membre }) => membre.id === utilisateur.id)
   );
   return {
-    ...toSummary(projet),
+    ...toSummary(projet, utilisateur),
     creeLe: projet.creeLe,
     modifieLe: projet.modifieLe,
     membres: projet.participations.map(({ utilisateur, rejointLe }) => ({
@@ -57,7 +65,7 @@ export function createProjetService(repository, utilisateurs = null) {
     async list(utilisateur) {
       const accessFilter = visibleProjetFilter(utilisateur);
       const projets = await repository.findVisibleProjets(accessFilter);
-      return projets.map(toSummary);
+      return projets.map((projet) => toSummary(projet, utilisateur));
     },
 
     async getById(utilisateur, id) {

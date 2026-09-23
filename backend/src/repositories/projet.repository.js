@@ -9,6 +9,7 @@ const summarySelect = {
   dateDebut: true,
   dateFin: true,
   responsable: { select: { id: true, identifiant: true } },
+  participations: { select: { utilisateurId: true } },
   _count: { select: { participations: true } },
 };
 

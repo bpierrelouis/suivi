@@ -1,11 +1,13 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, inject, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import AppLayout from "../components/AppLayout.vue";
+import { useRouter } from "vue-router";
+import ModalShell from "../components/ModalShell.vue";
 import { api, apiBlob } from "../services/api.js";
 import { renderMarkdown } from "../utils/markdown.js";
 
 const route = useRoute();
+const router = useRouter();
 const projet = ref(null);
 const utilisateurs = ref([]);
 const chargement = ref(true);
@@ -15,6 +17,9 @@ const form = reactive({ nom: "", description: "", visibilite: "public", dateDebu
 const nouveauMembre = ref("");
 const nouvelleTache = reactive({ titre: "", description: "", responsableId: "" });
 const documentation = ref("");
+const onglet = ref("description");
+const edition = ref(false);
+const rafraichirProjets = inject("rafraichirProjets", async () => {});
 
 const colonnes = [
   { id: "a_faire", label: "À faire" },
@@ -26,8 +31,16 @@ const membresAjoutables = computed(() => {
   return utilisateurs.value.filter((utilisateur) => !ids.has(utilisateur.id) && utilisateur.role !== "gestionnaire");
 });
 const markdownHtml = computed(() => renderMarkdown(documentation.value));
+const relationLabel = computed(() => ({
+  responsable: "Créateur",
+  membre: "Membre",
+  lecteur: "Lecture seule",
+  administrateur: "Administrateur",
+})[projet.value?.relation] || "Projet");
 
 function dateInput(value) { return value ? value.slice(0, 10) : ""; }
+function formatDate(value) { return value ? new Intl.DateTimeFormat("fr-FR").format(new Date(value)) : "Non renseignée"; }
+function close() { router.push({ name: "projets" }); }
 function hydrate(data) {
   projet.value = data;
   Object.assign(form, {
@@ -62,6 +75,7 @@ async function action(callback, success) {
     await callback();
     message.value = success;
     await charger();
+    await rafraichirProjets();
   } catch (error) {
     erreur.value = error.message === "PROJET_ARCHIVE_VERROUILLE"
       ? "Le projet est archivé et ne peut plus être modifié."
@@ -70,7 +84,10 @@ async function action(callback, success) {
 }
 
 function saveProject() {
-  return action(() => api(`/projets/${projet.value.id}`, { method: "PATCH", body: JSON.stringify(form) }), "Informations enregistrées.");
+  return action(async () => {
+    await api(`/projets/${projet.value.id}`, { method: "PATCH", body: JSON.stringify(form) });
+    edition.value = false;
+  }, "Informations enregistrées.");
 }
 function addMember() {
   if (!nouveauMembre.value) return;
@@ -132,48 +149,50 @@ onMounted(charger);
 </script>
 
 <template>
-  <AppLayout>
-    <RouterLink class="back-link" :to="{ name: 'projets' }">← Retour aux projets</RouterLink>
-    <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p>
-    <p v-if="message" class="form-success" role="status">{{ message }}</p>
+  <ModalShell :label="projet ? relationLabel : ''" :title="projet?.nom || 'Projet'" wide @close="close">
+    <template v-if="projet?.droits.modifier && onglet === 'description'" #actions><button class="button button--secondary" type="button" @click="edition = !edition">{{ edition ? "Annuler" : "Modifier" }}</button></template>
     <div v-if="chargement" class="loading">Chargement du projet…</div>
+    <div v-else-if="!projet" class="modal__body"><p class="form-error" role="alert">{{ erreur }}</p></div>
+    <template v-else>
+      <nav class="project-tabs" aria-label="Rubriques du projet">
+        <button :class="{ active: onglet === 'description' }" @click="onglet = 'description'">Description</button>
+        <button :class="{ active: onglet === 'membres' }" @click="onglet = 'membres'">Membres</button>
+        <button :class="{ active: onglet === 'documentation' }" @click="onglet = 'documentation'">Documentation</button>
+      </nav>
+      <div class="modal__body project-modal-body">
+        <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p><p v-if="message" class="form-success" role="status">{{ message }}</p>
 
-    <template v-else-if="projet">
-      <div class="page-heading project-heading">
-        <div><div class="project-heading__badges"><span class="visibility">{{ projet.visibilite === "public" ? "Public" : "Privé" }}</span><span class="status-badge">{{ projet.statut === "actif" ? "Actif" : "Archivé" }}</span></div>
-          <h1>{{ projet.nom }}</h1><p class="muted">Responsable : {{ projet.responsable.identifiant }}</p></div>
+        <template v-if="onglet === 'description'">
+          <form v-if="edition" class="form-grid project-edit-form" @submit.prevent="saveProject">
+            <label>Nom du projet<input v-model="form.nom" required /></label><label>Visibilité<select v-model="form.visibilite"><option value="public">Public</option><option value="prive">Privé</option></select></label>
+            <label class="form-grid__wide">Description<textarea v-model="form.description" rows="4" required></textarea></label><label>Date de début<input v-model="form.dateDebut" type="date" /></label><label>Date de fin<input v-model="form.dateFin" type="date" /></label>
+            <div class="form-actions form-grid__wide"><button class="button button--primary">Enregistrer les modifications</button></div>
+          </form>
+          <section v-else class="project-overview">
+            <p>{{ projet.description }}</p><dl><div><dt>Responsable</dt><dd>{{ projet.responsable.identifiant }}</dd></div><div><dt>Visibilité</dt><dd>{{ projet.visibilite === 'public' ? 'Publique' : 'Privée' }}</dd></div><div><dt>Début</dt><dd>{{ formatDate(projet.dateDebut) }}</dd></div><div><dt>Fin</dt><dd>{{ formatDate(projet.dateFin) }}</dd></div></dl>
+          </section>
+          <section class="kanban-section">
+            <div class="section-heading"><div><h2>Tableau des tâches</h2><p>Responsable facultatif parmi les membres — aucune priorité ni échéance.</p></div></div>
+            <form v-if="projet.droits.modifier" class="task-create" @submit.prevent="createTask"><input v-model="nouvelleTache.titre" required placeholder="Titre de la tâche" /><textarea v-model="nouvelleTache.description" required rows="2" placeholder="Description"></textarea><select v-model="nouvelleTache.responsableId"><option value="">Sans responsable</option><option v-for="membre in projet.membres" :key="membre.id" :value="membre.id">{{ membre.identifiant }}</option></select><button class="button button--primary">Nouvelle tâche</button></form>
+            <p v-if="projet.droits.modifier && projet.statut === 'actif'" class="archive-notice">Terminer la dernière tâche active archive automatiquement le projet et verrouille ses modifications.</p>
+            <div class="kanban-board"><section v-for="colonne in colonnes" :key="colonne.id" class="kanban-column"><h3>{{ colonne.label }} · {{ projet.taches.filter((tache) => tache.etat === colonne.id).length }}</h3>
+              <article v-for="tache in projet.taches.filter((item) => item.etat === colonne.id)" :key="tache.id" class="task-card"><input v-model="tache.titre" :disabled="!projet.droits.modifier" /><textarea v-model="tache.description" :disabled="!projet.droits.modifier" rows="2"></textarea><select :value="tache.responsable?.id || ''" :disabled="!projet.droits.modifier" @change="tache.responsable = projet.membres.find((m) => m.id === $event.target.value) || null"><option value="">Sans responsable</option><option v-for="membre in projet.membres" :key="membre.id" :value="membre.id">{{ membre.identifiant }}</option></select><select :value="tache.etat" :disabled="!projet.droits.modifier" @change="updateTask(tache, { etat: $event.target.value })"><option v-for="option in colonnes" :key="option.id" :value="option.id">{{ option.label }}</option></select><div v-if="projet.droits.modifier" class="task-card__actions"><button class="button button--small button--secondary" type="button" @click="saveTask(tache)">Enregistrer</button><button class="button button--small button--danger" type="button" @click="deleteTask(tache)">Supprimer</button></div></article>
+            </section></div>
+          </section>
+        </template>
+
+        <section v-else-if="onglet === 'membres'">
+          <div class="section-heading"><div><h2>Membres du projet</h2><p>Le responsable est toujours membre du projet.</p></div></div>
+          <form v-if="projet.droits.ajouterMembre" class="inline-form" @submit.prevent="addMember"><select v-model="nouveauMembre" required><option value="">Choisir un utilisateur</option><option v-for="user in membresAjoutables" :key="user.id" :value="user.id">{{ user.identifiant }}</option></select><button class="button button--primary">Ajouter</button></form>
+          <ul class="member-list"><li v-for="membre in projet.membres" :key="membre.id"><span class="account__avatar">{{ membre.identifiant.slice(0, 2).toUpperCase() }}</span><div><strong>{{ membre.identifiant }}</strong><small>{{ membre.id === projet.responsable.id ? "Responsable" : "Membre" }}</small></div><button v-if="projet.droits.retirerMembre && membre.id !== projet.responsable.id" class="icon-button icon-button--danger" aria-label="Retirer le membre" @click="removeMember(membre)">×</button></li></ul>
+        </section>
+
+        <section v-else class="documentation-section">
+          <div class="section-heading"><div><h2>Documentation Markdown</h2><p>Rédigez et prévisualisez la documentation du projet.</p></div><button class="button button--secondary" @click="exportDocumentation">Exporter en DOCX</button></div>
+          <div class="documentation-grid"><div><label>Source Markdown<textarea v-model="documentation" :disabled="!projet.droits.modifier" rows="16" placeholder="# Présentation du projet"></textarea></label><button v-if="projet.droits.modifier" class="button button--primary documentation-save" @click="saveDocumentation">Enregistrer la documentation</button></div><article class="markdown-preview"><span class="context-badge">Aperçu</span><div v-if="documentation" v-html="markdownHtml"></div><p v-else class="muted">La documentation est vide.</p></article></div>
+        </section>
       </div>
-
-      <section class="panel project-section">
-        <div class="panel__header"><div><p class="eyebrow">Projet</p><h2>Informations générales</h2></div></div>
-        <form class="form-grid" @submit.prevent="saveProject">
-          <label>Nom<input v-model="form.nom" :disabled="!projet.droits.modifier" required /></label>
-          <label>Visibilité<select v-model="form.visibilite" :disabled="!projet.droits.modifier"><option value="public">Public</option><option value="prive">Privé</option></select></label>
-          <label class="form-grid__wide">Description<textarea v-model="form.description" :disabled="!projet.droits.modifier" rows="5" required></textarea></label>
-          <label>Date de début<input v-model="form.dateDebut" :disabled="!projet.droits.modifier" type="date" /></label>
-          <label>Date de fin<input v-model="form.dateFin" :disabled="!projet.droits.modifier" type="date" /></label>
-          <div v-if="projet.droits.modifier" class="form-actions form-grid__wide"><button class="button button--primary">Enregistrer</button></div>
-        </form>
-      </section>
-
-      <section class="panel project-section">
-        <div class="panel__header"><div><p class="eyebrow">Équipe</p><h2>Membres</h2></div></div>
-        <form v-if="projet.droits.ajouterMembre" class="inline-form" @submit.prevent="addMember"><select v-model="nouveauMembre" required><option value="">Choisir un utilisateur</option><option v-for="user in membresAjoutables" :key="user.id" :value="user.id">{{ user.identifiant }}</option></select><button class="button button--secondary">Ajouter</button></form>
-        <ul class="member-list"><li v-for="membre in projet.membres" :key="membre.id"><span class="account__avatar">{{ membre.identifiant.slice(0, 2).toUpperCase() }}</span><div><strong>{{ membre.identifiant }}</strong><small>{{ membre.id === projet.responsable.id ? "Responsable" : "Membre" }}</small></div><button v-if="projet.droits.retirerMembre && membre.id !== projet.responsable.id" class="icon-button icon-button--danger" aria-label="Retirer le membre" @click="removeMember(membre)">×</button></li></ul>
-      </section>
-
-      <section class="panel project-section">
-        <div class="panel__header"><div><p class="eyebrow">Suivi</p><h2>Kanban</h2></div></div>
-        <form v-if="projet.droits.modifier" class="task-create" @submit.prevent="createTask"><input v-model="nouvelleTache.titre" required placeholder="Titre de la tâche" /><textarea v-model="nouvelleTache.description" required rows="2" placeholder="Description"></textarea><select v-model="nouvelleTache.responsableId"><option value="">Sans responsable</option><option v-for="membre in projet.membres" :key="membre.id" :value="membre.id">{{ membre.identifiant }}</option></select><button class="button button--primary">Ajouter la tâche</button></form>
-        <div class="kanban-board"><section v-for="colonne in colonnes" :key="colonne.id" class="kanban-column"><h3>{{ colonne.label }} <span>{{ projet.taches.filter((tache) => tache.etat === colonne.id).length }}</span></h3>
-          <article v-for="tache in projet.taches.filter((item) => item.etat === colonne.id)" :key="tache.id" class="task-card"><input v-model="tache.titre" :disabled="!projet.droits.modifier" /><textarea v-model="tache.description" :disabled="!projet.droits.modifier" rows="3"></textarea><select :value="tache.responsable?.id || ''" :disabled="!projet.droits.modifier" @change="tache.responsable = projet.membres.find((m) => m.id === $event.target.value) || null"><option value="">Sans responsable</option><option v-for="membre in projet.membres" :key="membre.id" :value="membre.id">{{ membre.identifiant }}</option></select><select :value="tache.etat" :disabled="!projet.droits.modifier" @change="updateTask(tache, { etat: $event.target.value })"><option v-for="option in colonnes" :key="option.id" :value="option.id">{{ option.label }}</option></select><div v-if="projet.droits.modifier" class="task-card__actions"><button class="button button--small button--secondary" @click="saveTask(tache)">Enregistrer</button><button class="button button--small button--danger" @click="deleteTask(tache)">Supprimer</button></div></article>
-        </section></div>
-      </section>
-
-      <section class="panel project-section">
-        <div class="panel__header"><div><p class="eyebrow">README</p><h2>Documentation Markdown</h2></div><button class="button button--secondary" @click="exportDocumentation">Exporter en DOCX</button></div>
-        <div class="documentation-grid"><div><label>Source Markdown<textarea v-model="documentation" :disabled="!projet.droits.modifier" rows="18" placeholder="# Présentation du projet"></textarea></label><button v-if="projet.droits.modifier" class="button button--primary documentation-save" @click="saveDocumentation">Enregistrer la documentation</button></div><article class="markdown-preview"><p class="eyebrow">Aperçu</p><div v-if="documentation" v-html="markdownHtml"></div><p v-else class="muted">La documentation est vide.</p></article></div>
-      </section>
+      <footer class="modal__footer modal__footer--between"><small>Projet {{ projet.visibilite === 'public' ? 'public' : 'privé' }} · {{ projet.membres.length }} membre{{ projet.membres.length > 1 ? 's' : '' }} · {{ projet.statut === 'actif' ? 'actif' : 'archivé' }}</small><button class="button button--secondary" @click="close">Fermer</button></footer>
     </template>
-  </AppLayout>
+  </ModalShell>
 </template>

@@ -1,0 +1,24 @@
+<script setup>
+defineProps({
+  label: { type: String, default: "" },
+  title: { type: String, required: true },
+  wide: { type: Boolean, default: false },
+});
+
+defineEmits(["close"]);
+</script>
+
+<template>
+  <div class="modal-backdrop" role="presentation" @mousedown.self="$emit('close')">
+    <section class="modal" :class="{ 'modal--wide': wide }" role="dialog" aria-modal="true" :aria-labelledby="$attrs['aria-labelledby'] || 'modal-title'">
+      <header class="modal__header">
+        <div>
+          <span v-if="label" class="context-badge">{{ label }}</span>
+          <h1 id="modal-title">{{ title }}</h1>
+        </div>
+        <div class="modal__header-actions"><slot name="actions" /><button class="close-button" type="button" aria-label="Fermer" @click="$emit('close')">×</button></div>
+      </header>
+      <slot />
+    </section>
+  </div>
+</template>

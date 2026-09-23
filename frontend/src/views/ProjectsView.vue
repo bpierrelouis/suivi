@@ -1,13 +1,20 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, provide, ref } from "vue";
 import AppLayout from "../components/AppLayout.vue";
 import { api } from "../services/api.js";
 
 const projets = ref([]);
 const chargement = ref(true);
 const erreur = ref("");
+const nombreVisible = computed(() => `${projets.value.length} projet${projets.value.length > 1 ? "s" : ""} visible${projets.value.length > 1 ? "s" : ""}`);
 
-onMounted(async () => {
+function relationLabel(projet) {
+  return ({ responsable: "Créateur", membre: "Membre", lecteur: "Lecture seule", administrateur: "Administrateur" })[projet.relation]
+    || (projet.visibilite === "public" ? "Lecture seule" : "Membre");
+}
+
+async function charger() {
+  chargement.value = true;
   try {
     const data = await api("/projets");
     projets.value = data.projets;
@@ -16,19 +23,23 @@ onMounted(async () => {
   } finally {
     chargement.value = false;
   }
-});
+}
+
+provide("rafraichirProjets", charger);
+onMounted(charger);
 </script>
 
 <template>
   <AppLayout>
     <div class="page-heading">
       <div>
-        <p class="eyebrow">Collaboration</p>
         <h1>Projets</h1>
-        <p class="muted">Les projets publics et les projets privés dont vous êtes membre.</p>
+        <p class="muted">Vos projets et les projets publics auxquels vous avez accès.</p>
       </div>
-      <RouterLink class="button button--primary" :to="{ name: 'projet-nouveau' }">Créer un projet</RouterLink>
+      <RouterLink class="button button--primary" :to="{ name: 'projet-nouveau' }">Nouveau projet</RouterLink>
     </div>
+
+    <section class="info-banner"><div><strong>Vos droits dépendent de chaque projet</strong><p>Créateur, membre ou simple lecteur : les actions disponibles s’adaptent automatiquement.</p></div><span class="context-badge">{{ nombreVisible }}</span></section>
 
     <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p>
     <div v-else-if="chargement" class="loading">Chargement des projets…</div>
@@ -41,15 +52,13 @@ onMounted(async () => {
         :to="{ name: 'projet-detail', params: { id: projet.id } }"
       >
         <div class="project-card__header">
-          <span class="visibility">{{ projet.visibilite === "public" ? "Public" : "Privé" }}</span>
-          <span class="status-badge">{{ projet.statut === "actif" ? "Actif" : "Archivé" }}</span>
+          <div><h2>{{ projet.nom }}</h2><p>{{ projet.description }}</p></div>
+          <span class="visibility-badge visibility-badge--large" :class="`visibility-badge--${projet.visibilite}`">{{ projet.visibilite === "public" ? "Public" : "Privé" }}</span>
         </div>
-        <h2>{{ projet.nom }}</h2>
-        <p>{{ projet.description }}</p>
-        <div class="project-card__footer">
-          <span>Responsable : {{ projet.responsable.identifiant }}</span>
-          <span>{{ projet.nombreMembres }} membre{{ projet.nombreMembres > 1 ? "s" : "" }}</span>
+        <div class="project-card__meta">
+          <strong>{{ relationLabel(projet) }}</strong><span>{{ projet.nombreMembres }} membre{{ projet.nombreMembres > 1 ? "s" : "" }}</span><span>{{ projet.statut === "actif" ? "Actif" : "Archivé" }}</span>
         </div>
+        <span class="relation-badge" :class="`relation-badge--${projet.relation || 'lecteur'}`">{{ relationLabel(projet) }}</span>
       </RouterLink>
     </section>
 
@@ -57,5 +66,6 @@ onMounted(async () => {
       <strong>Aucun projet accessible</strong>
       <p>Vous ne participez encore à aucun projet privé et aucun projet public n’est disponible.</p>
     </section>
+    <RouterView />
   </AppLayout>
 </template>

@@ -49,6 +49,10 @@ Le backend sépare les contrôleurs HTTP, services applicatifs, politiques d’a
 
 Le frontend sépare le client HTTP, le rendu Markdown, les vues et l’état de session. Les routes appliquent un premier filtrage ergonomique, tandis que l’API reste l’autorité de sécurité.
 
+## Conformité des interfaces
+
+Les vues reprennent la structure des maquettes de référence : panneau latéral bleu, barre supérieure, tableaux et cartes, ainsi que création et consultation des projets en modales au-dessus de la liste. Les écarts entre les anciennes images et les décisions fonctionnelles sont résolus en faveur de la documentation : le gestionnaire ne voit aucun projet et le Kanban est intégré à l’onglet `Description`, sans onglet Kanban séparé. Les fonctions d’inventaire prévues au Sprint 3 restent présentées comme un aperçu non interactif afin de ne pas simuler des opérations qui ne sont pas encore livrées.
+
 ## Modèle de données
 
 - `Projet` : informations, visibilité, statut, responsable et dates facultatives ;
@@ -63,9 +67,9 @@ Deux migrations versionnées créent le domaine projet puis les tâches et docum
 
 - modèle Prisma formaté, validé et client généré ;
 - 17 tests backend : droits, transformations, affectations, clôture, gestionnaire et export DOCX ;
-- 5 tests frontend : rôle, liste des projets et sécurité du rendu Markdown ;
+- 6 tests frontend : rôle, liste des projets, reverse proxy et sécurité du rendu Markdown ;
 - construction de production du frontend réussie ;
 - document DOCX de démonstration généré, rendu en image et contrôlé visuellement ;
 - absence d’erreur de format détectée par Git.
 
-Le moteur Docker n’étant pas disponible sur la machine de développement au moment du contrôle, les migrations n’ont pas encore été appliquées à une instance PostgreSQL réelle. La recette REC-03, REC-07, REC-08, REC-09 et REC-20 doit être exécutée et consignée dès qu’un serveur PostgreSQL est disponible.
+La stack Docker locale a été construite avec PostgreSQL 17, les migrations ont été appliquées et les services frontend/backend ont passé leurs contrôles de santé. Une recette applicative a validé la création d’un projet, l’ajout d’un membre, le Kanban, l’archivage automatique, la documentation et l’export DOCX. L’acceptation formelle des scénarios REC-03, REC-07, REC-08, REC-09 et REC-20 reste à consigner avec le validateur.

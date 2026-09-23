@@ -39,10 +39,11 @@ onMounted(charger);
 
 <template>
   <AppLayout>
-    <div class="page-heading"><div><p class="eyebrow">Administration</p><h1>Utilisateurs</h1><p class="muted">Un seul gestionnaire peut être actif.</p></div></div>
+    <div class="page-heading"><div><h1>Gestion des utilisateurs</h1><p class="muted">Attribuez ou retirez le rôle gestionnaire aux comptes existants.</p></div></div>
+    <section class="info-banner"><div><strong>Un seul gestionnaire peut être actif</strong><p>Une nouvelle nomination remplace automatiquement le gestionnaire précédent. Un responsable de projet actif ne peut pas être nommé.</p></div><span class="context-badge">Droits administrateur</span></section>
     <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p>
     <section class="panel user-table-wrap">
-      <table class="user-table"><thead><tr><th>Identifiant</th><th>Rôle</th><th>Action</th></tr></thead>
+      <table class="user-table"><thead><tr><th>Identifiant</th><th>Rôle actuel</th><th>Action</th></tr></thead>
         <tbody><tr v-for="utilisateur in utilisateurs" :key="utilisateur.id">
           <td>{{ utilisateur.identifiant }}</td><td><RoleBadge :role="utilisateur.role" /></td>
           <td><button v-if="utilisateur.role !== 'administrateur'" class="button button--secondary" :disabled="traitement === utilisateur.id" @click="changerRole(utilisateur)">

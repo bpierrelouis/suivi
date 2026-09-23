@@ -39,6 +39,7 @@ test("la liste transforme les données sans exposer la structure de persistance"
   const projets = await service.list(utilisateur);
 
   assert.equal(projets[0].nombreMembres, 1);
+  assert.equal(projets[0].relation, "responsable");
   assert.equal("_count" in projets[0], false);
   assert.equal("participations" in projets[0], false);
 });

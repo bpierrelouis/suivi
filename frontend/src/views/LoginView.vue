@@ -29,36 +29,40 @@ async function submit() {
 <template>
   <main class="login-page">
     <section class="login-intro">
-      <div class="brand brand--light"><span class="brand__mark">S</span><span>SUIVI</span></div>
-      <div>
-        <p class="eyebrow">Laboratoire · Espace sécurisé</p>
-        <h1>Les projets et les équipements, enfin réunis.</h1>
-        <p>Suivez l’activité du laboratoire dans un espace adapté à votre rôle.</p>
+      <div class="brand brand--light">
+        <span class="brand__mark">S</span>
+        <span class="brand__text"><strong>S.U.I.V.I.</strong><small>Suivi des Usages, Inventaires, Vie des projets et IA</small></span>
       </div>
-      <p class="login-intro__note">Sprint 1 · Authentification simulée</p>
+      <div>
+        <h1>Une vue claire sur le matériel et les projets.</h1>
+        <p>Centralisez l’inventaire du laboratoire, suivez les projets autorisés et accédez à un espace adapté à vos droits.</p>
+        <div class="login-features" aria-label="Fonctionnalités principales"><span>Inventaire</span><span>Projets</span><span>Traçabilité</span></div>
+      </div>
+      <p class="login-intro__note">Prototype intranet — accès simulé</p>
     </section>
 
     <section class="login-panel">
       <form class="login-card" @submit.prevent="submit">
         <div>
-          <p class="eyebrow">Bienvenue</p>
-          <h2>Connexion à SUIVI</h2>
-          <p class="muted">Utilisez votre identifiant de démonstration.</p>
+          <span class="context-badge">Accès sécurisé</span>
+          <h2>Connexion</h2>
+          <p class="muted">Accédez à votre espace selon vos droits.</p>
         </div>
 
         <label>
           <span>Identifiant</span>
-          <input v-model="identifiant" autocomplete="username" placeholder="prenom.nom@demo.local" required />
+          <input v-model="identifiant" autocomplete="username" placeholder="Votre identifiant" required />
         </label>
         <label>
           <span>Mot de passe</span>
-          <input v-model="motDePasse" type="password" autocomplete="current-password" required />
+          <input v-model="motDePasse" type="password" autocomplete="current-password" placeholder="••••••••••••" required />
         </label>
 
         <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p>
         <button class="button button--primary" type="submit" :disabled="chargement">
           {{ chargement ? "Connexion…" : "Se connecter" }}
         </button>
+        <p class="login-help">La première connexion reconnue crée automatiquement votre compte. Aucun formulaire d’inscription n’est proposé.</p>
       </form>
     </section>
   </main>
