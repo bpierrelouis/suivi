@@ -47,6 +47,10 @@
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
         Inventaire
       </a>
+      <a class="navlink" href="calendrier.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendrier
+      </a>
       <a class="navlink" href="utilisateurs.html">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
         Utilisateurs
@@ -57,13 +61,17 @@
       </a>
     </nav>
     <div class="sidebar__footer">
-      <button class="userchip">
-        <span class="userchip__avatar">AS</span>
+      <div class="userchip">
+        <span class="userchip__avatar" id="role-avatar">AS</span>
         <span class="userchip__meta">
-          <span class="userchip__name">Alexandre S.</span>
-          <span class="userchip__role">Administrateur</span>
+          <span class="userchip__name" id="role-name">Alexandre S.</span>
+          <select class="userchip__role-select" id="role-switcher" aria-label="Changer de role (demonstration)">
+            <option value="administrateur">Administrateur</option>
+            <option value="gestionnaire">Gestionnaire</option>
+            <option value="utilisateur">Utilisateur</option>
+          </select>
         </span>
-      </button>
+      </div>
       <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
         Déconnexion
@@ -89,14 +97,15 @@
       <div class="page-header">
         <div>
           <h1>Inventaire</h1>
-          <p id="inv-count">468 références de stock à jour</p>
+          <p id="inv-count">8 références actives</p>
         </div>
         <div class="flex gap-2">
-          <button class="btn btn-secondary">
-            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13m0 0-4-4m4 4 4-4M4 20h16"/></svg>
+          <button class="btn btn-secondary" id="btn-exporter" style="display:none;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0-4-4m4 4 4-4M4 20h16"/></svg>
             Exporter
           </button>
-          <button class="btn btn-primary" data-modal-open="modal-article" data-modal-title="Nouvel article">
+          <button class="btn btn-secondary" id="btn-voir-archives" style="display:none;">Voir les archives</button>
+          <button class="btn btn-primary" id="btn-nouvel-article" data-modal-open="modal-article" data-modal-title="Nouvel article">
             <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
             Nouvel article
           </button>
@@ -107,15 +116,17 @@
         <div class="toolbar__filters">
           <select class="field-select" id="filter-categorie" aria-label="Filtrer par catégorie">
             <option value="">Catégorie : Toutes</option>
-            <option>Matières premières</option>
-            <option>Composants</option>
-            <option>Consommables</option>
           </select>
-          <select class="field-select" id="filter-statut" aria-label="Filtrer par statut">
-            <option value="">Statut : Tous</option>
-            <option>En stock</option>
-            <option>Stock bas</option>
-            <option>Rupture</option>
+          <select class="field-select" id="filter-mode" aria-label="Filtrer par mode de suivi">
+            <option value="">Mode de suivi : Tous</option>
+            <option value="individualise">Individualisé</option>
+            <option value="non_individualise">Non individualisé</option>
+          </select>
+          <select class="field-select" id="filter-disponibilite" aria-label="Filtrer par disponibilité">
+            <option value="">Disponibilité : Toutes</option>
+            <option value="disponible">Disponible</option>
+            <option value="a_commander">À commander</option>
+            <option value="rupture">Rupture</option>
           </select>
         </div>
       </div>
@@ -123,7 +134,7 @@
       <div class="card card-pad">
         <div class="table-wrap">
           <table class="table">
-            <thead><tr><th scope="col">Référence</th><th scope="col">Désignation</th><th scope="col">Catégorie</th><th scope="col">Emplacement</th><th scope="col">Stock</th><th scope="col">Seuil</th><th scope="col">Statut</th><th scope="col"></th></tr></thead>
+            <thead><tr><th scope="col">Référence</th><th scope="col">Désignation</th><th scope="col">Catégorie</th><th scope="col">Mode de suivi</th><th scope="col">Disponibilité</th><th scope="col" class="col-gestion">Quantité</th><th scope="col" class="col-gestion">Quantité minimale</th><th scope="col">N° de série</th><th scope="col" class="col-archive">Supprimé le</th><th scope="col" class="col-archive">Supprimé par</th><th scope="col"></th></tr></thead>
             <tbody id="inv-body"></tbody>
           </table>
         </div>
@@ -147,46 +158,45 @@
     <form data-mock-form>
       <div class="modal__body">
         <div class="form-grid">
-          <div class="form-field">
-            <label for="article-ref">Référence</label>
-            <input id="article-ref" type="text" placeholder="REF-1080" required />
+          <div class="form-field span-2">
+            <label for="article-designation">Nom *</label>
+            <input id="article-designation" type="text" placeholder="Tôle acier galvanisée 2mm" required />
+            <span class="hint">Seul champ obligatoire — le reste peut être complété plus tard.</span>
           </div>
           <div class="form-field">
-            <label for="article-designation">Désignation</label>
-            <input id="article-designation" type="text" placeholder="Tôle acier galvanisée 2mm" required />
+            <label for="article-mode">Mode de suivi</label>
+            <select id="article-mode">
+              <option value="non_individualise">Non individualisé</option>
+              <option value="individualise">Individualisé</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="article-numero-serie">N° de série</label>
+            <input id="article-numero-serie" type="text" placeholder="Si individualisé" />
+          </div>
+          <div class="form-field">
+            <label for="article-ref-constructeur">Référence constructeur</label>
+            <input id="article-ref-constructeur" type="text" placeholder="Ex. TAG-2000" />
+          </div>
+          <div class="form-field">
+            <label for="article-numero-inventaire">N° d'inventaire</label>
+            <input id="article-numero-inventaire" type="text" placeholder="Ex. REF-1080" />
+          </div>
+          <div class="form-field" id="champ-quantite">
+            <label for="article-quantite">Quantité en stock</label>
+            <input id="article-quantite" type="number" min="0" placeholder="0" />
+          </div>
+          <div class="form-field" id="champ-seuil">
+            <label for="article-seuil">Quantité minimale</label>
+            <input id="article-seuil" type="number" min="0" placeholder="0" />
           </div>
           <div class="form-field">
             <label for="article-categorie">Catégorie</label>
-            <select id="article-categorie"><option>Matières premières</option><option>Composants</option><option>Consommables</option></select>
+            <select id="article-categorie"></select>
           </div>
-          <div class="form-field">
-            <label for="article-fournisseur">Fournisseur</label>
-            <input id="article-fournisseur" type="text" placeholder="Aciers du Nord" />
-          </div>
-          <div class="form-field">
-            <label for="article-emplacement">Emplacement</label>
-            <select id="article-emplacement"><option>Nord</option><option>Sud</option></select>
-          </div>
-          <div class="form-field">
-            <label for="article-allee">Allée / Travée</label>
-            <input id="article-allee" type="text" placeholder="Allée A2" />
-          </div>
-          <div class="form-field">
-            <label for="article-stock">Quantité en stock</label>
-            <input id="article-stock" type="number" placeholder="0" />
-          </div>
-          <div class="form-field">
-            <label for="article-seuil">Seuil d'alerte</label>
-            <input id="article-seuil" type="number" placeholder="0" />
-          </div>
-        </div>
-        <div class="alert">
-          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-          Une quantité sous le seuil déclenche automatiquement une alerte de réapprovisionnement.
         </div>
       </div>
       <div class="modal__footer">
-        <button type="button" class="btn btn-danger">Supprimer l'article</button>
         <span class="spacer"></span>
         <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
         <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -196,52 +206,177 @@
 </div>
 
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/role.js"></script>
 <script src="../assets/js/data.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/modal.js"></script>
+<script src="../assets/js/notifications.js"></script>
 <script src="../assets/js/pwa.js"></script>
 <script>
-  const stockTone = { "En stock": "success", "Stock bas": "warning", "Rupture": "danger" };
-  const categories = ["Matières premières", "Composants", "Consommables"];
+  const modeLabel = { individualise: "Individualisé", non_individualise: "Non individualisé" };
+
+  // Filtre catégorie peuplé depuis la vraie liste (US-08) — pas de valeurs figées dans le HTML.
+  document.getElementById("filter-categorie").innerHTML +=
+    StockFlowData.categoriesMateriel.map((c) => `<option>${c}</option>`).join("");
+
+  const dispoTone = { disponible: "success", a_commander: "warning", rupture: "danger", reserve: "info" };
+  const dispoLabel = { disponible: "Disponible", a_commander: "À commander", rupture: "Rupture", reserve: "Réservé" };
+
+  function disponibiliteCell(i) {
+    if (i.statut === "Archivé") return `<span class="badge badge-neutral">Archivé</span>`;
+    const dispo = StockFlowData.disponibilite(i, StockFlowRole.get());
+    return `<span class="badge badge-${dispoTone[dispo]}">${dispoLabel[dispo]}</span>`;
+  }
+
+  // US-11 : archives réservées à l'administrateur (le gestionnaire et l'utilisateur n'y ont pas
+  // accès, même via une bascule directe). US-05 CA3 : la liste active exclut les matériels supprimés.
+  let modeArchive = false;
+  function appliquerDroitsArchives() {
+    const estAdmin = StockFlowRole.get() === "administrateur";
+    const btn = document.getElementById("btn-voir-archives");
+    btn.style.display = estAdmin ? "inline-flex" : "none";
+    if (!estAdmin && modeArchive) modeArchive = false;
+  }
+  document.getElementById("btn-voir-archives").addEventListener("click", () => {
+    modeArchive = !modeArchive;
+    document.getElementById("btn-voir-archives").textContent = modeArchive ? "Voir l'inventaire actif" : "Voir les archives";
+    document.getElementById("filter-disponibilite").style.display = modeArchive ? "none" : "";
+    document.querySelector(".table").classList.toggle("mode-archive", modeArchive);
+    appliquerDroitsInventaire();
+    renderInventaire();
+  });
+
+  // Quantité / quantité minimale / filtre "À commander" : réservés à l'administrateur et au
+  // gestionnaire. La classe se pose sur la table (pas sur chaque cellule) pour rester valable
+  // après chaque nouveau rendu.
+  function appliquerVisibiliteColonnesGestion() {
+    const peutVoirGestion = StockFlowRole.peut("materiel:creer");
+    document.querySelector(".table").classList.toggle("hide-gestion", !peutVoirGestion);
+    const optionCommander = document.querySelector('#filter-disponibilite option[value="a_commander"]');
+    if (optionCommander) optionCommander.hidden = !peutVoirGestion;
+    if (!peutVoirGestion && document.getElementById("filter-disponibilite").value === "a_commander") {
+      document.getElementById("filter-disponibilite").value = "";
+    }
+  }
+  document.addEventListener("rolechange", () => { appliquerVisibiliteColonnesGestion(); appliquerDroitsArchives(); renderInventaire(); });
+  appliquerVisibiliteColonnesGestion();
+  appliquerDroitsArchives();
+
+  // Dernières lignes affichées — réutilisées telles quelles par l'export (US-13 CA1 : périmètre
+  // choisi = inventaire actif ou résultat des filtres actifs, exactement ce que l'écran montre).
+  let dernieresLignesAffichees = [];
 
   function renderInventaire() {
     const q = document.getElementById("search-inventaire").value.toLowerCase();
     const cat = document.getElementById("filter-categorie").value;
-    const statut = document.getElementById("filter-statut").value;
+    const mode = document.getElementById("filter-mode").value;
+    const dispoFiltre = document.getElementById("filter-disponibilite").value;
+    const role = StockFlowRole.get();
     const body = document.getElementById("inv-body");
-    let html = "";
-    let total = 0;
+    const statutAttendu = modeArchive ? "Archivé" : "Actif";
 
-    categories.forEach((c) => {
-      if (cat && cat !== c) return;
-      const rows = StockFlowData.inventaire.filter((i) =>
-        i.categorie === c &&
-        (!statut || i.statut === statut) &&
-        (i.designation.toLowerCase().includes(q) || i.ref.toLowerCase().includes(q))
-      );
-      if (!rows.length) return;
-      total += rows.length;
-      html += `<tr class="group-row"><td colspan="8">${c} (${rows.length})</td></tr>`;
-      html += rows.map((i) => `
-        <tr>
-          <td data-label="Référence" class="cell-muted">${i.ref}</td>
-          <td data-label="Désignation" style="font-weight:600;">${i.designation}</td>
-          <td data-label="Catégorie" class="cell-muted">${i.categorie}</td>
-          <td data-label="Emplacement" class="cell-muted">${i.emplacement}</td>
-          <td data-label="Stock">${i.stock}</td>
-          <td data-label="Seuil" class="cell-muted">${i.seuil}</td>
-          <td data-label="Statut"><span class="badge badge-${stockTone[i.statut]}">${i.statut}</span></td>
-          <td class="cell-actions"><button class="btn btn-secondary btn-sm" data-modal-open="modal-article" data-modal-title="Modifier l'article">Modifier</button></td>
-        </tr>`).join("");
-    });
+    const rows = StockFlowData.inventaire.filter((i) =>
+      i.statut === statutAttendu &&
+      (!cat || i.categorie === cat) &&
+      (!mode || i.modeSuivi === mode) &&
+      (modeArchive || !dispoFiltre || StockFlowData.disponibilite(i, role) === dispoFiltre) &&
+      (i.designation.toLowerCase().includes(q) || i.ref.toLowerCase().includes(q) || (i.numeroSerie || "").toLowerCase().includes(q))
+    );
+    dernieresLignesAffichees = rows;
 
-    body.innerHTML = html || `<tr><td colspan="8" class="cell-muted" style="text-align:center; padding:24px;">Aucun article ne correspond aux filtres.</td></tr>`;
-    document.getElementById("inv-count").textContent = `${total} référence${total > 1 ? "s" : ""} affichée${total > 1 ? "s" : ""}`;
+    body.innerHTML = rows.map((i) => `
+      <tr>
+        <td data-label="Référence" class="cell-muted">${i.ref}</td>
+        <td data-label="Désignation"><a href="materiel-detail.html?ref=${i.ref}" style="font-weight:600; color:var(--text);">${i.designation}</a></td>
+        <td data-label="Catégorie"><span class="badge badge-neutral">${i.categorie}</span></td>
+        <td data-label="Mode de suivi" class="cell-muted">${modeLabel[i.modeSuivi]}</td>
+        <td data-label="Disponibilité">${disponibiliteCell(i)}</td>
+        <td data-label="Quantité" class="col-gestion">${i.quantite ?? "—"}</td>
+        <td data-label="Quantité minimale" class="col-gestion cell-muted">${i.seuilAlerte ?? "—"}</td>
+        <td data-label="N° de série" class="cell-muted">${i.numeroSerie || "—"}</td>
+        <td data-label="Supprimé le" class="col-archive cell-muted">${i.suppression ? i.suppression.date : "—"}</td>
+        <td data-label="Supprimé par" class="col-archive cell-muted">${i.suppression ? i.suppression.auteur : "—"}</td>
+        <td class="cell-actions"><a href="materiel-detail.html?ref=${i.ref}" class="btn btn-secondary btn-sm">Consulter</a></td>
+      </tr>`).join("") || `<tr><td colspan="11" class="cell-muted" style="text-align:center; padding:24px;">${modeArchive ? "Aucun matériel archivé." : "Aucun article ne correspond aux filtres."}</td></tr>`;
+
+    document.getElementById("inv-count").textContent = modeArchive
+      ? `${rows.length} référence${rows.length > 1 ? "s" : ""} archivée${rows.length > 1 ? "s" : ""}`
+      : `${rows.length} référence${rows.length > 1 ? "s" : ""} affichée${rows.length > 1 ? "s" : ""}`;
   }
-  ["search-inventaire", "filter-categorie", "filter-statut"].forEach((id) =>
+  ["search-inventaire", "filter-categorie", "filter-mode", "filter-disponibilite"].forEach((id) =>
     document.getElementById(id).addEventListener("input", renderInventaire)
   );
   renderInventaire();
+
+  // Formulaire de création : une seule catégorie possible par article (champ obligatoire unique).
+  document.getElementById("article-categorie").innerHTML =
+    StockFlowData.categoriesMateriel.map((c) => `<option value="${c}">${c}</option>`).join("");
+
+  // Quantité/seuil : uniquement pertinents pour le non-individualisé (chaque individualisé = 1 fiche).
+  function appliquerVisibiliteQuantite() {
+    const estIndividualise = document.getElementById("article-mode").value === "individualise";
+    document.getElementById("champ-quantite").style.display = estIndividualise ? "none" : "flex";
+    document.getElementById("champ-seuil").style.display = estIndividualise ? "none" : "flex";
+  }
+  document.getElementById("article-mode").addEventListener("change", appliquerVisibiliteQuantite);
+  appliquerVisibiliteQuantite();
+
+  // Création réservée à l'administrateur et au gestionnaire (US-06 CA4), et jamais visible en
+  // mode archives (US-11 CA4 : aucune action de restauration).
+  function appliquerDroitsInventaire() {
+    document.getElementById("btn-nouvel-article").style.display =
+      (StockFlowRole.peut("materiel:creer") && !modeArchive) ? "inline-flex" : "none";
+  }
+  document.addEventListener("rolechange", appliquerDroitsInventaire);
+  appliquerDroitsInventaire();
+
+  /* ---------- Export (US-13) ----------
+     Écart assumé : le dictionnaire envisage Excel et/ou PDF sans trancher (Q-11 ouverte) ; cette
+     maquette génère un CSV réel (ouvrable directement dans Excel), le format le plus simple à
+     produire honnêtement sans bibliothèque externe ni faux fichier. CA1 : le périmètre exporté est
+     exactement celui affiché à l'écran (inventaire actif ou résultat des filtres actifs, y compris
+     la vue archives). CA3 : aucune colonne de cet inventaire ne référence un projet, donc aucune
+     information de projet ne peut fuiter vers le gestionnaire — la contrainte est respectée par
+     construction plutôt que par un filtrage a posteriori. */
+  function appliquerDroitsExport() {
+    document.getElementById("btn-exporter").style.display =
+      StockFlowRole.peut("materiel:exporter") ? "inline-flex" : "none";
+  }
+  document.addEventListener("rolechange", appliquerDroitsExport);
+  appliquerDroitsExport();
+
+  function echapperCsv(valeur) {
+    const s = String(valeur ?? "");
+    return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  }
+
+  document.getElementById("btn-exporter").addEventListener("click", () => {
+    const colonnes = ["Référence", "Désignation", "Catégorie", "Mode de suivi", "Disponibilité", "Quantité", "Quantité minimale", "N° de série", "Référence constructeur", "N° d'inventaire", "Créé le", "Créé par"];
+    if (modeArchive) colonnes.push("Supprimé le", "Supprimé par");
+
+    const role = StockFlowRole.get();
+    const lignes = dernieresLignesAffichees.map((i) => {
+      const base = [
+        i.ref, i.designation, i.categorie, modeLabel[i.modeSuivi],
+        i.statut === "Archivé" ? "Archivé" : dispoLabel[StockFlowData.disponibilite(i, role)],
+        i.quantite ?? "", i.seuilAlerte ?? "", i.numeroSerie || "", i.referenceConstructeur || "", i.numeroInventaire || "",
+        i.creeLe, i.creePar,
+      ];
+      if (modeArchive) base.push(i.suppression ? i.suppression.date : "", i.suppression ? i.suppression.auteur : "");
+      return base;
+    });
+
+    const csv = [colonnes, ...lignes].map((ligne) => ligne.map(echapperCsv).join(";")).join("\r\n");
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `inventaire-${modeArchive ? "archives" : "actif"}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
 </script>
 </body>
 </html>

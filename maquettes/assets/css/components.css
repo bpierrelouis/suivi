@@ -98,6 +98,8 @@
 }
 .table .cell-muted { color: var(--text-muted); }
 .table .cell-actions { text-align: right; white-space: nowrap; }
+.table.hide-gestion .col-gestion { display: none; }
+.table:not(.mode-archive) .col-archive { display: none; }
 
 @media (max-width: 720px) {
   .table thead { display: none; }
@@ -366,6 +368,35 @@
 .member-row__meta { flex: 1; min-width: 0; }
 .member-row__name { font-size: 14px; font-weight: 600; }
 .member-row__email { font-size: 12px; color: var(--text-muted); }
+
+/* ---------- Calendrier de disponibilité (US-26) ---------- */
+.calendrier-grille {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-2);
+}
+.calendrier-jour {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  min-height: 120px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.calendrier-jour.is-today { border-color: var(--accent); background: var(--info-soft); }
+.calendrier-jour__titre {
+  font-size: 12px; font-weight: 700; text-transform: capitalize;
+  color: var(--text-muted);
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.calendrier-creneau {
+  background: var(--warning-soft); color: var(--warning);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  font-size: 12px; line-height: 1.4;
+}
+@media (max-width: 720px) {
+  .calendrier-grille { grid-template-columns: 1fr; }
+}
 
 /* ---------- Utility ---------- */
 .flex { display: flex; }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Utilisateurs — SUIVI</title>
+<title>Notifications — SUIVI</title>
 <meta name="theme-color" content="#0f172a" />
 <link rel="manifest" href="../manifest.webmanifest" />
 <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
@@ -51,7 +51,7 @@
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         Calendrier
       </a>
-      <a class="navlink" href="utilisateurs.html" aria-current="page">
+      <a class="navlink" href="utilisateurs.html">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
         Utilisateurs
       </a>
@@ -81,10 +81,6 @@
 
   <div class="main">
     <header class="topbar">
-      <div class="searchbox hide-mobile">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" id="search-users" aria-label="Rechercher un utilisateur" placeholder="Rechercher un utilisateur…" />
-      </div>
       <div class="topbar__spacer"></div>
       <div class="topbar__actions">
         <button class="iconbtn" data-theme-toggle data-theme-icon aria-label="Basculer le thème">
@@ -94,75 +90,18 @@
     </header>
 
     <main class="content" id="main-content" tabindex="-1">
-      <div id="utilisateurs-refuse" class="alert" style="display:none;">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-        Tu n'as pas les droits pour gérer les utilisateurs. Seul l'administrateur y a accès (US-03).
-      </div>
-
-      <div id="utilisateurs-contenu">
       <div class="page-header">
         <div>
-          <h1>Utilisateurs</h1>
-          <p>Gère les comptes et les rôles d'accès</p>
+          <h1>Notifications</h1>
+          <p id="notif-count">0 notification</p>
         </div>
-        <button class="btn btn-primary" data-modal-open="modal-user" data-modal-title="Nouvel utilisateur">
-          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          Nouvel utilisateur
-        </button>
+        <button class="btn btn-secondary" id="btn-tout-marquer-lu">Tout marquer comme lu</button>
       </div>
 
       <div class="card card-pad">
-        <div class="table-wrap">
-          <table class="table">
-            <thead><tr><th scope="col">Nom</th><th scope="col">Email</th><th scope="col">Rôle</th><th scope="col">Statut</th><th scope="col"></th></tr></thead>
-            <tbody id="users-body"></tbody>
-          </table>
-        </div>
-      </div>
+        <div id="notifications-list"></div>
       </div>
     </main>
-  </div>
-</div>
-
-<!-- Modal: Nouvel utilisateur -->
-<div class="modal-scrim" id="modal-user">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-user-title">
-    <div class="modal__header">
-      <div>
-        <h2 data-modal-title id="modal-user-title">Nouvel utilisateur</h2>
-        <p>Crée un accès et attribue un rôle</p>
-      </div>
-      <button class="iconbtn" data-modal-close aria-label="Fermer">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <form data-mock-form>
-      <div class="modal__body">
-        <div class="form-grid">
-          <div class="form-field span-2">
-            <label for="user-nom">Nom complet</label>
-            <input id="user-nom" type="text" placeholder="Prénom Nom" required />
-          </div>
-          <div class="form-field span-2">
-            <label for="user-email">Email</label>
-            <input id="user-email" type="email" placeholder="prenom.nom@labo.fr" required />
-          </div>
-          <div class="form-field">
-            <label for="user-role">Rôle</label>
-            <select id="user-role"><option>Utilisateur</option><option>Gestionnaire</option><option>Administrateur</option></select>
-          </div>
-          <div class="form-field">
-            <label for="user-statut">Statut</label>
-            <select id="user-statut"><option>Actif</option><option>Suspendu</option></select>
-          </div>
-        </div>
-      </div>
-      <div class="modal__footer">
-        <span class="spacer"></span>
-        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-      </div>
-    </form>
   </div>
 </div>
 
@@ -174,32 +113,52 @@
 <script src="../assets/js/notifications.js"></script>
 <script src="../assets/js/pwa.js"></script>
 <script>
-  const roleTone = { "Administrateur": "info", "Gestionnaire": "success", "Utilisateur": "neutral" };
-
-  // US-03 CA1 : seul l'administrateur gère les utilisateurs.
-  function appliquerDroitsUtilisateurs() {
-    const autorise = StockFlowRole.get() === "administrateur";
-    document.getElementById("utilisateurs-refuse").style.display = autorise ? "none" : "flex";
-    document.getElementById("utilisateurs-contenu").style.display = autorise ? "block" : "none";
-    return autorise;
+  // US-27/28 : notifications internes propres à chaque destinataire, lues/non lues.
+  function utilisateurCourant() {
+    return StockFlowData.utilisateurs.find((u) => u.nom === StockFlowRole.nom());
   }
 
-  function renderUsers() {
-    if (!appliquerDroitsUtilisateurs()) return;
-    const q = document.getElementById("search-users").value.toLowerCase();
-    const rows = StockFlowData.utilisateurs.filter((u) => u.nom.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
-    document.getElementById("users-body").innerHTML = rows.map((u) => `
-      <tr>
-        <td data-label="Nom" style="font-weight:600;">${u.nom}</td>
-        <td data-label="Email" class="cell-muted">${u.email}</td>
-        <td data-label="Rôle"><span class="badge badge-${roleTone[u.role]}">${u.role}</span></td>
-        <td data-label="Statut">${u.statut === "Actif" ? '<span class="badge badge-success">Actif</span>' : '<span class="badge badge-danger">Suspendu</span>'}</td>
-        <td class="cell-actions"><button class="btn btn-secondary btn-sm" data-modal-open="modal-user" data-modal-title="Modifier l'utilisateur">Modifier</button></td>
-      </tr>`).join("") || `<tr><td colspan="5" class="cell-muted" style="text-align:center; padding:24px;">Aucun utilisateur ne correspond à la recherche.</td></tr>`;
+  function renderNotifications() {
+    const u = utilisateurCourant();
+    const liste = u ? StockFlowData.notificationsDe(u.id).slice().reverse() : [];
+    const nonLues = liste.filter((n) => !n.lu).length;
+
+    document.getElementById("notif-count").textContent =
+      `${liste.length} notification${liste.length > 1 ? "s" : ""}${nonLues ? ` · ${nonLues} non lue${nonLues > 1 ? "s" : ""}` : ""}`;
+    document.getElementById("btn-tout-marquer-lu").style.display = nonLues ? "inline-flex" : "none";
+
+    document.getElementById("notifications-list").innerHTML = liste.map((n) => `
+      <div class="member-row" style="align-items:flex-start;">
+        <span class="member-row__avatar" style="background:${n.lu ? "var(--bg)" : "var(--info-soft)"}; color:${n.lu ? "var(--text-muted)" : "var(--info)"};">
+          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </span>
+        <span class="member-row__meta">
+          <span class="member-row__name" style="font-weight:${n.lu ? "500" : "700"};">${n.message}</span><br>
+          <span class="member-row__email">${n.date}</span>
+        </span>
+        ${n.lu ? `<span class="badge badge-neutral">Lue</span>` : `<button class="btn btn-secondary btn-sm" data-marquer-lue="${n.id}" style="margin-left:12px;">Marquer comme lue</button>`}
+      </div>
+    `).join("") || `<p class="text-muted" style="font-size:13px;">Aucune notification pour le moment.</p>`;
   }
-  document.getElementById("search-users").addEventListener("input", renderUsers);
-  renderUsers();
-  document.addEventListener("rolechange", renderUsers);
+  renderNotifications();
+  document.addEventListener("rolechange", renderNotifications);
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-marquer-lue]");
+    if (btn) {
+      StockFlowData.marquerNotificationLue(btn.getAttribute("data-marquer-lue"));
+      renderNotifications();
+      if (typeof window.rafraichirClocheNotifications === "function") window.rafraichirClocheNotifications();
+    }
+  });
+
+  document.getElementById("btn-tout-marquer-lu").addEventListener("click", () => {
+    const u = utilisateurCourant();
+    if (!u) return;
+    StockFlowData.notificationsDe(u.id).forEach((n) => StockFlowData.marquerNotificationLue(n.id));
+    renderNotifications();
+    if (typeof window.rafraichirClocheNotifications === "function") window.rafraichirClocheNotifications();
+  });
 </script>
 </body>
 </html>

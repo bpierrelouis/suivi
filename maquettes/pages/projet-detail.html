@@ -49,6 +49,10 @@
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
         Inventaire
       </a>
+      <a class="navlink" href="calendrier.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendrier
+      </a>
       <a class="navlink" href="utilisateurs.html">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
         Utilisateurs
@@ -59,13 +63,17 @@
       </a>
     </nav>
     <div class="sidebar__footer">
-      <button class="userchip">
-        <span class="userchip__avatar">AS</span>
+      <div class="userchip">
+        <span class="userchip__avatar" id="role-avatar">AS</span>
         <span class="userchip__meta">
-          <span class="userchip__name">Alexandre S.</span>
-          <span class="userchip__role">Administrateur</span>
+          <span class="userchip__name" id="role-name">Alexandre S.</span>
+          <select class="userchip__role-select" id="role-switcher" aria-label="Changer de role (demonstration)">
+            <option value="administrateur">Administrateur</option>
+            <option value="gestionnaire">Gestionnaire</option>
+            <option value="utilisateur">Utilisateur</option>
+          </select>
         </span>
-      </button>
+      </div>
       <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
         Déconnexion
@@ -88,6 +96,11 @@
     </header>
 
     <main class="content" id="main-content" tabindex="-1">
+      <div id="projet-refuse" class="alert" style="display:none; margin-bottom:16px;">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        Tu n'as pas accès à ce projet (US-04, US-15) — il est privé et tu n'en es pas membre.
+      </div>
+      <div id="projet-contenu">
       <div class="page-header">
         <div>
           <div class="flex items-center gap-2" style="margin-bottom:6px;">
@@ -96,15 +109,27 @@
           </div>
           <p id="project-meta"></p>
         </div>
-        <button class="btn btn-primary" id="project-header-action" data-modal-open="modal-tache" data-modal-title="Nouvelle tâche">
-          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Nouvelle tâche</span>
-        </button>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary" id="btn-cloturer-projet" style="display:none;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+            Clôturer le projet
+          </button>
+          <button class="btn btn-primary" id="project-header-action" data-modal-open="modal-tache" data-modal-title="Nouvelle tâche">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Nouvelle tâche</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="projet-archive-info" class="alert" style="display:none; margin-bottom:16px;">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        Ce projet est clôturé/archivé : il n'est plus modifiable (US-20 CA5). Son matériel réservé a été libéré.
       </div>
 
       <div class="tabs" data-tabs>
         <button class="tab" data-tab="apercu" aria-selected="true">Vue d'ensemble</button>
         <button class="tab" data-tab="membres" aria-selected="false">Membres</button>
+        <button class="tab" data-tab="reservations" aria-selected="false">Réservations</button>
         <button class="tab" data-tab="historique" aria-selected="false">Historique</button>
         <button class="tab" data-tab="documentation" aria-selected="false">Documentation</button>
       </div>
@@ -127,6 +152,25 @@
           </div>
           <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Le gestionnaire ne peut pas être membre d'un projet.</p>
           <div id="membres-list"></div>
+        </div>
+      </div>
+
+      <div data-tab-panel="reservations" class="tab-panel">
+        <div class="card card-pad">
+          <div class="flex items-center" style="justify-content:space-between; margin-bottom:8px;">
+            <h2 style="font-size:15px; font-weight:700;">Réservations de matériel</h2>
+            <button class="btn btn-secondary btn-sm" id="btn-reserver" data-modal-open="modal-reservation" data-modal-title="Réserver du matériel">
+              <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Réserver
+            </button>
+          </div>
+          <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Seul le matériel individualisé actif peut être réservé, sur des créneaux qui ne se chevauchent pas.</p>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">Matériel</th><th scope="col">Début</th><th scope="col">Fin</th><th scope="col">Réservant</th><th scope="col">État</th><th scope="col"></th></tr></thead>
+              <tbody id="reservations-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -158,11 +202,12 @@
         <div class="card card-pad">
           <div class="table-wrap">
             <table class="table">
-              <thead><tr><th scope="col">Date</th><th scope="col">Référence</th><th scope="col">Nom</th><th scope="col">Responsable</th><th scope="col">Statut</th></tr></thead>
+              <thead><tr><th scope="col">Date</th><th scope="col">Auteur</th><th scope="col">Nature</th><th scope="col">Détail</th></tr></thead>
               <tbody id="historique-body"></tbody>
             </table>
           </div>
         </div>
+      </div>
       </div>
     </main>
   </div>
@@ -239,6 +284,45 @@
   </div>
 </div>
 
+<!-- Modal: Réserver du matériel (US-22, US-23) -->
+<div class="modal-scrim" id="modal-reservation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-reservation-title">
+    <div class="modal__header">
+      <div>
+        <h2 data-modal-title id="modal-reservation-title">Réserver du matériel</h2>
+        <p>Minutes acceptées : 00 ou 30 uniquement. La fin doit être strictement après le début.</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form id="form-reservation">
+      <div class="modal__body">
+        <div class="form-field">
+          <label for="reservation-materiel">Matériel individualisé</label>
+          <select id="reservation-materiel"></select>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="reservation-debut">Début</label>
+            <input id="reservation-debut" type="datetime-local" step="1800" required />
+          </div>
+          <div class="form-field">
+            <label for="reservation-fin">Fin</label>
+            <input id="reservation-fin" type="datetime-local" step="1800" required />
+          </div>
+        </div>
+        <p class="hint" id="reservation-erreur" style="display:none; color:var(--danger);"></p>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary" id="btn-valider-reservation">Réserver</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Side panel: détail d'une carte Kanban -->
 <div class="panel" id="kanban-detail-panel" role="dialog" aria-modal="true" aria-labelledby="kanban-detail-panel-title">
   <div class="panel__header">
@@ -282,6 +366,7 @@
 </div>
 
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/role.js"></script>
 <script src="../assets/js/data.js"></script>
 <script>
   // Détermine le projet affiché à partir de l'URL (?id=PRJ-XXXX) — retombe sur le premier
@@ -297,23 +382,47 @@
   document.getElementById("project-meta").textContent =
     `${window.PROJET.id} · Responsable ${window.PROJET.responsable} · Échéance ${window.PROJET.echeance}`;
   document.getElementById("project-description").textContent = window.PROJET.description;
+
+  // Accès au projet (US-04 CA2, US-15 CA1/CA2) : gestionnaire → jamais ; utilisateur → public
+  // ou membre ; administrateur → toujours. Revérifié à chaque changement de rôle (démo).
+  function appliquerAccesProjet() {
+    const role = StockFlowRole.get();
+    const nomPersona = StockFlowRole.nom();
+    const visible = StockFlowData.projetVisible(window.PROJET, role, nomPersona);
+    document.getElementById("projet-refuse").style.display = visible ? "none" : "flex";
+    document.getElementById("projet-contenu").style.display = visible ? "block" : "none";
+    return visible;
+  }
+  appliquerAccesProjet();
+  document.addEventListener("rolechange", appliquerAccesProjet);
 </script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/modal.js"></script>
 <script src="../assets/js/kanban.js"></script>
+<script src="../assets/js/notifications.js"></script>
 <script src="../assets/js/pwa.js"></script>
 <script src="../assets/js/markdown.js"></script>
 <script>
   const PROJET_REF = window.PROJET_REF;
 
-  document.getElementById("historique-body").innerHTML = StockFlowData.historique.filter((h) => h.ref === PROJET_REF).map((h) => `
-    <tr>
-      <td data-label="Date" class="cell-muted">${h.date}</td>
-      <td data-label="Référence" class="cell-muted">${h.ref}</td>
-      <td data-label="Nom" style="font-weight:600;">${h.nom}</td>
-      <td data-label="Responsable">${h.responsable}</td>
-      <td data-label="Statut"><span class="badge badge-${h.statut === "Actif" ? "success" : h.statut === "En attente" ? "warning" : "neutral"}">${h.statut}</span></td>
-    </tr>`).join("");
+  function estProjetArchiveActuel() {
+    const p = StockFlowData.projets.find((x) => x.id === PROJET_REF);
+    return p ? StockFlowData.estProjetArchive(p) : false;
+  }
+
+  /* ---------- Historique (US-31) ---------- */
+  const NATURE_LABEL = { creation: "Création", membres: "Membres", documentation: "Documentation", taches: "Tâches", cloture: "Clôture/archivage" };
+  function renderHistorique() {
+    const evenements = StockFlowData.historiqueProjet[PROJET_REF] || [];
+    document.getElementById("historique-body").innerHTML = evenements.slice().reverse().map((h) => `
+      <tr>
+        <td data-label="Date" class="cell-muted">${h.date}</td>
+        <td data-label="Auteur">${h.auteur}</td>
+        <td data-label="Nature"><span class="badge badge-neutral">${NATURE_LABEL[h.nature] || h.nature}</span></td>
+        <td data-label="Détail">${h.detail}</td>
+      </tr>`).join("") || `<tr><td colspan="4" class="cell-muted" style="text-align:center; padding:24px;">Aucun événement.</td></tr>`;
+  }
+  renderHistorique();
 
   /* ---------- Membres ---------- */
   function utilisateurParId(id) {
@@ -323,11 +432,16 @@
     return nom.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
   }
 
+  // US-18 : retrait d'un membre réservé à l'administrateur (droits des autres profils = Q-07 ouverte).
   function renderMembres() {
     const membres = StockFlowData.projetMembres[PROJET_REF] || [];
+    const peutRetirer = StockFlowRole.get() === "administrateur" && !estProjetArchiveActuel();
     document.getElementById("membres-list").innerHTML = membres.map((m) => {
       const u = utilisateurParId(m.userId);
       if (!u) return "";
+      const boutonRetirer = peutRetirer
+        ? `<button class="btn btn-secondary btn-sm" data-retirer-membre="${u.id}" style="margin-left:12px;" ${m.role === "Responsable" ? "disabled title=\"Le responsable ne peut pas être retiré\"" : ""}>Retirer</button>`
+        : "";
       return `
         <div class="member-row">
           <span class="member-row__avatar">${initiales(u.nom)}</span>
@@ -335,8 +449,8 @@
             <span class="member-row__name">${u.nom}</span><br>
             <span class="member-row__email">${u.email}</span>
           </span>
-          <span class="badge ${m.role === "Créateur" ? "badge-info" : "badge-neutral"}">${m.role}</span>
-          <button class="btn btn-secondary btn-sm" data-retirer-membre="${u.id}" style="margin-left:12px;" ${m.role === "Créateur" ? "disabled title=\"Le créateur ne peut pas être retiré\"" : ""}>Retirer</button>
+          <span class="badge ${m.role === "Responsable" ? "badge-info" : "badge-neutral"}">${m.role}</span>
+          ${boutonRetirer}
         </div>`;
     }).join("") || `<p class="text-muted" style="font-size:13px;">Aucun membre pour l'instant.</p>`;
   }
@@ -367,8 +481,11 @@
     const retirer = e.target.closest("[data-retirer-membre]");
     if (retirer && !retirer.disabled) {
       const userId = retirer.getAttribute("data-retirer-membre");
+      const u = utilisateurParId(userId);
       StockFlowData.projetMembres[PROJET_REF] = (StockFlowData.projetMembres[PROJET_REF] || []).filter((m) => m.userId !== userId);
+      StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "membres", `Retrait de ${u ? u.nom : userId} des membres.`);
       renderMembres();
+      renderHistorique();
     }
   });
 
@@ -376,9 +493,12 @@
     e.preventDefault();
     const userId = document.getElementById("membre-utilisateur").value;
     if (!userId) return;
+    const u = utilisateurParId(userId);
     StockFlowData.projetMembres[PROJET_REF] = StockFlowData.projetMembres[PROJET_REF] || [];
     StockFlowData.projetMembres[PROJET_REF].push({ userId, role: "Membre" });
+    StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "membres", `Ajout de ${u ? u.nom : userId} comme membre.`);
     renderMembres();
+    renderHistorique();
   });
 
   renderMembres();
@@ -404,8 +524,10 @@
     if (e.target.closest("[data-doc-cancel]")) fermerEditionDoc();
     if (e.target.closest("[data-doc-save]")) {
       StockFlowData.documentation[PROJET_REF] = document.getElementById("doc-textarea").value;
+      StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "documentation", "Documentation modifiée.");
       renderDocPreview();
       fermerEditionDoc();
+      renderHistorique();
     }
     if (e.target.closest("[data-doc-export]")) {
       alert("Export DOCX — non disponible dans cette maquette (US-32, mise en forme à trancher en Q-28).");
@@ -414,18 +536,152 @@
 
   renderDocPreview();
 
-  /* ---------- Bouton d'en-tête contextuel selon l'onglet actif ---------- */
+  function estMembreOuAdmin() {
+    const role = StockFlowRole.get();
+    if (role === "administrateur") return true;
+    if (role === "gestionnaire") return false;
+    return StockFlowData.estMembreProjet(PROJET_REF, StockFlowRole.nom());
+  }
+  // US-16/17/18/19/32 : modification réservée à "un membre du projet ou l'administrateur", et plus
+  // du tout possible une fois le projet clôturé/archivé (US-20 CA5, D-05 : pas de réouverture).
+  function peutModifierProjet() {
+    return estMembreOuAdmin() && !estProjetArchiveActuel();
+  }
+
+  /* ---------- Réservations (US-22 à US-25) ---------- */
+  const ETAT_RESA_LABEL = { planifiee: "Planifiée", en_cours: "En cours", passee: "Passée", annulee: "Annulée" };
+  const ETAT_RESA_TONE = { planifiee: "info", en_cours: "success", passee: "neutral", annulee: "danger" };
+
+  function materielIndividualiseActif() {
+    return StockFlowData.inventaire.filter((i) => i.modeSuivi === "individualise" && i.statut === "Actif");
+  }
+  function designationMateriel(ref) {
+    const m = StockFlowData.inventaire.find((i) => i.ref === ref);
+    return m ? `${m.designation} (${m.ref})` : ref;
+  }
+  function formatDateHeure(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    return d.toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function renderReservations() {
+    const resas = StockFlowData.reservationsDuProjet(PROJET_REF).slice().sort((a, b) => new Date(b.debut) - new Date(a.debut));
+    const peutGerer = peutModifierProjet();
+    document.getElementById("reservations-body").innerHTML = resas.map((r) => {
+      const etat = StockFlowData.etatReservation(r);
+      const actionsPossibles = peutGerer && r.statut === "active" && etat !== "passee";
+      const actions = actionsPossibles
+        ? `<button class="btn btn-secondary btn-sm" data-modifier-reservation="${r.id}">Modifier</button> <button class="btn btn-secondary btn-sm" data-annuler-reservation="${r.id}">Annuler</button>`
+        : "";
+      return `
+        <tr>
+          <td data-label="Matériel">${designationMateriel(r.ref)}</td>
+          <td data-label="Début" class="cell-muted">${formatDateHeure(r.debut)}</td>
+          <td data-label="Fin" class="cell-muted">${formatDateHeure(r.fin)}</td>
+          <td data-label="Réservant">${r.reservantNom}</td>
+          <td data-label="État"><span class="badge badge-${ETAT_RESA_TONE[etat]}">${ETAT_RESA_LABEL[etat]}</span></td>
+          <td class="cell-actions">${actions}</td>
+        </tr>`;
+    }).join("") || `<tr><td colspan="6" class="cell-muted" style="text-align:center; padding:24px;">Aucune réservation pour ce projet.</td></tr>`;
+    const btnReserver = document.getElementById("btn-reserver");
+    if (btnReserver) btnReserver.style.display = peutGerer ? "inline-flex" : "none";
+  }
+  renderReservations();
+
+  let reservationEnEdition = null;
+  function ouvrirModalReservation(reservation) {
+    reservationEnEdition = reservation || null;
+    document.getElementById("modal-reservation-title").textContent = reservation ? "Modifier la réservation" : "Réserver du matériel";
+    document.getElementById("reservation-erreur").style.display = "none";
+    const select = document.getElementById("reservation-materiel");
+    select.innerHTML = materielIndividualiseActif().map((m) => `<option value="${m.ref}">${m.designation} (${m.ref})</option>`).join("") || `<option value="">Aucun matériel individualisé actif</option>`;
+    document.getElementById("btn-valider-reservation").textContent = reservation ? "Enregistrer" : "Réserver";
+    if (reservation) {
+      select.value = reservation.ref;
+      select.disabled = true;
+      document.getElementById("reservation-debut").value = reservation.debut;
+      document.getElementById("reservation-fin").value = reservation.fin;
+    } else {
+      select.disabled = false;
+      document.getElementById("reservation-debut").value = "";
+      document.getElementById("reservation-fin").value = "";
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[data-modal-open="modal-reservation"]')) ouvrirModalReservation(null);
+
+    const modifier = e.target.closest("[data-modifier-reservation]");
+    if (modifier) {
+      const r = StockFlowData.reservations.find((x) => x.id === modifier.getAttribute("data-modifier-reservation"));
+      if (r) {
+        ouvrirModalReservation(r);
+        window.StockFlowDialog.open(document.getElementById("modal-reservation"));
+      }
+    }
+
+    const annuler = e.target.closest("[data-annuler-reservation]");
+    if (annuler) {
+      const id = annuler.getAttribute("data-annuler-reservation");
+      if (confirm("Annuler cette réservation ?")) {
+        const r = StockFlowData.annulerReservation(id, StockFlowRole.nom());
+        if (r) {
+          StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "taches", `Réservation de ${designationMateriel(r.ref)} annulée.`);
+          renderReservations();
+          renderHistorique();
+        }
+      }
+    }
+  });
+
+  document.getElementById("form-reservation").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const ref = document.getElementById("reservation-materiel").value;
+    const debut = document.getElementById("reservation-debut").value;
+    const fin = document.getElementById("reservation-fin").value;
+    const erreurEl = document.getElementById("reservation-erreur");
+
+    if (!ref) { erreurEl.textContent = "Choisis un matériel."; erreurEl.style.display = "block"; return; }
+    if (!StockFlowData.reservationValide(debut, fin)) {
+      erreurEl.textContent = "La période est incomplète, la fin doit être après le début, et seules les minutes 00 ou 30 sont acceptées.";
+      erreurEl.style.display = "block";
+      return;
+    }
+    const excludeId = reservationEnEdition ? reservationEnEdition.id : undefined;
+    if (StockFlowData.chevauchementReservation(ref, debut, fin, excludeId)) {
+      erreurEl.textContent = "Ce créneau chevauche une réservation active existante pour ce matériel.";
+      erreurEl.style.display = "block";
+      return;
+    }
+
+    if (reservationEnEdition) {
+      StockFlowData.modifierReservation(reservationEnEdition.id, { debut, fin });
+      StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "taches", `Réservation de ${designationMateriel(ref)} modifiée.`);
+    } else {
+      StockFlowData.creerReservation({ ref, projetId: PROJET_REF, debut, fin, reservantId: StockFlowData.utilisateurs.find((u) => u.nom === StockFlowRole.nom())?.id, reservantNom: StockFlowRole.nom() });
+      StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "taches", `Réservation de ${designationMateriel(ref)} créée.`);
+    }
+    document.getElementById("modal-reservation").classList.remove("is-open");
+    reservationEnEdition = null;
+    renderReservations();
+    renderHistorique();
+  });
+
+  /* ---------- Bouton d'en-tête contextuel selon l'onglet actif ----------
+     US-16/17/32 : modification réservée à "un membre du projet ou l'administrateur". */
   const headerAction = document.getElementById("project-header-action");
   const HEADER_ACTIONS = {
     apercu: { label: "Nouvelle tâche", modal: "modal-tache", title: "Nouvelle tâche" },
     membres: { label: "Ajouter un membre", modal: "modal-membre", title: "Ajouter un membre" },
+    reservations: null,
     documentation: { label: "Modifier la documentation", action: ouvrirEditionDoc },
     historique: null,
   };
 
   function updateHeaderAction(tab) {
     const config = HEADER_ACTIONS[tab];
-    if (!config) {
+    if (!config || !peutModifierProjet()) {
       headerAction.style.display = "none";
       return;
     }
@@ -449,11 +705,49 @@
 
   updateHeaderAction("apercu");
 
+  /* ---------- Clôture/archivage manuel (US-20) ----------
+     Déclenchable par le responsable ou l'administrateur, indépendamment de l'état du Kanban (CA1).
+     Une fois clôturé, plus aucune réouverture (CA5, D-05) : le bouton disparaît définitivement. */
+  function appliquerEtatArchive() {
+    const projet = StockFlowData.projets.find((p) => p.id === PROJET_REF);
+    const archive = StockFlowData.estProjetArchive(projet);
+    document.getElementById("projet-archive-info").style.display = archive ? "flex" : "none";
+
+    const role = StockFlowRole.get();
+    const nom = StockFlowRole.nom();
+    const peutCloturer = !archive && (role === "administrateur" || StockFlowData.estResponsableProjet(PROJET_REF, nom));
+    document.getElementById("btn-cloturer-projet").style.display = peutCloturer ? "inline-flex" : "none";
+  }
+
+  document.getElementById("btn-cloturer-projet").addEventListener("click", () => {
+    if (!confirm("Clôturer/archiver ce projet ? Cette action est définitive et libère immédiatement son matériel réservé.")) return;
+    StockFlowData.cloturerProjet(PROJET_REF, StockFlowRole.nom());
+    const projet = StockFlowData.projets.find((p) => p.id === PROJET_REF);
+    const badge = document.getElementById("project-status-badge");
+    badge.className = `badge badge-${STATUT_TONE[projet.statut]}`;
+    badge.textContent = projet.statut;
+    appliquerEtatArchive();
+    renderReservations();
+    renderHistorique();
+    updateHeaderAction((document.querySelector(".tab[aria-selected=\"true\"]") || {}).getAttribute?.("data-tab") || "apercu");
+    if (typeof window.rafraichirKanbanLecture === "function") window.rafraichirKanbanLecture();
+  });
+
+  document.addEventListener("rolechange", () => {
+    renderMembres();
+    renderReservations();
+    appliquerEtatArchive();
+    const activeTab = document.querySelector(".tab[aria-selected=\"true\"]");
+    updateHeaderAction(activeTab ? activeTab.getAttribute("data-tab") : "apercu");
+  });
+
   /* ---------- Statut du projet dérivé du Kanban ----------
      En attente : toutes les tâches sont encore en "À faire".
      Actif       : au moins une tâche est sortie de "À faire".
      Clôturé     : toutes les tâches sont en "Terminé".
-     (Projet sans aucune tâche : "En attente" par défaut.) */
+     (Projet sans aucune tâche : "En attente" par défaut.)
+     D-05 : une fois clôturé (manuellement ou automatiquement), le projet ne peut plus être rouvert —
+     ce calcul est donc ignoré si le projet est déjà archivé, même si des tâches sont redéplacées. */
   function calculerStatutProjet(kanbanData) {
     const total = Object.values(kanbanData).reduce((n, col) => n + col.tasks.length, 0);
     if (total === 0) return "En attente";
@@ -466,20 +760,43 @@
   const STATUT_GROUPE = { "Actif": "En cours", "En attente": "En attente", "Clôturé": "Clôturés" };
 
   window.onKanbanChange = function (kanbanData) {
-    const statut = calculerStatutProjet(kanbanData);
+    const projet = StockFlowData.projets.find((p) => p.id === PROJET_REF);
     const badge = document.getElementById("project-status-badge");
+
+    if (projet && StockFlowData.estProjetArchive(projet)) {
+      badge.className = `badge badge-${STATUT_TONE[projet.statut]}`;
+      badge.textContent = projet.statut;
+      return;
+    }
+
+    const statut = calculerStatutProjet(kanbanData);
     badge.className = `badge badge-${STATUT_TONE[statut]}`;
     badge.textContent = statut;
 
-    const projet = StockFlowData.projets.find((p) => p.id === PROJET_REF);
     if (projet) {
-      projet.statut = statut;
-      projet.groupe = STATUT_GROUPE[statut];
+      if (statut === "Clôturé") {
+        StockFlowData.cloturerProjet(PROJET_REF, StockFlowRole.nom(), "Projet clôturé automatiquement (dernière tâche terminée).");
+        appliquerEtatArchive();
+        renderReservations();
+        renderHistorique();
+      } else {
+        projet.statut = statut;
+        projet.groupe = STATUT_GROUPE[statut];
+      }
     }
+  };
+
+  // US-31 CA2 : les modifications de tâches (ici, le déplacement, seule mutation réellement câblée
+  // sur ce Kanban de démonstration) sont tracées dans l'historique du projet.
+  window.onTacheDeplacee = function (task, fromCol, toCol) {
+    const LABELS = { "a-faire": "À faire", "en-cours": "En cours", "en-revue": "En revue", "termine": "Terminé" };
+    StockFlowData.ajouterHistoriqueProjet(PROJET_REF, StockFlowRole.nom(), "taches", `Tâche « ${task.title} » déplacée de ${LABELS[fromCol] || fromCol} vers ${LABELS[toCol] || toCol}.`);
+    renderHistorique();
   };
 
   // kanban.js a déjà fait son premier rendu avant que ce hook n'existe : on resynchronise ici.
   window.onKanbanChange(StockFlowData.kanbanParProjet[PROJET_REF]);
+  appliquerEtatArchive();
 </script>
 </body>
 </html>

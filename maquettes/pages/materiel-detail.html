@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fiche matériel — SUIVI</title>
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="../assets/icons/icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="stylesheet" href="../assets/css/variables.css" />
+<link rel="stylesheet" href="../assets/css/base.css" />
+<link rel="stylesheet" href="../assets/css/layout.css" />
+<link rel="stylesheet" href="../assets/css/components.css" />
+</head>
+<body data-root-prefix="../">
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+<div class="stack-banners">
+  <div class="pwa-banner" id="pwa-install-banner">
+    <div class="pwa-banner__text"><strong>Installer SUIVI</strong><span>Accède à l'app depuis ton écran d'accueil, même hors ligne.</span></div>
+    <button class="btn btn-secondary btn-sm" data-pwa-dismiss>Plus tard</button>
+    <button class="btn btn-primary btn-sm" data-pwa-install>Installer</button>
+  </div>
+  <div class="pwa-banner pwa-banner--offline" id="pwa-offline-banner">
+    <div class="pwa-banner__text"><strong>Mode hors ligne</strong><span>Les données affichées peuvent ne pas être à jour.</span></div>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#2563eb"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      SUIVI
+    </div>
+    <nav class="sidebar__nav" aria-label="Navigation principale">
+      <a class="navlink" href="dashboard.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="12" width="8" height="9" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg>
+        Tableau de bord
+      </a>
+      <a class="navlink" href="projets.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+        Projets
+      </a>
+      <a class="navlink" href="inventaire.html" aria-current="page">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
+        Inventaire
+      </a>
+      <a class="navlink" href="calendrier.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendrier
+      </a>
+      <a class="navlink" href="utilisateurs.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
+        Utilisateurs
+      </a>
+      <a class="navlink" href="parametres.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.6 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+        Paramètres
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="userchip">
+        <span class="userchip__avatar" id="role-avatar">AS</span>
+        <span class="userchip__meta">
+          <span class="userchip__name" id="role-name">Alexandre S.</span>
+          <select class="userchip__role-select" id="role-switcher" aria-label="Changer de role (demonstration)">
+            <option value="administrateur">Administrateur</option>
+            <option value="gestionnaire">Gestionnaire</option>
+            <option value="utilisateur">Utilisateur</option>
+          </select>
+        </span>
+      </div>
+      <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <a href="inventaire.html" class="hide-mobile" style="font-size:13px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+        <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Inventaire
+      </a>
+      <div class="topbar__spacer"></div>
+      <div class="topbar__actions">
+        <button class="iconbtn" data-theme-toggle data-theme-icon aria-label="Basculer le thème">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="content" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <div>
+          <div class="flex items-center gap-2" style="margin-bottom:6px;">
+            <h1 style="font-size:20px;" id="materiel-titre">Fiche matériel</h1>
+            <span class="badge badge-success" id="materiel-disponibilite-badge">Disponible</span>
+          </div>
+          <p id="materiel-meta"></p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary" id="btn-supprimer-materiel" style="display:none;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/></svg>
+            Supprimer
+          </button>
+          <button class="btn btn-primary" id="materiel-header-action" data-modal-open="modal-article" data-modal-title="Modifier la fiche">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            <span>Modifier</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="materiel-refuse-archive" class="alert" style="display:none;">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        Ce matériel a été supprimé de l'inventaire actif. Seul l'administrateur peut consulter sa fiche archivée (US-11 CA3).
+      </div>
+
+      <div id="materiel-contenu">
+      <div id="materiel-archive-info" class="alert" style="display:none; margin-bottom:16px;">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <span id="materiel-archive-detail"></span>
+      </div>
+
+      <div class="tabs" data-tabs>
+        <button class="tab" data-tab="apercu" aria-selected="true">Vue d'ensemble</button>
+        <button class="tab" data-tab="reservations" aria-selected="false">Réservations</button>
+        <button class="tab" data-tab="historique" aria-selected="false">Historique</button>
+        <button class="tab" data-tab="documents" aria-selected="false">Documents</button>
+      </div>
+
+      <div data-tab-panel="apercu" class="tab-panel is-active">
+        <div class="card card-pad">
+          <h2 style="font-size:15px; font-weight:700; margin-bottom:12px;">Informations</h2>
+          <div class="form-grid">
+            <div class="form-field">
+              <span class="field-label">Mode de suivi</span>
+              <p id="materiel-mode" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field">
+              <span class="field-label">N° de série</span>
+              <p id="materiel-serie" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field">
+              <span class="field-label">Référence constructeur</span>
+              <p id="materiel-ref-constructeur" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field">
+              <span class="field-label">N° d'inventaire</span>
+              <p id="materiel-numero-inventaire" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field col-gestion" id="materiel-quantite-champ">
+              <span class="field-label">Quantité</span>
+              <p id="materiel-quantite" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field col-gestion" id="materiel-seuil-champ">
+              <span class="field-label">Quantité minimale</span>
+              <p id="materiel-seuil" style="margin:0; font-size:14px;"></p>
+            </div>
+            <div class="form-field">
+              <span class="field-label">Catégorie</span>
+              <div id="materiel-categorie" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+            </div>
+            <div class="form-field span-2">
+              <span class="field-label">Créé le</span>
+              <p id="materiel-cree" style="margin:0; font-size:14px; color:var(--text-muted);"></p>
+            </div>
+          </div>
+
+          <div id="materiel-alerte-rupture" class="alert" style="display:none; margin-top:16px;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+            <div style="flex:1;">
+              <span id="materiel-alerte-texte">Cet article est en rupture.</span>
+              <div style="margin-top:8px;">
+                <button class="btn btn-secondary btn-sm" id="btn-signaler-rupture">Signaler au gestionnaire</button>
+                <button class="btn btn-primary btn-sm" id="btn-commander" data-modal-open="modal-commande" style="display:none;">Commander</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="materiel-demandes-en-attente" style="display:none; margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <div data-tab-panel="reservations" class="tab-panel">
+        <div class="card card-pad">
+          <div id="reservations-refuse" class="alert" style="display:none;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+            Tu n'as pas les droits pour consulter les réservations de ce matériel. Seuls l'administrateur et le gestionnaire y ont accès (US-25).
+          </div>
+          <div id="reservations-autorise">
+            <p class="text-muted" id="reservations-non-individualise" style="font-size:13px; display:none;">Ce matériel n'est pas individualisé : il ne peut pas être réservé (dictionnaire § Réservation).</p>
+            <div class="table-wrap" id="reservations-table-wrap">
+              <table class="table">
+                <thead><tr><th scope="col">Projet</th><th scope="col">Réservant</th><th scope="col">Début</th><th scope="col">Fin</th><th scope="col">État</th></tr></thead>
+                <tbody id="materiel-reservations-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-tab-panel="historique" class="tab-panel">
+        <div class="card card-pad">
+          <div id="historique-refuse" class="alert" style="display:none;">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+            Tu n'as pas les droits pour consulter l'historique de ce matériel. Seuls l'administrateur et le gestionnaire y ont accès (US-12).
+          </div>
+          <div id="historique-autorise" class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">Date</th><th scope="col">Auteur</th><th scope="col">Nature</th><th scope="col">Détail</th></tr></thead>
+              <tbody id="materiel-historique-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div data-tab-panel="documents" class="tab-panel">
+        <div class="card card-pad">
+          <p class="text-muted" style="font-size:13px; margin-bottom:12px;">Factures, bons de commande et autres justificatifs liés à ce matériel.</p>
+          <div id="documents-list"></div>
+        </div>
+      </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Modifier la fiche -->
+<div class="modal-scrim" id="modal-article">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-article-title">
+    <div class="modal__header">
+      <div>
+        <h2 data-modal-title id="modal-article-title">Modifier la fiche</h2>
+        <p>Le nom reste le seul champ obligatoire</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form data-mock-form id="form-modifier-article">
+      <div class="modal__body">
+        <div class="form-grid">
+          <div class="form-field span-2">
+            <label for="edit-designation">Nom *</label>
+            <input id="edit-designation" type="text" required />
+          </div>
+          <div class="form-field">
+            <label for="edit-mode">Mode de suivi</label>
+            <select id="edit-mode">
+              <option value="non_individualise">Non individualisé</option>
+              <option value="individualise">Individualisé</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="edit-numero-serie">N° de série</label>
+            <input id="edit-numero-serie" type="text" />
+          </div>
+          <div class="form-field">
+            <label for="edit-ref-constructeur">Référence constructeur</label>
+            <input id="edit-ref-constructeur" type="text" />
+          </div>
+          <div class="form-field">
+            <label for="edit-numero-inventaire">N° d'inventaire</label>
+            <input id="edit-numero-inventaire" type="text" />
+          </div>
+          <div class="form-field" id="edit-champ-quantite">
+            <label for="edit-quantite">Quantité en stock</label>
+            <input id="edit-quantite" type="number" min="0" />
+          </div>
+          <div class="form-field" id="edit-champ-seuil">
+            <label for="edit-seuil">Quantité minimale</label>
+            <input id="edit-seuil" type="number" min="0" />
+          </div>
+          <div class="form-field">
+            <label for="edit-categorie">Catégorie</label>
+            <select id="edit-categorie"></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Ajouter un document -->
+<div class="modal-scrim" id="modal-document">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-document-title">
+    <div class="modal__header">
+      <div>
+        <h2 id="modal-document-title">Ajouter un document</h2>
+        <p>Facture, bon de commande ou autre justificatif</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form id="form-ajouter-document">
+      <div class="modal__body">
+        <div class="form-field">
+          <label for="document-fichier">Fichier</label>
+          <input id="document-fichier" type="file" required />
+        </div>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Commander (mock — aucun fournisseur réellement relié) -->
+<div class="modal-scrim" id="modal-commande">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-commande-title">
+    <div class="modal__header">
+      <div>
+        <h2 id="modal-commande-title">Commander</h2>
+        <p>Réapprovisionnement auprès du fournisseur habituel</p>
+      </div>
+      <button class="iconbtn" data-modal-close aria-label="Fermer">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <form id="form-commander">
+      <div class="modal__body">
+        <div class="form-field">
+          <label for="commande-quantite">Quantité à commander</label>
+          <input id="commande-quantite" type="number" min="1" value="50" required />
+        </div>
+      </div>
+      <div class="modal__footer">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
+        <button type="submit" class="btn btn-primary">Valider la commande</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/role.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script src="../assets/js/modal.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script src="../assets/js/pwa.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const REF = StockFlowData.inventaire.find((m) => m.ref === params.get("ref")) ? params.get("ref") : StockFlowData.inventaire[0].ref;
+  const modeLabel = { individualise: "Individualisé", non_individualise: "Non individualisé" };
+
+  function materiel() {
+    return StockFlowData.inventaire.find((m) => m.ref === REF);
+  }
+
+  // US-11 CA3 : une fiche archivée reste consultable par l'administrateur uniquement, même en
+  // visant directement son URL. US-10 CA1/CA2 : la suppression archive et conserve la trace.
+  function appliquerAccesMateriel() {
+    const m = materiel();
+    const role = StockFlowRole.get();
+    const archive = m.statut === "Archivé";
+    const accesRefuse = archive && role !== "administrateur";
+
+    document.getElementById("materiel-refuse-archive").style.display = accesRefuse ? "flex" : "none";
+    document.getElementById("materiel-contenu").style.display = accesRefuse ? "none" : "block";
+
+    const infoEl = document.getElementById("materiel-archive-info");
+    infoEl.style.display = archive ? "flex" : "none";
+    if (archive) {
+      document.getElementById("materiel-archive-detail").textContent =
+        `Matériel supprimé le ${m.suppression.date} par ${m.suppression.auteur}. Aucune restauration possible (US-10 CA1).`;
+    }
+
+    const peutGerer = StockFlowRole.peut("materiel:creer");
+    document.getElementById("btn-supprimer-materiel").style.display = (peutGerer && !archive) ? "inline-flex" : "none";
+
+    return !accesRefuse;
+  }
+
+  const dispoTone = { disponible: "success", a_commander: "warning", rupture: "danger", reserve: "info" };
+  const dispoLabel = { disponible: "Disponible", a_commander: "À commander", rupture: "Rupture", reserve: "Réservé" };
+
+  function renderApercu() {
+    const m = materiel();
+    document.title = `${m.designation} — SUIVI`;
+    document.getElementById("materiel-titre").textContent = m.designation;
+    document.getElementById("materiel-meta").textContent = `${m.ref} · ${modeLabel[m.modeSuivi]}`;
+    document.getElementById("materiel-mode").textContent = modeLabel[m.modeSuivi];
+    document.getElementById("materiel-serie").textContent = m.numeroSerie || "—";
+    document.getElementById("materiel-ref-constructeur").textContent = m.referenceConstructeur || "—";
+    document.getElementById("materiel-numero-inventaire").textContent = m.numeroInventaire || "—";
+
+    // Quantité / quantité minimale : réservées à l'administrateur et au gestionnaire.
+    const peutVoirGestion = StockFlowRole.peut("materiel:creer");
+    const aQuantite = m.quantite !== null && m.quantite !== undefined;
+    document.getElementById("materiel-quantite-champ").style.display = (peutVoirGestion && aQuantite) ? "flex" : "none";
+    document.getElementById("materiel-seuil-champ").style.display = (peutVoirGestion && aQuantite) ? "flex" : "none";
+    if (aQuantite) {
+      document.getElementById("materiel-quantite").textContent = m.quantite;
+      document.getElementById("materiel-seuil").textContent = m.seuilAlerte;
+    }
+
+    const dispo = StockFlowData.disponibilite(m, StockFlowRole.get());
+    document.getElementById("materiel-disponibilite-badge").className = `badge badge-${dispoTone[dispo]}`;
+    document.getElementById("materiel-disponibilite-badge").textContent = dispoLabel[dispo];
+
+    document.getElementById("materiel-categorie").innerHTML = `<span class="badge badge-neutral">${m.categorie}</span>`;
+    document.getElementById("materiel-cree").textContent = `${m.creeLe} par ${m.creePar}`;
+
+    renderAlerteRupture(dispo);
+  }
+
+  /* ---------- Rupture : signalement (utilisateur) + commande (admin/gestionnaire) ----------
+     Écart assumé par rapport au dictionnaire de données, à valider avec le client. */
+  function demandesEnAttente() {
+    return StockFlowData.notifications.filter((n) => n.ref === REF && n.statut === "nouvelle");
+  }
+
+  function renderAlerteRupture(dispo) {
+    const alerte = document.getElementById("materiel-alerte-rupture");
+    const btnSignaler = document.getElementById("btn-signaler-rupture");
+    const btnCommander = document.getElementById("btn-commander");
+    const zoneDemandes = document.getElementById("materiel-demandes-en-attente");
+    const role = StockFlowRole.get();
+
+    if (dispo !== "rupture") {
+      alerte.style.display = "none";
+      zoneDemandes.style.display = "none";
+      return;
+    }
+
+    alerte.style.display = "flex";
+    document.getElementById("materiel-alerte-texte").textContent = "Cet article est en rupture.";
+
+    // Utilisateur : peut signaler la rupture au gestionnaire.
+    const dejaSignale = StockFlowData.notifications.some((n) => n.ref === REF && n.demandePar === StockFlowRole.nom() && n.statut === "nouvelle");
+    btnSignaler.style.display = role === "utilisateur" ? "inline-flex" : "none";
+    btnSignaler.disabled = dejaSignale;
+    btnSignaler.textContent = dejaSignale ? "Demande envoyée" : "Signaler au gestionnaire";
+
+    // Admin/gestionnaire : peuvent commander directement.
+    btnCommander.style.display = StockFlowRole.peut("materiel:creer") ? "inline-flex" : "none";
+
+    const demandes = demandesEnAttente();
+    if (StockFlowRole.peut("materiel:creer") && demandes.length) {
+      zoneDemandes.style.display = "block";
+      zoneDemandes.innerHTML = `<p class="text-muted" style="font-size:13px;">${demandes.length} demande${demandes.length > 1 ? "s" : ""} de réapprovisionnement en attente (dont ${demandes.map((d) => d.demandePar).join(", ")}).</p>`;
+    } else {
+      zoneDemandes.style.display = "none";
+    }
+  }
+
+  document.getElementById("btn-signaler-rupture").addEventListener("click", () => {
+    StockFlowData.notifications.push({
+      id: `NOTIF-${Date.now()}`,
+      ref: REF,
+      demandePar: StockFlowRole.nom(),
+      date: "aujourd'hui",
+      statut: "nouvelle",
+    });
+    renderAlerteRupture(StockFlowData.disponibilite(materiel(), StockFlowRole.get()));
+  });
+
+  document.getElementById("form-commander").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const quantite = Number(document.getElementById("commande-quantite").value) || 0;
+    StockFlowData.commandes[REF] = StockFlowData.commandes[REF] || [];
+    StockFlowData.commandes[REF].push({ quantite, date: "aujourd'hui", demandePar: StockFlowRole.nom() });
+    // La commande traite les demandes de réapprovisionnement en attente pour cet article.
+    demandesEnAttente().forEach((n) => (n.statut = "traitee"));
+    document.getElementById("modal-commande").classList.remove("is-open");
+    alert(`Commande de ${quantite} unité(s) enregistrée (maquette — aucun fournisseur réellement relié).`);
+    renderAlerteRupture(StockFlowData.disponibilite(materiel(), StockFlowRole.get()));
+  });
+
+  /* ---------- Historique (US-12) — réservé admin/gestionnaire ---------- */
+  function renderHistorique() {
+    const autorise = StockFlowRole.peut("materiel:historique");
+    document.getElementById("historique-refuse").style.display = autorise ? "none" : "flex";
+    document.getElementById("historique-autorise").style.display = autorise ? "block" : "none";
+    if (!autorise) return;
+    const evenements = StockFlowData.historiqueMateriel[REF] || [];
+    document.getElementById("materiel-historique-body").innerHTML = evenements.map((e) => `
+      <tr>
+        <td data-label="Date" class="cell-muted">${e.date}</td>
+        <td data-label="Auteur">${e.auteur}</td>
+        <td data-label="Nature"><span class="badge badge-neutral">${{ creation: "Création", modification: "Modification", suppression: "Suppression" }[e.nature] || e.nature}</span></td>
+        <td data-label="Détail" class="cell-muted">${e.detail}</td>
+      </tr>`).join("") || `<tr><td colspan="4" class="cell-muted" style="text-align:center; padding:16px;">Aucun événement.</td></tr>`;
+  }
+
+  /* ---------- Réservations (US-25) — réservé admin/gestionnaire, individualisé uniquement ---------- */
+  const ETAT_RESA_LABEL = { planifiee: "Planifiée", en_cours: "En cours", passee: "Passée", annulee: "Annulée" };
+  const ETAT_RESA_TONE = { planifiee: "info", en_cours: "success", passee: "neutral", annulee: "danger" };
+  function formatDateHeure(iso) {
+    if (!iso) return "—";
+    return new Date(iso).toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+  function renderReservationsMateriel() {
+    const m = materiel();
+    const role = StockFlowRole.get();
+    const autorise = StockFlowRole.peut("materiel:historique");
+    document.getElementById("reservations-refuse").style.display = autorise ? "none" : "flex";
+    document.getElementById("reservations-autorise").style.display = autorise ? "block" : "none";
+    if (!autorise) return;
+
+    const estIndividualise = m.modeSuivi === "individualise";
+    document.getElementById("reservations-non-individualise").style.display = estIndividualise ? "none" : "block";
+    document.getElementById("reservations-table-wrap").style.display = estIndividualise ? "block" : "none";
+    if (!estIndividualise) return;
+
+    // US-25 CA3 : le gestionnaire voit l'historique des réservations mais jamais le projet concerné.
+    const resas = StockFlowData.reservationsDuMateriel(REF).slice().sort((a, b) => new Date(b.debut) - new Date(a.debut));
+    document.getElementById("materiel-reservations-body").innerHTML = resas.map((r) => {
+      const projet = StockFlowData.projets.find((p) => p.id === r.projetId);
+      const nomProjet = role === "gestionnaire" ? "Réservé" : (projet ? projet.nom : "—");
+      const etat = StockFlowData.etatReservation(r);
+      return `
+        <tr>
+          <td data-label="Projet">${nomProjet}</td>
+          <td data-label="Réservant">${r.reservantNom}</td>
+          <td data-label="Début" class="cell-muted">${formatDateHeure(r.debut)}</td>
+          <td data-label="Fin" class="cell-muted">${formatDateHeure(r.fin)}</td>
+          <td data-label="État"><span class="badge badge-${ETAT_RESA_TONE[etat]}">${ETAT_RESA_LABEL[etat]}</span></td>
+        </tr>`;
+    }).join("") || `<tr><td colspan="5" class="cell-muted" style="text-align:center; padding:24px;">Aucune réservation pour ce matériel.</td></tr>`;
+  }
+
+  /* ---------- Documents / pièces jointes (US-33) ---------- */
+  function renderDocuments() {
+    const peutGerer = StockFlowRole.peut("materiel:piece-jointe:gerer");
+    const pieces = StockFlowData.piecesJointesMateriel[REF] || [];
+    const addBtn = peutGerer
+      ? `<button class="btn btn-secondary btn-sm" data-modal-open="modal-document">Ajouter un document</button>`
+      : "";
+    const rows = pieces.map((p, idx) => `
+      <div class="member-row">
+        <span class="member-row__avatar">
+          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+        </span>
+        <span class="member-row__meta">
+          <span class="member-row__name">${p.nom}</span>
+          <span class="member-row__email">Ajouté le ${p.dateAjout} par ${p.auteur}</span>
+        </span>
+        <button class="btn btn-secondary btn-sm" data-telecharger-piece style="margin-left:12px;">Télécharger</button>
+        ${peutGerer ? `<button class="btn btn-danger btn-sm" data-retirer-piece="${idx}" style="margin-left:8px;">Retirer</button>` : ""}
+      </div>`).join("") || `<p class="text-muted" style="font-size:13px;">Aucun document joint.</p>`;
+
+    document.getElementById("documents-list").innerHTML = `
+      <div class="flex items-center" style="justify-content:flex-end; margin-bottom:12px;">${addBtn}</div>
+      ${rows}
+    `;
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-telecharger-piece]")) {
+      alert("Téléchargement — non disponible dans cette maquette (aucun fichier réellement stocké).");
+    }
+    const retirer = e.target.closest("[data-retirer-piece]");
+    if (retirer) {
+      const idx = Number(retirer.getAttribute("data-retirer-piece"));
+      StockFlowData.piecesJointesMateriel[REF].splice(idx, 1);
+      renderDocuments();
+    }
+  });
+
+  document.getElementById("form-ajouter-document").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = document.getElementById("document-fichier");
+    const fichier = input.files[0];
+    if (!fichier) return;
+    StockFlowData.piecesJointesMateriel[REF] = StockFlowData.piecesJointesMateriel[REF] || [];
+    StockFlowData.piecesJointesMateriel[REF].push({
+      nom: fichier.name,
+      dateAjout: "aujourd'hui",
+      auteur: StockFlowRole.nom(),
+    });
+    input.value = "";
+    document.getElementById("modal-document").classList.remove("is-open");
+    renderDocuments();
+  });
+
+  /* ---------- Formulaire de modification ---------- */
+  // Une seule catégorie par article (champ obligatoire unique).
+  function peupleCategoriesEdition() {
+    const m = materiel();
+    document.getElementById("edit-categorie").innerHTML =
+      StockFlowData.categoriesMateriel.map((c) => `<option value="${c}" ${c === m.categorie ? "selected" : ""}>${c}</option>`).join("");
+  }
+  function appliquerVisibiliteQuantiteEdition() {
+    const estIndividualise = document.getElementById("edit-mode").value === "individualise";
+    document.getElementById("edit-champ-quantite").style.display = estIndividualise ? "none" : "flex";
+    document.getElementById("edit-champ-seuil").style.display = estIndividualise ? "none" : "flex";
+  }
+  document.getElementById("edit-mode").addEventListener("change", appliquerVisibiliteQuantiteEdition);
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[data-modal-open="modal-article"]')) {
+      const m = materiel();
+      document.getElementById("edit-designation").value = m.designation;
+      document.getElementById("edit-mode").value = m.modeSuivi;
+      document.getElementById("edit-numero-serie").value = m.numeroSerie || "";
+      document.getElementById("edit-ref-constructeur").value = m.referenceConstructeur || "";
+      document.getElementById("edit-numero-inventaire").value = m.numeroInventaire || "";
+      document.getElementById("edit-quantite").value = m.quantite ?? "";
+      document.getElementById("edit-seuil").value = m.seuilAlerte ?? "";
+      peupleCategoriesEdition();
+      appliquerVisibiliteQuantiteEdition();
+    }
+  });
+  document.getElementById("form-modifier-article").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const m = materiel();
+    m.designation = document.getElementById("edit-designation").value || m.designation;
+    m.modeSuivi = document.getElementById("edit-mode").value;
+    m.numeroSerie = document.getElementById("edit-numero-serie").value || null;
+    m.referenceConstructeur = document.getElementById("edit-ref-constructeur").value || null;
+    m.numeroInventaire = document.getElementById("edit-numero-inventaire").value || null;
+    if (m.modeSuivi === "individualise") {
+      m.quantite = null;
+      m.seuilAlerte = null;
+    } else {
+      const q = document.getElementById("edit-quantite").value;
+      const s = document.getElementById("edit-seuil").value;
+      m.quantite = q === "" ? 0 : Number(q);
+      m.seuilAlerte = s === "" ? 0 : Number(s);
+    }
+    m.categorie = document.getElementById("edit-categorie").value;
+
+    StockFlowData.historiqueMateriel[REF] = StockFlowData.historiqueMateriel[REF] || [];
+    StockFlowData.historiqueMateriel[REF].push({ date: "aujourd'hui", auteur: StockFlowRole.nom(), nature: "modification", detail: "Fiche modifiée." });
+
+    renderApercu();
+    renderHistorique();
+  });
+
+  /* ---------- Bouton d'en-tête contextuel ---------- */
+  const headerAction = document.getElementById("materiel-header-action");
+  function updateHeaderAction(tab) {
+    if (tab === "apercu" && materiel().statut !== "Archivé") {
+      headerAction.style.display = StockFlowRole.peut("materiel:modifier") ? "inline-flex" : "none";
+      headerAction.setAttribute("data-modal-open", "modal-article");
+      headerAction.setAttribute("data-modal-title", "Modifier la fiche");
+      headerAction.querySelector("span").textContent = "Modifier";
+    } else {
+      headerAction.style.display = "none";
+    }
+  }
+  document.addEventListener("click", (e) => {
+    const tab = e.target.closest("[data-tab]");
+    if (tab) updateHeaderAction(tab.getAttribute("data-tab"));
+  });
+
+  // US-10 : suppression = archivage irréversible, jamais de suppression physique ni de restauration.
+  document.getElementById("btn-supprimer-materiel").addEventListener("click", () => {
+    const m = materiel();
+    if (!confirm(`Supprimer « ${m.designation} » de l'inventaire actif ? La fiche sera archivée (consultable par l'administrateur uniquement), ses réservations en cours/futures annulées et les membres des projets concernés notifiés.`)) return;
+    StockFlowData.supprimerMateriel(REF, StockFlowRole.nom());
+    StockFlowData.historiqueMateriel[REF] = StockFlowData.historiqueMateriel[REF] || [];
+    StockFlowData.historiqueMateriel[REF].push({ date: "aujourd'hui", auteur: StockFlowRole.nom(), nature: "suppression", detail: "Matériel supprimé (archivé)." });
+    renderTout();
+  });
+
+  function renderTout() {
+    appliquerAccesMateriel();
+    renderApercu();
+    renderHistorique();
+    renderReservationsMateriel();
+    renderDocuments();
+    updateHeaderAction("apercu");
+  }
+  document.addEventListener("rolechange", renderTout);
+  renderTout();
+</script>
+</body>
+</html>

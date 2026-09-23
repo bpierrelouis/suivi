@@ -1,4 +1,4 @@
-const CACHE_NAME = "SUIVI-shell-v1";
+const CACHE_NAME = "SUIVI-shell-v2";
 
 const APP_SHELL = [
   "./index.html",
@@ -9,17 +9,23 @@ const APP_SHELL = [
   "./assets/css/layout.css",
   "./assets/css/components.css",
   "./assets/js/theme.js",
+  "./assets/js/role.js",
   "./assets/js/nav.js",
   "./assets/js/data.js",
   "./assets/js/modal.js",
   "./assets/js/kanban.js",
+  "./assets/js/markdown.js",
+  "./assets/js/notifications.js",
   "./assets/js/pwa.js",
   "./assets/icons/icon.svg",
   "./pages/dashboard.html",
   "./pages/projets.html",
   "./pages/projet-detail.html",
   "./pages/inventaire.html",
+  "./pages/materiel-detail.html",
+  "./pages/calendrier.html",
   "./pages/utilisateurs.html",
+  "./pages/notifications.html",
   "./pages/parametres.html",
 ];
 

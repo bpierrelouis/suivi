@@ -47,6 +47,10 @@
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
         Inventaire
       </a>
+      <a class="navlink" href="calendrier.html">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Calendrier
+      </a>
       <a class="navlink" href="utilisateurs.html">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
         Utilisateurs
@@ -57,13 +61,17 @@
       </a>
     </nav>
     <div class="sidebar__footer">
-      <button class="userchip">
-        <span class="userchip__avatar">AS</span>
+      <div class="userchip">
+        <span class="userchip__avatar" id="role-avatar">AS</span>
         <span class="userchip__meta">
-          <span class="userchip__name">Alexandre S.</span>
-          <span class="userchip__role">Administrateur</span>
+          <span class="userchip__name" id="role-name">Alexandre S.</span>
+          <select class="userchip__role-select" id="role-switcher" aria-label="Changer de role (demonstration)">
+            <option value="administrateur">Administrateur</option>
+            <option value="gestionnaire">Gestionnaire</option>
+            <option value="utilisateur">Utilisateur</option>
+          </select>
         </span>
-      </button>
+      </div>
       <button class="navlink" style="margin-top:4px; width:100%; background:none; border:none; cursor:pointer;" data-logout>
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
         Déconnexion
@@ -100,7 +108,7 @@
         </div>
       </div>
 
-      <div class="card card-pad" style="max-width:640px;">
+      <div class="card card-pad" style="margin-bottom:20px; max-width:640px;">
         <h2 style="font-size:15px; font-weight:700; margin-bottom:16px;">Profil</h2>
         <form data-mock-form style="display:flex; flex-direction:column; gap:16px;">
           <div class="form-grid">
@@ -118,13 +126,99 @@
           </div>
         </form>
       </div>
+
+      <div id="categories-refuse" class="alert" style="display:none; max-width:640px;">
+        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        Tu n'as pas les droits pour gérer les catégories. Seuls l'administrateur et le gestionnaire y ont accès (US-08).
+      </div>
+
+      <div class="card card-pad" id="categories-carte" style="max-width:640px; display:none;">
+        <h2 style="font-size:15px; font-weight:700; margin-bottom:4px;">Catégories de matériel</h2>
+        <p class="text-muted" style="font-size:13px; margin-bottom:16px;">Une catégorie utilisée par au moins un article actif ne peut pas être supprimée.</p>
+        <div id="categories-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;"></div>
+        <form id="form-ajouter-categorie" style="display:flex; gap:8px;">
+          <input id="nouvelle-categorie" type="text" placeholder="Nouvelle catégorie" style="flex:1;" required />
+          <button type="submit" class="btn btn-secondary">Ajouter</button>
+        </form>
+      </div>
+
+      <div class="card card-pad" style="margin-top:20px; max-width:640px;">
+        <h2 style="font-size:15px; font-weight:700; margin-bottom:4px;">Données de démonstration</h2>
+        <p class="text-muted" style="font-size:13px; margin-bottom:16px;">Les actions faites dans cette maquette (réservations, clôtures, suppressions…) sont conservées entre les pages tant que tu ne réinitialises pas.</p>
+        <button class="btn btn-secondary" id="btn-reinitialiser-donnees">Réinitialiser les données de démonstration</button>
+      </div>
     </main>
   </div>
 </div>
 
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/role.js"></script>
+<script src="../assets/js/data.js"></script>
 <script src="../assets/js/nav.js"></script>
 <script src="../assets/js/modal.js"></script>
+<script src="../assets/js/notifications.js"></script>
 <script src="../assets/js/pwa.js"></script>
+<script>
+  // US-08 : gestion des catégories de matériel, réservée à l'administrateur et au gestionnaire.
+  // CA3 (dictionnaire) : supprimer une catégorie ne doit pas affecter les matériels actifs qui
+  // l'utilisent — ici, bloquée tant qu'au moins un article actif la référence, plutôt que de les
+  // détacher silencieusement (categorie est un champ unique depuis le Sprint 3, écart assumé avec
+  // le dictionnaire ; un simple retrait d'association n'a donc pas de sens ici).
+  function appliquerDroitsCategories() {
+    const autorise = StockFlowRole.peut("categorie:gerer");
+    document.getElementById("categories-refuse").style.display = autorise ? "none" : "flex";
+    document.getElementById("categories-carte").style.display = autorise ? "block" : "none";
+    return autorise;
+  }
+
+  function nombreArticlesActifs(categorie) {
+    return StockFlowData.inventaire.filter((i) => i.statut === "Actif" && i.categorie === categorie).length;
+  }
+
+  function renderCategories() {
+    if (!appliquerDroitsCategories()) return;
+    document.getElementById("categories-list").innerHTML = StockFlowData.categoriesMateriel.map((c) => {
+      const n = nombreArticlesActifs(c);
+      return `
+        <div class="member-row">
+          <span class="member-row__meta">
+            <span class="member-row__name">${c}</span><br>
+            <span class="member-row__email">${n} article${n > 1 ? "s" : ""} actif${n > 1 ? "s" : ""}</span>
+          </span>
+          <button class="btn btn-secondary btn-sm" data-supprimer-categorie="${c}" ${n > 0 ? `disabled title="Catégorie utilisée par ${n} article(s) actif(s)"` : ""}>Supprimer</button>
+        </div>`;
+    }).join("");
+  }
+
+  document.getElementById("form-ajouter-categorie").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = document.getElementById("nouvelle-categorie");
+    const nom = input.value.trim();
+    if (!nom || StockFlowData.categoriesMateriel.includes(nom)) return;
+    StockFlowData.categoriesMateriel.push(nom);
+    input.value = "";
+    renderCategories();
+  });
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-supprimer-categorie]");
+    if (btn && !btn.disabled) {
+      const nom = btn.getAttribute("data-supprimer-categorie");
+      if (confirm(`Supprimer la catégorie « ${nom} » ?`)) {
+        StockFlowData.categoriesMateriel = StockFlowData.categoriesMateriel.filter((c) => c !== nom);
+        renderCategories();
+      }
+    }
+  });
+
+  renderCategories();
+  document.addEventListener("rolechange", renderCategories);
+
+  document.getElementById("btn-reinitialiser-donnees").addEventListener("click", () => {
+    if (confirm("Réinitialiser toutes les données de démonstration (projets, inventaire, réservations, notifications…) ? Cette action est irréversible.")) {
+      StockFlowData.reinitialiser();
+    }
+  });
+</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Utilisateurs — SUIVI</title>
+<title>Calendrier — SUIVI</title>
 <meta name="theme-color" content="#0f172a" />
 <link rel="manifest" href="../manifest.webmanifest" />
 <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml" />
@@ -47,11 +47,11 @@
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>
         Inventaire
       </a>
-      <a class="navlink" href="calendrier.html">
+      <a class="navlink" href="calendrier.html" aria-current="page">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         Calendrier
       </a>
-      <a class="navlink" href="utilisateurs.html" aria-current="page">
+      <a class="navlink" href="utilisateurs.html">
         <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.3"/><path d="M15.8 14.2c2.7.4 4.7 2.3 4.7 5.3"/></svg>
         Utilisateurs
       </a>
@@ -81,10 +81,6 @@
 
   <div class="main">
     <header class="topbar">
-      <div class="searchbox hide-mobile">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" id="search-users" aria-label="Rechercher un utilisateur" placeholder="Rechercher un utilisateur…" />
-      </div>
       <div class="topbar__spacer"></div>
       <div class="topbar__actions">
         <button class="iconbtn" data-theme-toggle data-theme-icon aria-label="Basculer le thème">
@@ -94,75 +90,30 @@
     </header>
 
     <main class="content" id="main-content" tabindex="-1">
-      <div id="utilisateurs-refuse" class="alert" style="display:none;">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-        Tu n'as pas les droits pour gérer les utilisateurs. Seul l'administrateur y a accès (US-03).
-      </div>
-
-      <div id="utilisateurs-contenu">
       <div class="page-header">
         <div>
-          <h1>Utilisateurs</h1>
-          <p>Gère les comptes et les rôles d'accès</p>
+          <h1>Calendrier de disponibilité</h1>
+          <p id="calendrier-semaine-label">Semaine du —</p>
         </div>
-        <button class="btn btn-primary" data-modal-open="modal-user" data-modal-title="Nouvel utilisateur">
-          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          Nouvel utilisateur
-        </button>
+        <select class="field-select" id="calendrier-materiel" aria-label="Matériel"></select>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__filters">
+          <button class="btn btn-secondary btn-sm" id="btn-semaine-precedente">← Semaine précédente</button>
+          <button class="btn btn-secondary btn-sm" id="btn-semaine-actuelle">Aujourd'hui</button>
+          <button class="btn btn-secondary btn-sm" id="btn-semaine-suivante">Semaine suivante →</button>
+        </div>
       </div>
 
       <div class="card card-pad">
-        <div class="table-wrap">
-          <table class="table">
-            <thead><tr><th scope="col">Nom</th><th scope="col">Email</th><th scope="col">Rôle</th><th scope="col">Statut</th><th scope="col"></th></tr></thead>
-            <tbody id="users-body"></tbody>
-          </table>
-        </div>
-      </div>
+        <p class="text-muted" style="font-size:13px; margin-bottom:12px;">
+          Vue en lecture seule (US-26 CA4) — pour réserver ce matériel, rends-toi sur l'onglet « Réservations » du projet concerné.
+        </p>
+        <p class="text-muted" id="calendrier-vide" style="font-size:13px; display:none;">Aucun matériel individualisé actif à afficher.</p>
+        <div id="calendrier-grille" class="calendrier-grille"></div>
       </div>
     </main>
-  </div>
-</div>
-
-<!-- Modal: Nouvel utilisateur -->
-<div class="modal-scrim" id="modal-user">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-user-title">
-    <div class="modal__header">
-      <div>
-        <h2 data-modal-title id="modal-user-title">Nouvel utilisateur</h2>
-        <p>Crée un accès et attribue un rôle</p>
-      </div>
-      <button class="iconbtn" data-modal-close aria-label="Fermer">
-        <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <form data-mock-form>
-      <div class="modal__body">
-        <div class="form-grid">
-          <div class="form-field span-2">
-            <label for="user-nom">Nom complet</label>
-            <input id="user-nom" type="text" placeholder="Prénom Nom" required />
-          </div>
-          <div class="form-field span-2">
-            <label for="user-email">Email</label>
-            <input id="user-email" type="email" placeholder="prenom.nom@labo.fr" required />
-          </div>
-          <div class="form-field">
-            <label for="user-role">Rôle</label>
-            <select id="user-role"><option>Utilisateur</option><option>Gestionnaire</option><option>Administrateur</option></select>
-          </div>
-          <div class="form-field">
-            <label for="user-statut">Statut</label>
-            <select id="user-statut"><option>Actif</option><option>Suspendu</option></select>
-          </div>
-        </div>
-      </div>
-      <div class="modal__footer">
-        <span class="spacer"></span>
-        <button type="button" class="btn btn-secondary" data-modal-close>Annuler</button>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-      </div>
-    </form>
   </div>
 </div>
 
@@ -174,32 +125,97 @@
 <script src="../assets/js/notifications.js"></script>
 <script src="../assets/js/pwa.js"></script>
 <script>
-  const roleTone = { "Administrateur": "info", "Gestionnaire": "success", "Utilisateur": "neutral" };
-
-  // US-03 CA1 : seul l'administrateur gère les utilisateurs.
-  function appliquerDroitsUtilisateurs() {
-    const autorise = StockFlowRole.get() === "administrateur";
-    document.getElementById("utilisateurs-refuse").style.display = autorise ? "none" : "flex";
-    document.getElementById("utilisateurs-contenu").style.display = autorise ? "block" : "none";
-    return autorise;
+  // US-26 — calendrier de disponibilité. Écarts assumés (Q-16 non tranchée) : une vue "1 matériel à
+  // la fois" par semaine, navigable ; tous les rôles peuvent consulter (comme l'inventaire, US-05) ;
+  // seul le nom du projet est masqué ("Réservé") selon les mêmes règles que partout ailleurs
+  // (StockFlowData.projetVisible), pas le matériel ni le créneau lui-même.
+  function materielsIndividualisesActifs() {
+    return StockFlowData.inventaire.filter((i) => i.modeSuivi === "individualise" && i.statut === "Actif");
   }
 
-  function renderUsers() {
-    if (!appliquerDroitsUtilisateurs()) return;
-    const q = document.getElementById("search-users").value.toLowerCase();
-    const rows = StockFlowData.utilisateurs.filter((u) => u.nom.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
-    document.getElementById("users-body").innerHTML = rows.map((u) => `
-      <tr>
-        <td data-label="Nom" style="font-weight:600;">${u.nom}</td>
-        <td data-label="Email" class="cell-muted">${u.email}</td>
-        <td data-label="Rôle"><span class="badge badge-${roleTone[u.role]}">${u.role}</span></td>
-        <td data-label="Statut">${u.statut === "Actif" ? '<span class="badge badge-success">Actif</span>' : '<span class="badge badge-danger">Suspendu</span>'}</td>
-        <td class="cell-actions"><button class="btn btn-secondary btn-sm" data-modal-open="modal-user" data-modal-title="Modifier l'utilisateur">Modifier</button></td>
-      </tr>`).join("") || `<tr><td colspan="5" class="cell-muted" style="text-align:center; padding:24px;">Aucun utilisateur ne correspond à la recherche.</td></tr>`;
+  function peupleSelectMateriel() {
+    const sel = document.getElementById("calendrier-materiel");
+    const valeurPrecedente = sel.value;
+    const materiels = materielsIndividualisesActifs();
+    sel.innerHTML = materiels.map((m) => `<option value="${m.ref}">${m.designation} (${m.ref})</option>`).join("");
+    document.getElementById("calendrier-vide").style.display = materiels.length ? "none" : "block";
+    if (materiels.some((m) => m.ref === valeurPrecedente)) sel.value = valeurPrecedente;
   }
-  document.getElementById("search-users").addEventListener("input", renderUsers);
-  renderUsers();
-  document.addEventListener("rolechange", renderUsers);
+
+  function lundiDeLaSemaine(date) {
+    const d = new Date(date);
+    const jour = d.getDay();
+    d.setDate(d.getDate() + (jour === 0 ? -6 : 1) - jour);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+  let semaineReference = lundiDeLaSemaine(new Date());
+
+  function joursDeLaSemaine() {
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(semaineReference);
+      d.setDate(d.getDate() + i);
+      return d;
+    });
+  }
+
+  function nomProjetPourAffichage(projetId) {
+    const projet = StockFlowData.projets.find((p) => p.id === projetId);
+    if (!projet) return "—";
+    return StockFlowData.projetVisible(projet, StockFlowRole.get(), StockFlowRole.nom()) ? projet.nom : "Réservé";
+  }
+
+  function renderCalendrier() {
+    const jours = joursDeLaSemaine();
+    document.getElementById("calendrier-semaine-label").textContent =
+      `Semaine du ${jours[0].toLocaleDateString("fr-FR")} au ${jours[6].toLocaleDateString("fr-FR")}`;
+
+    const ref = document.getElementById("calendrier-materiel").value;
+    const grille = document.getElementById("calendrier-grille");
+    if (!ref) { grille.innerHTML = ""; return; }
+
+    // US-26 CA3 : seules les réservations actives (non annulées) bloquent un créneau.
+    const resasActives = StockFlowData.reservationsDuMateriel(ref).filter((r) => r.statut === "active");
+
+    grille.innerHTML = jours.map((jour) => {
+      const finJour = new Date(jour);
+      finJour.setDate(finJour.getDate() + 1);
+      const creneaux = resasActives
+        .filter((r) => new Date(r.debut) < finJour && new Date(r.fin) > jour)
+        .sort((a, b) => new Date(a.debut) - new Date(b.debut));
+
+      const blocs = creneaux.map((r) => {
+        const hDebut = new Date(r.debut).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        const hFin = new Date(r.fin).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        return `<div class="calendrier-creneau"><strong>${hDebut}–${hFin}</strong><br>${nomProjetPourAffichage(r.projetId)}</div>`;
+      }).join("") || `<p class="text-muted" style="font-size:12px; margin:0;">Disponible</p>`;
+
+      const estAujourdhui = jour.toDateString() === new Date().toDateString();
+      return `
+        <div class="calendrier-jour${estAujourdhui ? " is-today" : ""}">
+          <div class="calendrier-jour__titre">${jour.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" })}</div>
+          ${blocs}
+        </div>`;
+    }).join("");
+  }
+
+  document.getElementById("calendrier-materiel").addEventListener("change", renderCalendrier);
+  document.getElementById("btn-semaine-precedente").addEventListener("click", () => {
+    semaineReference.setDate(semaineReference.getDate() - 7);
+    renderCalendrier();
+  });
+  document.getElementById("btn-semaine-suivante").addEventListener("click", () => {
+    semaineReference.setDate(semaineReference.getDate() + 7);
+    renderCalendrier();
+  });
+  document.getElementById("btn-semaine-actuelle").addEventListener("click", () => {
+    semaineReference = lundiDeLaSemaine(new Date());
+    renderCalendrier();
+  });
+
+  peupleSelectMateriel();
+  renderCalendrier();
+  document.addEventListener("rolechange", () => { peupleSelectMateriel(); renderCalendrier(); });
 </script>
 </body>
 </html>
