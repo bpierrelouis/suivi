@@ -12,6 +12,7 @@
 | [User stories](user-stories.md) | Besoins utilisateurs et critères d’acceptation vérifiables. |
 | [Backlog produit](backlog.md) | Priorités proposées, dépendances, lots et état des éléments. |
 | [Premier sprint](sprint-01.md) | Objectif, travaux, démonstration et conditions de réalisation. |
+| [Réalisation technique du Sprint 1](sprint-01-realisation.md) | Fonctionnalités livrées, hypothèse d’authentification simulée, démarrage et tests. |
 | [Prochains sprints](prochains-sprints.md) | Ordre validé après S1 et contenu proposé des sprints 2 à 5. |
 | [Règles de gestion et droits](regles-de-gestion.md) | Contraintes métier et matrice des autorisations. |
 | [Dictionnaire de données](dictionnaire-donnees.md) | Entités, informations attendues et relations conceptuelles. |

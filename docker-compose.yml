@@ -1,15 +1,62 @@
+name: suivi
+
 services:
-  db:
+  postgres:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: stockflow_dev
-      POSTGRES_DB: SUIVI
+      POSTGRES_USER: ${POSTGRES_USER:-suivi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-suivi_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-suivi}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT:-5433}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-suivi} -d ${POSTGRES_DB:-suivi}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      target: development
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-suivi}:${POSTGRES_PASSWORD:-suivi_dev_password}@postgres:5432/${POSTGRES_DB:-suivi}?schema=public
+      FRONTEND_ORIGIN: http://localhost:${FRONTEND_PORT:-5173}
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-me-123456}
+      SESSION_TTL: ${SESSION_TTL:-8h}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin-demo-change-me}
+      MANAGER_PASSWORD: ${MANAGER_PASSWORD:-manager-demo-change-me}
+      SIMULATED_PASSWORD: ${SIMULATED_PASSWORD:-demo-suivi}
+    command: sh -c "npm run db:deploy && npm run db:seed && npm run dev"
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:${BACKEND_PORT:-4000}/api
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
-  pgdata:
+  postgres_data:

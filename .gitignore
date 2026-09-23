@@ -1,2 +1,6 @@
 .codex*
 IDENTIFIANTS-TEST.md
+node_modules/
+dist/
+coverage/
+.env

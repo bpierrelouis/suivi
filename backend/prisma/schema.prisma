@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  administrateur
+  gestionnaire
+  utilisateur
+}
+
+model Utilisateur {
+  id           String   @id @default(uuid()) @db.Uuid
+  identifiant  String   @unique
+  motDePasse   String   @map("mot_de_passe")
+  role         Role     @default(utilisateur)
+  creeLe       DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  derniereConnexion DateTime? @map("derniere_connexion") @db.Timestamptz(3)
+
+  @@map("utilisateurs")
+}

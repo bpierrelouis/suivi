@@ -16,7 +16,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 
 ## État du projet
 
-Le premier sprint est terminé avec les maquettes, la connexion fonctionnelle et les tableaux de bord. Après la réunion client, la gestion des projets passe avant celle de l’inventaire dans les prochains sprints. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
+Le développement de la nouvelle application commence par le Sprint 1 : socle Vue/Express/Prisma, connexion simulée et tableaux de bord adaptés aux rôles. Après ce socle, la gestion des projets passe avant celle de l’inventaire. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
 
 Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
 
@@ -27,6 +27,7 @@ Les maquettes de l’application sont disponibles dans le [projet Figma](https:/
 Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories, le backlog, les règles métier, les droits, le dictionnaire de données, le glossaire et la préparation de la recette.
 
 - [Stack technique initiale et décisions d’architecture](docs/stack-technique.md).
+- [Réalisation technique du Sprint 1](docs/sprint-01-realisation.md).
 - [Compte rendu de réunion client](docs/compte-rendu-reunion-client.md) — source des besoins.
 - [User stories et critères d’acceptation](docs/user-stories.md).
 - [Backlog produit et proposition de lots](docs/backlog.md).
