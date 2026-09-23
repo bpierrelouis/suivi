@@ -5,40 +5,51 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-suivi}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-suivi_dev_password}
-      POSTGRES_DB: ${POSTGRES_DB:-suivi}
-    ports:
-      - "${POSTGRES_PORT:-5433}:5432"
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-suivi} -d ${POSTGRES_DB:-suivi}"]
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER:?POSTGRES_USER is required} -d ${POSTGRES_DB:?POSTGRES_DB is required}
       interval: 5s
       timeout: 5s
       retries: 10
 
-  backend:
+  migrate:
     build:
       context: ./backend
-      target: development
-    restart: unless-stopped
+      target: generated
+    restart: "no"
     environment:
-      NODE_ENV: development
-      PORT: 4000
-      DATABASE_URL: postgresql://${POSTGRES_USER:-suivi}:${POSTGRES_PASSWORD:-suivi_dev_password}@postgres:5432/${POSTGRES_DB:-suivi}?schema=public
-      FRONTEND_ORIGIN: http://localhost:${FRONTEND_PORT:-5173}
-      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-me-123456}
-      SESSION_TTL: ${SESSION_TTL:-8h}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin-demo-change-me}
-      MANAGER_PASSWORD: ${MANAGER_PASSWORD:-manager-demo-change-me}
-      SIMULATED_PASSWORD: ${SIMULATED_PASSWORD:-demo-suivi}
-    command: sh -c "npm run db:deploy && npm run db:seed && npm run dev"
-    ports:
-      - "${BACKEND_PORT:-4000}:4000"
+      DATABASE_URL: postgresql://${POSTGRES_USER:?POSTGRES_USER is required}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:?POSTGRES_DB is required}?schema=public
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD is required}
+      MANAGER_PASSWORD: ${MANAGER_PASSWORD:?MANAGER_PASSWORD is required}
+      SIMULATED_PASSWORD: ${SIMULATED_PASSWORD:?SIMULATED_PASSWORD is required}
+    command: ["sh", "-c", "npm run db:deploy && npm run db:seed"]
     depends_on:
       postgres:
         condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER:?POSTGRES_USER is required}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:?POSTGRES_DB is required}?schema=public
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      SESSION_TTL: ${SESSION_TTL:?SESSION_TTL is required}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD is required}
+      MANAGER_PASSWORD: ${MANAGER_PASSWORD:?MANAGER_PASSWORD is required}
+      SIMULATED_PASSWORD: ${SIMULATED_PASSWORD:?SIMULATED_PASSWORD is required}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:4000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 10s
@@ -48,15 +59,20 @@ services:
   frontend:
     build:
       context: ./frontend
-      target: development
+      target: production
     restart: unless-stopped
     environment:
-      VITE_API_URL: http://localhost:${BACKEND_PORT:-4000}/api
+      API_UPSTREAM: http://backend:4000
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
+      - "${APP_PORT:?APP_PORT is required}:80"
     depends_on:
       backend:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

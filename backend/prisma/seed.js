@@ -46,7 +46,7 @@ async function upsertProjet({ id, nom, description, visibilite, responsable, mem
 
 try {
   await upsertAccount("admin", process.env.ADMIN_PASSWORD, "administrateur");
-  await upsertAccount("gestionnaire@demo.local", process.env.MANAGER_PASSWORD, "gestionnaire", true);
+  await upsertAccount("gestionnaire", process.env.MANAGER_PASSWORD, "gestionnaire", true);
   const lea = await upsertAccount("lea.fournier@demo.local", process.env.SIMULATED_PASSWORD, "utilisateur", true);
   const marc = await upsertAccount("marc.vidal@demo.local", process.env.SIMULATED_PASSWORD, "utilisateur", true);
 

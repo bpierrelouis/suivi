@@ -26,15 +26,16 @@ Les versions majeures sont verrouillées dans les fichiers de dépendances lors 
 
 ```mermaid
 flowchart LR
-    U[Utilisateur] -->|HTTPS| F[Frontend Vue]
-    F -->|API JSON / HTTPS| A[API Express]
+    U[Utilisateur] -->|HTTPS| N[Nginx]
+    N -->|Fichiers statiques| F[Frontend Vue]
+    N -->|Proxy inverse /api| A[API Express]
     A -->|Prisma| P[(PostgreSQL)]
     A -->|Métadonnées| P
     A -->|URL signée courte| F
     F -->|Envoi ou téléchargement direct| S[(Stockage S3)]
 ```
 
-Le navigateur ne dialogue jamais directement avec PostgreSQL. L’API est l’unique point d’application des droits et des règles métier. Les métadonnées d’un fichier sont stockées en base ; son contenu binaire est stocké dans S3.
+Le navigateur ne connaît qu’une origine publique servie par Nginx. Les appels relatifs `/api` sont relayés vers Express sur le réseau Docker ; Compose injecte `http://backend:4000` dans `API_UPSTREAM` au démarrage de Nginx. Cette adresse interne reste cohérente avec le port du service backend et n’est jamais intégrée au bundle JavaScript. En développement hors Docker, `DEV_API_UPSTREAM` configure le proxy Vite. Ni l’API ni PostgreSQL ne publient de port sur l’hôte. L’API est l’unique point d’application des droits et des règles métier. Les métadonnées d’un fichier sont stockées en base ; son contenu binaire est stocké dans S3.
 
 ## Justification des choix
 
@@ -90,15 +91,16 @@ Le fichier Compose cible contiendra les services suivants :
 
 | Service | Exposition locale | Persistance | Remarque |
 | --- | --- | --- | --- |
-| `frontend` | `5173` | aucune | Serveur Vite en développement |
-| `api` | `4000` | aucune | API Express avec rechargement local |
-| `postgres` | `5433` vers `5432` | volume nommé | Port externe optionnel |
+| `frontend` | `APP_PORT` vers `80` | aucune | Build Vue de production servi par Nginx et proxy inverse `/api` |
+| `backend` | réseau Docker uniquement | aucune | API Express de production, non exposée sur l’hôte |
+| `migrate` | aucune | aucune | Tâche éphémère de migration et d’initialisation avant l’API |
+| `postgres` | réseau Docker uniquement | volume nommé | Base non exposée sur l’hôte |
 | `minio` | `9000` et console `9001` | volume nommé | Émulation S3 locale uniquement |
 | `minio-init` | aucune | aucune | Création idempotente du bucket puis arrêt |
 
-Les services `api`, `postgres` et `minio` disposent d’un contrôle de santé. L’API attend la disponibilité de PostgreSQL et du bucket. Les données sont conservées dans des volumes nommés. Les secrets réels sont injectés par l’environnement ; le fichier `.env.example` ne contient que des valeurs de démonstration.
+Les services `frontend`, `backend` et `postgres` disposent d’un contrôle de santé. Le backend attend la réussite de la tâche de migration, qui attend elle-même PostgreSQL. Les données sont conservées dans des volumes nommés. Les secrets réels sont injectés par l’environnement ; le fichier `.env.example` ne contient que des valeurs de démonstration.
 
-Le Compose sert au développement et à la recette locale. Pour la production, les images sont construites sans montage de source, le frontend est servi par un serveur HTTP, PostgreSQL et S3 sont de préférence des services administrés, et les migrations sont exécutées par une tâche dédiée avant le démarrage de la nouvelle version.
+Le Compose fournit un environnement intégré local proche de la production et sert à la recette. Pour le développement avec rechargement à chaud, Vite relaie également `/api` vers Express sans exposer l’adresse du backend au code navigateur. En production cible, PostgreSQL et S3 sont de préférence des services administrés et les migrations restent exécutées par une tâche dédiée avant la nouvelle version.
 
 ## Organisation cible du dépôt
 

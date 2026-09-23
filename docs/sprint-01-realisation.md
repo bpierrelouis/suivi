@@ -31,9 +31,9 @@ Une adresse inconnue accompagnée du mot de passe de simulation crée exactement
 
 1. Copier `.env.example` vers `.env` et remplacer les secrets.
 2. Lancer `docker compose up --build` depuis la racine.
-3. Ouvrir `http://localhost:5173`.
+3. Ouvrir le port défini par `APP_PORT`, par exemple `http://localhost:8080` avec le fichier d’exemple.
 
-Le backend applique la migration Prisma et initialise les deux comptes spéciaux au démarrage local. PostgreSQL est exposé sur le port `5433` par défaut et l’API sur le port `4000`.
+Une tâche dédiée applique les migrations Prisma et initialise les comptes de démonstration avant le démarrage de l’API. Nginx sert le frontend de production et relaie `/api` vers le backend. PostgreSQL et l’API restent accessibles uniquement sur le réseau Docker et aucun de leurs ports n’est publié sur l’hôte.
 
 ## Comptes de démonstration
 

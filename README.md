@@ -20,6 +20,8 @@ Le Sprint 1 a livré le socle Vue/Express/Prisma, la connexion simulée et les t
 
 Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
 
+Pour lancer l’application complète, copier `.env.example` vers `.env`, renseigner toutes les valeurs, puis exécuter `docker compose up --build`. Avec `APP_PORT=8080`, l’application est disponible sur `http://localhost:8080`. Seul le reverse proxy Nginx est exposé ; Compose lui injecte l’adresse interne du service backend sans l’intégrer au bundle frontend. PostgreSQL et Express restent internes au réseau Docker.
+
 Les maquettes de l’application sont disponibles dans le [projet Figma](https://www.figma.com/design/jajh8IuesCXPLS03wqmoSm/Maquettes-CRUD-%E2%80%94-Admin---Gestionnaire---User?node-id=0-1&t=ju2YbvuAWpwhaLhP-1).
 
 ## Documentation
