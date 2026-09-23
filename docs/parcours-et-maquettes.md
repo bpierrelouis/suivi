@@ -27,7 +27,7 @@ Accueil → inventaire actif → fiche → création/modification/suppression, c
 
 Accueil → tous les projets autorisés au titre de l’administration → informations, membres, Kanban, réservations et historique des modifications. Les actions sont disponibles sans adhésion au projet. Les archives de tous les projets sont consultables et ne peuvent pas être rouvertes ; les modalités de modification et de suppression restent à définir.
 
-Gestion des rôles → choix d’un utilisateur → attribution/retrait du rôle gestionnaire. Le parcours de remplacement et l’effet sur les participations suivent Q-02. L’écran peut être reporté après S1 selon Q-20.
+Gestion des rôles → choix d’un utilisateur → attribution/retrait du rôle gestionnaire. Une nomination remplace atomiquement le gestionnaire précédent, refuse un responsable de projet actif et retire les autres participations du candidat.
 
 ## Gestionnaire
 

@@ -1,0 +1,125 @@
+import { conflict, forbidden, notFound } from "../errors/app.error.js";
+import {
+  assertCanCreateProjet,
+  assertCanModifyProjet,
+  isProjetMember,
+  visibleProjetFilter,
+} from "../policies/projet-access.policy.js";
+
+function toSummary(projet) {
+  return {
+    id: projet.id,
+    nom: projet.nom,
+    description: projet.description,
+    visibilite: projet.visibilite,
+    statut: projet.statut,
+    dateDebut: projet.dateDebut,
+    dateFin: projet.dateFin,
+    responsable: projet.responsable,
+    nombreMembres: projet._count.participations,
+  };
+}
+
+function toDetail(projet, utilisateur) {
+  const peutModifier = projet.statut === "actif" && (
+    utilisateur.role === "administrateur"
+    || projet.participations.some(({ utilisateur: membre }) => membre.id === utilisateur.id)
+  );
+  return {
+    ...toSummary(projet),
+    creeLe: projet.creeLe,
+    modifieLe: projet.modifieLe,
+    membres: projet.participations.map(({ utilisateur, rejointLe }) => ({
+      ...utilisateur,
+      rejointLe,
+    })),
+    taches: projet.taches || [],
+    documentation: projet.documentation || { contenu: "", modifieLe: null, auteur: null },
+    droits: {
+      modifier: peutModifier,
+      ajouterMembre: peutModifier,
+      retirerMembre: projet.statut === "actif" && utilisateur.role === "administrateur",
+    },
+  };
+}
+
+async function getCommandProjet(repository, utilisateur, id) {
+  const projet = await repository.findProjetForCommand(id);
+  if (!projet) throw notFound("PROJET_INTROUVABLE");
+  assertCanModifyProjet(utilisateur, projet);
+  return projet;
+}
+
+export function createProjetService(repository, utilisateurs = null) {
+  if (!repository) throw new TypeError("Un repository de projets est requis.");
+
+  return {
+    async list(utilisateur) {
+      const accessFilter = visibleProjetFilter(utilisateur);
+      const projets = await repository.findVisibleProjets(accessFilter);
+      return projets.map(toSummary);
+    },
+
+    async getById(utilisateur, id) {
+      const accessFilter = visibleProjetFilter(utilisateur);
+      const projet = await repository.findVisibleProjetById(id, accessFilter);
+      if (!projet) throw notFound("PROJET_INTROUVABLE");
+      return toDetail(projet, utilisateur);
+    },
+
+    async create(utilisateur, data) {
+      assertCanCreateProjet(utilisateur);
+      return repository.createProjet(data, utilisateur.id);
+    },
+
+    async update(utilisateur, id, data) {
+      await getCommandProjet(repository, utilisateur, id);
+      return repository.updateProjet(id, data);
+    },
+
+    async addMember(utilisateur, projetId, utilisateurId) {
+      await getCommandProjet(repository, utilisateur, projetId);
+      if (!utilisateurs) throw new TypeError("Un repository d'utilisateurs est requis.");
+      const membre = await utilisateurs.findById(utilisateurId);
+      if (!membre) throw notFound("UTILISATEUR_INTROUVABLE");
+      if (membre.role === "gestionnaire") throw conflict("GESTIONNAIRE_INTERDIT_AUX_PROJETS");
+      return repository.addProjetMember(projetId, utilisateurId);
+    },
+
+    async removeMember(utilisateur, projetId, utilisateurId) {
+      const projet = await getCommandProjet(repository, utilisateur, projetId);
+      if (utilisateur.role !== "administrateur") throw forbidden("RETRAIT_MEMBRE_RESERVE_ADMINISTRATEUR");
+      if (projet.responsableId === utilisateurId) throw conflict("RESPONSABLE_NON_RETIRABLE");
+      if (!isProjetMember(projet, utilisateurId)) throw notFound("MEMBRE_INTROUVABLE");
+      await repository.removeProjetMember(projetId, utilisateurId);
+    },
+
+    async createTask(utilisateur, projetId, data) {
+      const projet = await getCommandProjet(repository, utilisateur, projetId);
+      if (data.responsableId && !isProjetMember(projet, data.responsableId)) {
+        throw conflict("RESPONSABLE_TACHE_NON_MEMBRE");
+      }
+      return repository.createTache(projetId, data);
+    },
+
+    async updateTask(utilisateur, projetId, taskId, data) {
+      const projet = await getCommandProjet(repository, utilisateur, projetId);
+      if (!await repository.findTache(taskId, projetId)) throw notFound("TACHE_INTROUVABLE");
+      if (data.responsableId && !isProjetMember(projet, data.responsableId)) {
+        throw conflict("RESPONSABLE_TACHE_NON_MEMBRE");
+      }
+      await repository.updateTacheAndCloseIfComplete(taskId, projetId, data);
+    },
+
+    async deleteTask(utilisateur, projetId, taskId) {
+      await getCommandProjet(repository, utilisateur, projetId);
+      if (!await repository.findTache(taskId, projetId)) throw notFound("TACHE_INTROUVABLE");
+      await repository.deleteTache(taskId);
+    },
+
+    async saveDocumentation(utilisateur, projetId, contenu) {
+      await getCommandProjet(repository, utilisateur, projetId);
+      return repository.saveDocumentation(projetId, contenu, utilisateur.id);
+    },
+  };
+}

@@ -218,4 +218,4 @@ classDiagram
 - Archiver un projet, manuellement ou par achèvement de sa dernière tâche, conserve ses membres, tâches, réservations et événements, libère ses réservations et interdit toute réouverture.
 - L'état lu/non lu d'une notification appartient à chaque destinataire, jamais à la notification globalement.
 
-Les attributs `ordre` d'une tâche, le détail des annulations et les états calculés d'une réservation restent des propositions de conception soumises aux arbitrages Q-22 et Q-26.
+L’attribut `ordre` d’une tâche est retenu pour stabiliser l’affichage du Kanban. Le détail des annulations et les états calculés d’une réservation restent des propositions soumises aux arbitrages Q-22.

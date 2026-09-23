@@ -30,6 +30,9 @@ async function logout() {
         <RouterLink to="/inventaire" class="nav__link">
           <span aria-hidden="true">□</span> Inventaire
         </RouterLink>
+        <RouterLink v-if="auth.utilisateur?.role === 'administrateur'" to="/utilisateurs" class="nav__link">
+          <span aria-hidden="true">◇</span> Utilisateurs
+        </RouterLink>
       </nav>
 
       <div class="account">

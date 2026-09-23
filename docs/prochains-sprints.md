@@ -1,6 +1,6 @@
 # SUIVI — Contenu des prochains sprints
 
-**Mise à jour :** 15 septembre 2026. **Statut :** formalisation du retour client après le premier sprint. Les durées, dates, responsables et capacités restent à planifier avec l’équipe.
+**Mise à jour :** 23 septembre 2026. **Statut :** Sprint 2 implémenté ; les durées, dates, responsables et capacités des sprints suivants restent à planifier avec l’équipe.
 
 ## Décisions de planification
 
@@ -17,6 +17,8 @@ Cette réorganisation reprend les domaines du support client du 14 septembre 202
 
 **Objectif :** permettre aux utilisateurs autorisés de créer un projet, de le consulter et de collaborer depuis sa fiche descriptive.
 
+**Avancement au 23 septembre 2026 :** le périmètre applicatif du Sprint 2 est implémenté : rôle gestionnaire, projets, membres, Kanban, clôture automatique et documentation DOCX. Les tests automatisés passent et le rendu DOCX a été contrôlé. La recette PostgreSQL et l’acceptation formelle restent à consigner.
+
 | Contenu | Stories | Résultat attendu |
 | --- | --- | --- |
 | Rôle gestionnaire | [US-03](user-stories.md#us-03) | Attribution ou retrait du rôle par l’administrateur, avec exclusion immédiate de tous les projets. |
@@ -26,7 +28,7 @@ Cette réorganisation reprend les domaines du support client du 14 septembre 202
 | Documentation du projet | [US-32](user-stories.md#us-32) | Édition d’un document Markdown propre au projet, aperçu lisible et export DOCX. |
 | Confidentialité | Tranche de [US-29](user-stories.md#us-29) | Aucun projet privé ni document associé n’est divulgué à une personne non autorisée ; le gestionnaire reste exclu. |
 
-Les arbitrages Q-01, Q-02, Q-06, Q-07, Q-26 à Q-28 doivent être résolus avant la recette des comportements concernés. L’archivage du projet et son historique détaillé restent au Sprint 4 afin d’être traités avec les réservations et la libération du matériel.
+Les décisions D-14 à D-19 fixent les comportements nécessaires au Sprint 2. Les effets sur réservations et notifications, la clôture manuelle et l’historique détaillé restent au Sprint 4 afin d’être traités avec la libération du matériel.
 
 ### Démonstration attendue
 

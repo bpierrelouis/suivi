@@ -59,7 +59,7 @@ Le devenir des pièces jointes à l’archivage du matériel et la conservation 
 | Identifiant interne | Proposition, automatique | Référence stable ; ne doit pas être divulguée par une surface masquant le projet. |
 | Nom | Minimum requis, texte | Avec description et visibilité. |
 | Description | Minimum requis, texte | Format/longueur non définis. |
-| Visibilité | Minimum requis, NP/public ou Secret/privé | Droits de l’utilisateur sur choix et changement à préciser en Q-06. |
+| Visibilité | Minimum requis, NP/public ou Secret/privé | Choisie à la création et modifiable sur un projet actif par un membre ou l’administrateur. |
 | Responsable | Requis métier, référence utilisateur | Utilisateur à l’origine du projet, obligatoirement membre ; droit de clôture/archivage. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
 | État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. Le passage de la dernière tâche non terminée à l’état terminé déclenche automatiquement cette transition ; un projet sans tâche reste actif. |
@@ -70,11 +70,11 @@ Le devenir des pièces jointes à l’archivage du matériel et la conservation 
 | Information | Obligation / forme conceptuelle | Règle |
 | --- | --- | --- |
 | Projet | Requis, référence unique | Un document de référence principal par projet. |
-| Contenu source | Requis métier, Markdown | Comparable à un `README.md` ; syntaxe prise en charge à préciser en Q-28. |
+| Contenu source | Requis métier, Markdown | Titres, paragraphes, listes, gras, italique, code en ligne et liens HTTP/HTTPS. |
 | Dernière modification | Date, heure et auteur | Mise à jour lors de chaque enregistrement. |
 | Export DOCX | Résultat généré | Reprend le titre du projet et la structure de la version Markdown enregistrée. |
 
-La documentation suit les droits de lecture et de modification du projet. L’historisation des versions, les images intégrées et les règles détaillées de conversion DOCX restent ouvertes en Q-28.
+La documentation suit les droits de lecture et de modification du projet. Les images intégrées et l’historisation des versions sont exclues ; l’export DOCX conserve le titre et la structure textuelle.
 
 ## Participation à un projet
 
@@ -82,19 +82,19 @@ Les notions **responsable**, **membre** et **simple** décrivent la relation d�
 
 Association entre un projet et un utilisateur. L’ajout produit ses effets immédiatement. Un projet peut avoir plusieurs membres et un utilisateur participer à plusieurs projets ; le gestionnaire ne peut pas participer. L’administrateur exerce ses droits sans avoir besoin d’une association.
 
-**Proposition :** une seule participation active par couple utilisateur/projet. Le sort de l’association lors d’un changement de rôle reste ouvert en Q-02. Le responsable étant membre, son retrait ou son remplacement doit préserver la présence d’un responsable membre selon Q-27.
+Une seule participation existe par couple utilisateur–projet. La nomination comme gestionnaire supprime les participations du candidat, qui ne peut pas être responsable d’un projet actif. Le responsable étant membre, son retrait est interdit.
 
 ## Tâche
 
 | Information | Obligation / forme conceptuelle | Règle |
 | --- | --- | --- |
 | Identifiant interne et projet | Proposition de référence, automatiques | Une tâche appartient à un projet. |
-| Titre / description | Présents selon le compte rendu | Règles de saisie obligatoire et valeurs vides à confirmer en Q-26. |
-| Colonne / état Kanban | Nécessaire au suivi, valeurs à confirmer | À faire, En cours, Fait envisagés ; personnalisation Q-01. |
+| Titre / description | Requis, textes non vides | Présents à la création et à la modification. |
+| Colonne / état Kanban | Requis | À faire, En cours ou Fait ; colonnes fixes. |
 | Responsable de la tâche | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
-| Ordre dans la colonne | Proposition seulement | À retenir si nécessaire au parcours validé, Q-26. |
+| Ordre dans la colonne | Entier géré par l’application | Prépare l’ordre stable des tâches dans une colonne. |
 
-Aucune date d’échéance ni priorité. Quand la dernière tâche non terminée passe à l’état terminé, le projet associé passe automatiquement à l’état archivé. Suppression de tâche et conservation des tâches non terminées lors d’une clôture manuelle : Q-26.
+Aucune date d’échéance ni priorité. Une tâche peut être créée, modifiée, déplacée ou supprimée sur un projet actif. Quand la dernière tâche non terminée passe à l’état terminé, le projet associé passe automatiquement à l’état archivé ; la suppression d’une tâche ne déclenche pas cette clôture.
 
 ## Historique des modifications d’un projet
 

@@ -12,13 +12,93 @@ enum Role {
   utilisateur
 }
 
+enum VisibiliteProjet {
+  public
+  prive
+}
+
+enum StatutProjet {
+  actif
+  archive
+}
+
+enum EtatTache {
+  a_faire
+  en_cours
+  terminee
+}
+
 model Utilisateur {
-  id           String   @id @default(uuid()) @db.Uuid
-  identifiant  String   @unique
-  motDePasse   String   @map("mot_de_passe")
-  role         Role     @default(utilisateur)
-  creeLe       DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
-  derniereConnexion DateTime? @map("derniere_connexion") @db.Timestamptz(3)
+  id                      String                @id @default(uuid()) @db.Uuid
+  identifiant             String                @unique
+  motDePasse              String                @map("mot_de_passe")
+  role                    Role                  @default(utilisateur)
+  creeLe                  DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
+  derniereConnexion       DateTime?             @map("derniere_connexion") @db.Timestamptz(3)
+  projetsResponsables     Projet[]              @relation("ResponsableProjet")
+  participations          Participation[]
+  tachesAssignees         Tache[]               @relation("ResponsableTache")
+  documentationsModifiees DocumentationProjet[] @relation("AuteurDocumentation")
 
   @@map("utilisateurs")
+}
+
+model Projet {
+  id             String               @id @default(uuid()) @db.Uuid
+  nom            String
+  description    String
+  visibilite     VisibiliteProjet
+  statut         StatutProjet         @default(actif)
+  dateDebut      DateTime?            @map("date_debut") @db.Date
+  dateFin        DateTime?            @map("date_fin") @db.Date
+  responsableId  String               @map("responsable_id") @db.Uuid
+  responsable    Utilisateur          @relation("ResponsableProjet", fields: [responsableId], references: [id], onDelete: Restrict)
+  participations Participation[]
+  taches         Tache[]
+  documentation  DocumentationProjet?
+  creeLe         DateTime             @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe      DateTime             @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@index([statut, visibilite])
+  @@map("projets")
+}
+
+model Tache {
+  id            String       @id @default(uuid()) @db.Uuid
+  projetId      String       @map("projet_id") @db.Uuid
+  projet        Projet       @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  titre         String
+  description   String
+  etat          EtatTache    @default(a_faire)
+  ordre         Int          @default(0)
+  responsableId String?      @map("responsable_id") @db.Uuid
+  responsable   Utilisateur? @relation("ResponsableTache", fields: [responsableId], references: [id], onDelete: SetNull)
+  creeLe        DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe     DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@index([projetId, etat, ordre])
+  @@map("taches")
+}
+
+model DocumentationProjet {
+  projetId  String      @id @map("projet_id") @db.Uuid
+  projet    Projet      @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  contenu   String      @default("")
+  auteurId  String      @map("auteur_id") @db.Uuid
+  auteur    Utilisateur @relation("AuteurDocumentation", fields: [auteurId], references: [id], onDelete: Restrict)
+  modifieLe DateTime    @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@map("documentations_projets")
+}
+
+model Participation {
+  projetId      String      @map("projet_id") @db.Uuid
+  utilisateurId String      @map("utilisateur_id") @db.Uuid
+  projet        Projet      @relation(fields: [projetId], references: [id], onDelete: Cascade)
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Restrict)
+  rejointLe     DateTime    @default(now()) @map("rejoint_le") @db.Timestamptz(3)
+
+  @@id([projetId, utilisateurId])
+  @@index([utilisateurId])
+  @@map("participations_projets")
 }

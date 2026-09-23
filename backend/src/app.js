@@ -6,6 +6,8 @@ import { env } from "./config/env.js";
 import authRoutes from "./routes/auth.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import healthRoutes from "./routes/health.routes.js";
+import projetRoutes from "./routes/projet.routes.js";
+import utilisateurRoutes from "./routes/utilisateur.routes.js";
 import { errorHandler, notFound } from "./middlewares/error.middleware.js";
 
 export const app = express();
@@ -19,6 +21,8 @@ app.use(cookieParser());
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/projets", projetRoutes);
+app.use("/api/utilisateurs", utilisateurRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -42,9 +42,9 @@ Se connecter avec `admin` : rôle administrateur conservé et accès adapté. V�
 
 ### REC-03 — Gestionnaire unique et évolution des droits
 
-**Stories :** US-03, US-29. **Précondition :** Q-02 décidé ; interface/routine d’administration disponible.
+**Stories :** US-03, US-29. **Décision :** D-14 ; interface d’administration disponible.
 
-Attribuer puis retirer le rôle à un utilisateur existant ; vérifier unicité, retour à l’utilisateur et conservation à la reconnexion. Tester deux attributions concurrentes : au plus un gestionnaire subsiste. Vérifier le devenir des adhésions selon Q-02 et l’absence immédiate d’accès aux projets/notifications non autorisées. Un non-administrateur ne peut ni attribuer ni retirer ce rôle.
+Attribuer puis retirer le rôle à un utilisateur existant ; vérifier unicité, remplacement atomique, retour à l’utilisateur et conservation à la reconnexion. Tester deux attributions concurrentes : au plus un gestionnaire subsiste. Vérifier le refus d’un responsable actif, la suppression des autres participations et l’absence immédiate d’accès aux projets. Un non-administrateur ne peut ni attribuer ni retirer ce rôle.
 
 ### REC-04 — Tableau de bord par profil
 
@@ -70,19 +70,19 @@ Combiner des critères convenus et vérifier résultats/tri, puis retirer les fi
 
 ### REC-07 — Visibilité et modification des projets
 
-**Stories :** US-14 à US-16, US-29. **Préconditions :** Q-06 et effet des dates Q-13 décidés pour les fonctions testées.
+**Stories :** US-14 à US-16, US-29. **Décisions :** D-15 et D-19.
 
 Créer un projet avec nom, description et visibilité sans dates ; vérifier les champs minimums. C consulte P-PUB mais ne le modifie pas et n’accède pas à P-PRIV. A/B modifient leurs projets selon leurs droits ; admin agit sans être membre. G ne peut lister, consulter, créer ou modifier aucun projet. Vérifier les changements de visibilité selon Q-06 et les changements de dates selon Q-13 sans laisser de conflit de réservation non traité.
 
 ### REC-08 — Membres et retrait
 
-**Stories :** US-17, US-18, US-29. **Préconditions :** Q-07/Q-27 décidés.
+**Stories :** US-17, US-18, US-29. **Décision :** D-17.
 
 Faire ajouter C à P-PRIV par B : accès immédiat sans invitation, puis droits de collaboration. Admin retire C : perte des droits de membre et de l’accès privé, puisqu’il n’est pas responsable. Vérifier le traitement des réservations existantes selon Q-07. Refuser l’ajout de G et l’ajout de membres par un extérieur. Vérifier séparément le transfert ou retrait du responsable selon Q-27 et le cas des utilisateurs jamais connectés.
 
 ### REC-09 — Kanban
 
-**Stories :** US-19. **Préconditions :** Q-01/Q-26 décidés.
+**Stories :** US-19. **Décision :** D-16.
 
 Vérifier que le Kanban est affiché dans l’onglet Description du projet et qu’aucun onglet Kanban distinct n’est nécessaire. Vérifier titre, description, responsable de tâche facultatif, colonnes et opérations convenues : création, modification, déplacement, éventuelle suppression si retenue. Affecter un membre du projet comme responsable de tâche, changer ce responsable puis le retirer ; refuser un utilisateur qui n’est pas membre. A/B/admin peuvent agir selon leurs droits ; C sur P-PUB reste en lecture ; G et les extérieurs à P-PRIV ne voient pas son tableau. Aucune échéance ni priorité n’est requise. Vérifier la personnalisation seulement si elle a été retenue. Sur un projet contenant plusieurs tâches, terminer toutes les tâches sauf une et vérifier que le projet reste actif ; terminer la dernière et vérifier le déclenchement automatique de la clôture.
 
@@ -158,7 +158,7 @@ Parcourir connexion, accueil, inventaire et projets pour les trois rôles : admi
 
 ### REC-20 — Documentation Markdown et export DOCX
 
-**Stories :** US-32, US-29. **Périmètre :** S2, après Q-28.
+**Stories :** US-32, US-29. **Périmètre :** S2, décision D-18.
 
 Depuis un projet autorisé, enregistrer un document Markdown contenant au minimum des titres, paragraphes et listes, puis rouvrir la fiche et vérifier la conservation du contenu et son aperçu. Exporter la version enregistrée en DOCX et vérifier le titre du projet, la structure et l’absence de contenu non rendu. Un membre et l’administrateur peuvent modifier ; un lecteur autorisé peut consulter et exporter sans modifier. Le gestionnaire et un utilisateur extérieur à un projet privé ne peuvent ni lire, ni exporter, ni cibler directement sa documentation.
 

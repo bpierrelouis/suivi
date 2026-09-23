@@ -36,12 +36,12 @@ En tant qu’administrateur, je veux utiliser le compte `admin` afin d’adminis
 
 En tant qu’administrateur, je veux désigner un gestionnaire et lui rendre ensuite le rôle utilisateur afin d’organiser la tenue de l’inventaire.
 
-**Référence :** §2.2 ; RG-03 à RG-05. **Arbitrages :** Q-02, Q-20.
+**Référence :** §2.2 ; RG-03 à RG-05. **Décision :** D-14.
 
 - CA1 : seul l’administrateur peut attribuer ce rôle à un utilisateur existant ou le lui retirer.
-- CA2 : aucune séquence d’attribution, y compris simultanée, ne laisse plus d’un gestionnaire ; le parcours de remplacement est à préciser en Q-02.
+- CA2 : aucune séquence d’attribution, y compris simultanée, ne laisse plus d’un gestionnaire ; la nouvelle nomination remplace atomiquement le gestionnaire précédent.
 - CA3 : après retrait, l’utilisateur a le rôle utilisateur ; une reconnexion conserve ce rôle.
-- CA4 : dès l’attribution, aucun accès aux projets ni participation opérationnelle n’est autorisé au gestionnaire. Le traitement des adhésions antérieures doit suivre l’arbitrage Q-02.
+- CA4 : dès l’attribution, aucun accès aux projets ni participation opérationnelle n’est autorisé au gestionnaire ; un responsable de projet actif ne peut pas être nommé et les autres participations du candidat sont retirées.
 
 <a id="us-04"></a>
 ### US-04 — Consulter un tableau de bord adapté à son profil
@@ -182,11 +182,11 @@ En tant qu’administrateur ou gestionnaire, je veux joindre des documents à un
 
 En tant qu’administrateur ou utilisateur, je veux créer un projet afin d’organiser un travail du laboratoire.
 
-**Référence :** §4.1 ; RG-15, RG-16. **Arbitrage :** Q-06.
+**Référence :** §4.1 ; RG-15, RG-16. **Décision :** D-15.
 
 - CA1 : la création recueille nom, description et visibilité ; les dates de début et de fin restent facultatives.
 - CA2 : l’utilisateur à l’origine du projet est identifié comme responsable et devient obligatoirement membre du projet.
-- CA3 : le projet suit les droits NP/public ou Secret/privé ; les modalités du choix par un utilisateur sont fixées en Q-06.
+- CA3 : l’administrateur et l’utilisateur choisissent une visibilité publique ou privée à la création.
 - CA4 : le gestionnaire ne peut pas créer de projet.
 
 <a id="us-15"></a>
@@ -206,46 +206,46 @@ En tant qu’administrateur ou utilisateur, je veux consulter les projets auxque
 
 En tant que membre ou administrateur, je veux modifier les informations d’un projet afin de maintenir son suivi à jour.
 
-**Référence :** §2.2 et §4.2 ; RG-15, RG-18. **Arbitrages :** Q-06, Q-13.
+**Référence :** §2.2 et §4.2 ; RG-15, RG-18. **Décisions :** D-15, D-19.
 
 - CA1 : un membre modifie les informations de son projet ; l’administrateur agit aussi sans être membre.
 - CA2 : le gestionnaire et un utilisateur non membre ne peuvent pas effectuer la modification.
-- CA3 : le nom, la description et la visibilité restent renseignés ; les droits de changement de visibilité suivent Q-06.
-- CA4 : l’effet d’un changement des dates du projet sur les réservations existantes doit être fixé par Q-13 avant réalisation de ce comportement.
+- CA3 : le nom, la description et la visibilité restent renseignés ; un membre ou l’administrateur peut changer la visibilité d’un projet actif.
+- CA4 : un changement des dates du projet ne déplace aucune réservation automatiquement.
 
 <a id="us-17"></a>
 ### US-17 — Ajouter des membres
 
 En tant que membre ou administrateur, je veux ajouter un utilisateur à un projet afin qu’il puisse y collaborer immédiatement.
 
-**Référence :** §4.2 ; RG-05, RG-18. **Arbitrage :** Q-07.
+**Référence :** §4.2 ; RG-05, RG-18. **Décision :** D-17.
 
 - CA1 : un membre ajoute d’autres membres à son projet ; l’administrateur peut le faire sur tout projet sans adhésion.
 - CA2 : l’ajout donne immédiatement les droits du membre, y compris la consultation d’un projet privé, sans acceptation d’invitation.
 - CA3 : le gestionnaire ne peut pas être ajouté ; un utilisateur non membre ne peut pas ajouter d’utilisateur.
-- CA4 : le mode de sélection, notamment pour un utilisateur jamais connecté, suit Q-07 et n’introduit pas de création manuelle de compte.
+- CA4 : la sélection porte uniquement sur les comptes existants et n’introduit pas de création manuelle de compte.
 
 <a id="us-18"></a>
 ### US-18 — Retirer un membre
 
 En tant qu’administrateur, je veux retirer un membre afin de gérer la composition des projets.
 
-**Référence :** §4.2 ; RG-18. **Arbitrages :** Q-07, Q-27 pour le responsable.
+**Référence :** §4.2 ; RG-18. **Décision :** D-17.
 
 - CA1 : l’administrateur peut retirer un membre d’un projet sans en être lui-même membre.
 - CA2 : après retrait d’un membre qui n’est pas responsable, l’appartenance ne donne plus de droits ; un projet privé devient inaccessible sauf autre droit applicable.
-- CA3 : les droits éventuels de retrait des autres profils, le transfert ou retrait du responsable et l’effet sur les réservations existantes doivent être décidés en Q-07/Q-27.
+- CA3 : seul l’administrateur retire un membre non responsable ; le responsable ne peut pas être retiré. Les tâches affectées au membre retiré deviennent sans responsable.
 
 <a id="us-19"></a>
 ### US-19 — Gérer les tâches en Kanban
 
 En tant que membre ou administrateur, je veux gérer les tâches d’un projet dans un Kanban afin de suivre le travail.
 
-**Référence :** §4.3 ; RG-18, RG-19. **Arbitrages :** Q-01, Q-26.
+**Référence :** §4.3 ; RG-18, RG-19. **Décision :** D-16.
 
 - CA1 : chaque tâche présente un titre et une description ; un responsable de tâche facultatif peut être choisi parmi les membres du projet, modifié ou retiré ; aucune échéance ni priorité n’est demandée.
-- CA2 : **proposition de détail du suivi** : un membre ou l’administrateur crée/modifie une tâche et la déplace entre colonnes ; ces opérations et l’éventuelle suppression sont à confirmer en Q-26.
-- CA3 : les colonnes et leur caractère fixe/personnalisable suivent Q-01 ; À faire, En cours et Fait sont la proposition initiale.
+- CA2 : un membre ou l’administrateur crée, modifie, déplace et supprime une tâche d’un projet actif.
+- CA3 : les colonnes fixes sont À faire, En cours et Fait.
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
 - CA5 : le Kanban est affiché dans l’onglet Description de la fiche projet ; il ne nécessite ni onglet Kanban distinct ni retour à la liste des projets.
 - CA6 : lorsque la dernière tâche non terminée passe à l’état terminé, le système déclenche automatiquement la clôture du projet selon US-20. Un projet sans tâche ne se clôture pas automatiquement.
@@ -292,14 +292,14 @@ En tant que personne autorisée à consulter un projet, je veux consulter son hi
 
 En tant que membre ou administrateur, je veux rédiger la documentation d’un projet en Markdown et l’exporter en DOCX afin de maintenir un document de référence réutilisable hors de SUIVI.
 
-**Référence :** retour client après le premier sprint ; RG-33. **Arbitrage :** Q-28.
+**Référence :** retour client après le premier sprint ; RG-33. **Décision :** D-18.
 
 - CA1 : chaque projet possède un document de référence unique, comparable à un `README.md`, dont le contenu source est conservé en Markdown.
 - CA2 : un membre du projet ou l’administrateur peut modifier et enregistrer ce contenu ; une personne disposant seulement du droit de consultation peut le lire sans le modifier.
 - CA3 : l’éditeur propose un aperçu lisible du rendu Markdown et conserve le contenu enregistré lors d’une nouvelle consultation.
 - CA4 : une personne autorisée à consulter le projet peut exporter la version enregistrée au format DOCX ; le fichier reprend le titre du projet et la structure du document Markdown.
 - CA5 : la documentation suit la visibilité du projet et reste inaccessible au gestionnaire ainsi qu’aux utilisateurs sans accès au projet.
-- CA6 : le périmètre Markdown, la gestion des images ou pièces intégrées, l’historisation et les règles de mise en forme du DOCX suivent Q-28.
+- CA6 : le Markdown accepte titres, paragraphes, listes, gras, italique, code en ligne et liens HTTP/HTTPS. Les images intégrées et l’historique de versions sont exclus.
 
 ## E4 — Réservations et traçabilité
 
