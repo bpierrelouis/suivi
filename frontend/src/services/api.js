@@ -33,3 +33,19 @@ export async function apiBlob(path) {
     disposition: response.headers.get("Content-Disposition") || "",
   };
 }
+
+export async function apiFile(path, file) {
+  const response = await fetch(`${API_URL}${path}`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": file.type, "X-Filename": encodeURIComponent(file.name) },
+    body: file,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(data.error || "ERREUR_RESEAU");
+    error.status = response.status;
+    throw error;
+  }
+  return data;
+}

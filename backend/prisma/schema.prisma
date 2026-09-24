@@ -28,6 +28,23 @@ enum EtatTache {
   terminee
 }
 
+enum ModeSuiviMateriel {
+  individualise
+  non_individualise
+}
+
+enum StatutMateriel {
+  actif
+  archive
+}
+
+enum TypeEvenementMateriel {
+  creation
+  modification
+  ajout_piece_jointe
+  retrait_piece_jointe
+}
+
 model Utilisateur {
   id                      String                @id @default(uuid()) @db.Uuid
   identifiant             String                @unique
@@ -39,8 +56,82 @@ model Utilisateur {
   participations          Participation[]
   tachesAssignees         Tache[]               @relation("ResponsableTache")
   documentationsModifiees DocumentationProjet[] @relation("AuteurDocumentation")
+  materielsCrees          Materiel[]            @relation("AuteurCreationMateriel")
+  historiquesMateriel     HistoriqueMateriel[]  @relation("AuteurEvenementMateriel")
+  piecesJointesMateriel   PieceJointeMateriel[] @relation("AuteurPieceJointeMateriel")
 
   @@map("utilisateurs")
+}
+
+model Materiel {
+  id                    String                @id @default(uuid()) @db.Uuid
+  nom                   String
+  modeSuivi             ModeSuiviMateriel     @default(individualise) @map("mode_suivi")
+  numeroSerie           String?               @map("numero_serie")
+  referenceConstructeur String?               @map("reference_constructeur")
+  numeroInventaire      String?               @map("numero_inventaire")
+  statut                StatutMateriel        @default(actif)
+  auteurCreationId      String                @map("auteur_creation_id") @db.Uuid
+  auteurCreation        Utilisateur           @relation("AuteurCreationMateriel", fields: [auteurCreationId], references: [id], onDelete: Restrict)
+  categories            MaterielCategorie[]
+  historique            HistoriqueMateriel[]
+  piecesJointes         PieceJointeMateriel[]
+  creeLe                DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe             DateTime              @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@index([statut, nom])
+  @@map("materiels")
+}
+
+model Categorie {
+  id        String              @id @default(uuid()) @db.Uuid
+  nom       String              @unique
+  materiels MaterielCategorie[]
+  creeLe    DateTime            @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime            @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@map("categories")
+}
+
+model MaterielCategorie {
+  materielId  String    @map("materiel_id") @db.Uuid
+  categorieId String    @map("categorie_id") @db.Uuid
+  materiel    Materiel  @relation(fields: [materielId], references: [id], onDelete: Cascade)
+  categorie   Categorie @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+
+  @@id([materielId, categorieId])
+  @@index([categorieId])
+  @@map("materiels_categories")
+}
+
+model HistoriqueMateriel {
+  id         String                @id @default(uuid()) @db.Uuid
+  materielId String                @map("materiel_id") @db.Uuid
+  materiel   Materiel              @relation(fields: [materielId], references: [id], onDelete: Restrict)
+  type       TypeEvenementMateriel
+  details    Json?
+  auteurId   String                @map("auteur_id") @db.Uuid
+  auteur     Utilisateur           @relation("AuteurEvenementMateriel", fields: [auteurId], references: [id], onDelete: Restrict)
+  creeLe     DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@index([materielId, creeLe])
+  @@map("historique_materiels")
+}
+
+model PieceJointeMateriel {
+  id         String      @id @default(uuid()) @db.Uuid
+  materielId String      @map("materiel_id") @db.Uuid
+  materiel   Materiel    @relation(fields: [materielId], references: [id], onDelete: Restrict)
+  nomFichier String      @map("nom_fichier")
+  typeMime   String      @map("type_mime")
+  taille     Int
+  contenu    Bytes
+  auteurId   String      @map("auteur_id") @db.Uuid
+  auteur     Utilisateur @relation("AuteurPieceJointeMateriel", fields: [auteurId], references: [id], onDelete: Restrict)
+  ajouteLe   DateTime    @default(now()) @map("ajoute_le") @db.Timestamptz(3)
+
+  @@index([materielId, ajouteLe])
+  @@map("pieces_jointes_materiels")
 }
 
 model Projet {

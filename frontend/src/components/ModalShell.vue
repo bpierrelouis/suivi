@@ -10,7 +10,7 @@ defineEmits(["close"]);
 
 <template>
   <div class="modal-backdrop" role="presentation" @mousedown.self="$emit('close')">
-    <section class="modal" :class="{ 'modal--wide': wide }" role="dialog" aria-modal="true" :aria-labelledby="$attrs['aria-labelledby'] || 'modal-title'">
+    <section class="modal" :class="{ 'modal--wide': wide }" role="dialog" aria-modal="true" :aria-labelledby="$attrs['aria-labelledby'] || 'modal-title'" @keydown.esc="$emit('close')">
       <header class="modal__header">
         <div>
           <span v-if="label" class="context-badge">{{ label }}</span>

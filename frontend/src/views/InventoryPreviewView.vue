@@ -1,30 +1,70 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import AppLayout from "../components/AppLayout.vue";
+import ModalShell from "../components/ModalShell.vue";
 import { useAuthStore } from "../stores/auth.js";
+import { api, apiBlob, apiFile } from "../services/api.js";
 
 const auth = useAuthStore();
 const peutGerer = computed(() => ["administrateur", "gestionnaire"].includes(auth.utilisateur?.role));
-const materiels = [
-  { nom: "Oscilloscope MSO-4", reference: "OSC-042", mode: "Individualisé", categories: "Mesure, Électronique", disponible: true, maj: "12 min" },
-  { nom: "Caméra thermique X2", reference: "CAM-117", mode: "Individualisé", categories: "Imagerie", disponible: false, maj: "48 min" },
-  { nom: "Kit optique 532 nm", reference: "OPT-023", mode: "Non individualisé", categories: "Optique", disponible: true, maj: "2 h" },
-  { nom: "Analyseur réseau VNA", reference: "VNA-008", mode: "Individualisé", categories: "RF, Mesure", disponible: false, maj: "Hier" },
-  { nom: "Alimentation 30V / 5A", reference: "ALI-064", mode: "Non individualisé", categories: "Électronique", disponible: true, maj: "Hier" },
-  { nom: "Capteur pression PX-9", reference: "CAP-191", mode: "Individualisé", categories: "Capteurs", disponible: true, maj: "3 j" },
-];
+const materiels = ref([]); const categories = ref([]); const detail = ref(null); const historique = ref([]);
+const modal = ref(""); const chargement = ref(true); const traitement = ref(false); const erreur = ref(""); const message = ref(""); const fichier = ref(null);
+const filters = reactive({ recherche: "", categorieId: "", modeSuivi: "", tri: "nom_asc" });
+const form = reactive({ nom: "", modeSuivi: "individualise", numeroSerie: "", referenceConstructeur: "", numeroInventaire: "", categorieIds: [] });
+const nouveauNomCategorie = ref("");
+const nombreMateriels = computed(() => `${materiels.value.length} matériel${materiels.value.length > 1 ? "s" : ""}`);
+
+function formatDate(value) { return new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)); }
+function modeLabel(value) { return value === "individualise" ? "Individualisé" : "Non individualisé"; }
+function reference(item) { return item.numeroInventaire || item.numeroSerie || item.referenceConstructeur || "—"; }
+function query() { const params = new URLSearchParams(); Object.entries(filters).forEach(([key, value]) => value && params.set(key, value)); return params.toString(); }
+async function charger() {
+  chargement.value = true; erreur.value = "";
+  try { const [inventory, categoryData] = await Promise.all([api(`/materiels?${query()}`), api("/materiels/categories")]); materiels.value = inventory.materiels; categories.value = categoryData.categories; }
+  catch { erreur.value = "Impossible de charger l’inventaire."; }
+  finally { chargement.value = false; }
+}
+let debounce;
+watch(filters, () => { clearTimeout(debounce); debounce = setTimeout(charger, 250); });
+function resetFilters() { Object.assign(filters, { recherche: "", categorieId: "", modeSuivi: "", tri: "nom_asc" }); }
+function resetForm(item = null) { Object.assign(form, item ? { nom: item.nom, modeSuivi: item.modeSuivi, numeroSerie: item.numeroSerie || "", referenceConstructeur: item.referenceConstructeur || "", numeroInventaire: item.numeroInventaire || "", categorieIds: item.categories.map((category) => category.id) } : { nom: "", modeSuivi: "individualise", numeroSerie: "", referenceConstructeur: "", numeroInventaire: "", categorieIds: [] }); }
+function openCreate() { detail.value = null; resetForm(); modal.value = "form"; }
+function openCategories() { erreur.value = ""; message.value = ""; modal.value = "categories"; }
+async function openDetail(item) { erreur.value = ""; historique.value = []; try { detail.value = (await api(`/materiels/${item.id}`)).materiel; modal.value = "detail"; } catch { erreur.value = "Impossible d’ouvrir cette fiche."; } }
+function openEdit() { resetForm(detail.value); modal.value = "form"; }
+async function saveMaterial() {
+  erreur.value = ""; traitement.value = true;
+  try { const editing = Boolean(detail.value?.id); if (editing) await api(`/materiels/${detail.value.id}`, { method: "PATCH", body: JSON.stringify(form) }); else { const created = await api("/materiels", { method: "POST", body: JSON.stringify(form) }); detail.value = { id: created.id }; } await charger(); await openDetail(detail.value); message.value = editing ? "Fiche mise à jour." : "Matériel créé."; }
+  catch { erreur.value = "La fiche n’a pas pu être enregistrée."; }
+  finally { traitement.value = false; }
+}
+async function loadHistory() { try { historique.value = (await api(`/materiels/${detail.value.id}/historique`)).historique; } catch { erreur.value = "Impossible de charger l’historique."; } }
+async function upload() { if (!fichier.value) return; erreur.value = ""; traitement.value = true; try { await apiFile(`/materiels/${detail.value.id}/pieces-jointes`, fichier.value); fichier.value = null; await openDetail(detail.value); message.value = "Pièce jointe ajoutée."; } catch (error) { erreur.value = error.message === "FICHIER_TROP_VOLUMINEUX" ? "Le fichier dépasse 10 Mo." : "Fichier refusé. Utilisez un PDF, JPEG ou PNG valide."; } finally { traitement.value = false; } }
+async function download(piece) { try { const { blob } = await apiBlob(`/materiels/${detail.value.id}/pieces-jointes/${piece.id}`); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = piece.nomFichier; link.click(); URL.revokeObjectURL(url); } catch { erreur.value = "Le téléchargement a échoué."; } }
+async function removeAttachment(piece) { if (!window.confirm(`Retirer définitivement « ${piece.nomFichier} » ?`)) return; traitement.value = true; try { await api(`/materiels/${detail.value.id}/pieces-jointes/${piece.id}`, { method: "DELETE" }); await openDetail(detail.value); message.value = "Pièce jointe retirée."; } catch { erreur.value = "La pièce jointe n’a pas pu être retirée."; } finally { traitement.value = false; } }
+async function addCategory() { if (!nouveauNomCategorie.value.trim()) return; try { await api("/materiels/categories", { method: "POST", body: JSON.stringify({ nom: nouveauNomCategorie.value }) }); nouveauNomCategorie.value = ""; await charger(); } catch { erreur.value = "Cette catégorie existe déjà ou son nom est invalide."; } }
+async function renameCategory(category) { const nom = window.prompt("Nouveau nom de la catégorie", category.nom); if (!nom) return; try { await api(`/materiels/categories/${category.id}`, { method: "PATCH", body: JSON.stringify({ nom }) }); await charger(); } catch { erreur.value = "La catégorie n’a pas pu être renommée."; } }
+async function deleteCategory(category) { if (!window.confirm(`Supprimer la catégorie « ${category.nom} » ? Les matériels seront conservés.`)) return; try { await api(`/materiels/categories/${category.id}`, { method: "DELETE" }); await charger(); } catch { erreur.value = "La catégorie n’a pas pu être supprimée."; } }
+function closeModal() { modal.value = ""; detail.value = null; historique.value = []; message.value = ""; }
+onMounted(charger);
 </script>
 
 <template>
   <AppLayout>
-    <div class="page-heading">
-      <div><h1>Inventaire du laboratoire</h1><p class="muted">Consultez le matériel actif, ses catégories et sa disponibilité.</p></div>
-      <div v-if="peutGerer" class="page-actions"><button class="button button--secondary" disabled>Catégories</button><button class="button button--secondary" disabled>Exporter</button><button class="button button--primary" disabled>Nouveau matériel</button></div>
-    </div>
-    <section class="info-banner"><div><strong>{{ peutGerer ? "Aperçu de l’inventaire" : "Consultation de l’inventaire" }}</strong><p>Les opérations de gestion, les filtres et les fiches détaillées seront activés au Sprint 3.</p></div><span class="context-badge">Sprint 3</span></section>
+    <div class="page-heading"><div><h1>Inventaire du laboratoire</h1><p class="muted">Consultez et retrouvez le matériel actif et ses catégories.</p></div><div v-if="peutGerer" class="page-actions"><button class="button button--secondary" @click="openCategories">Catégories</button><button class="button button--primary" @click="openCreate">Nouveau matériel</button></div></div>
+    <section class="info-banner"><div><strong>Inventaire actif</strong><p>Recherchez par nom ou référence, puis affinez par catégorie et mode de suivi.</p></div><span class="context-badge">{{ nombreMateriels }}</span></section>
+    <p v-if="erreur && !modal" class="form-error" role="alert">{{ erreur }}</p>
     <section class="panel inventory-panel">
-      <div class="inventory-filters" aria-label="Filtres à venir"><input placeholder="⌕ Rechercher un matériel…" disabled /><select disabled><option>Toutes catégories</option></select><select disabled><option>Mode de suivi</option></select><select disabled><option>Disponibilité</option></select><button class="button button--secondary" disabled>Réinitialiser</button></div>
-      <div class="inventory-table-wrap"><table class="data-table"><thead><tr><th>Matériel</th><th>Référence</th><th>Mode de suivi</th><th>Catégories</th><th>Disponibilité</th><th>Mise à jour</th></tr></thead><tbody><tr v-for="materiel in materiels" :key="materiel.reference"><td><strong>{{ materiel.nom }}</strong></td><td>{{ materiel.reference }}</td><td>{{ materiel.mode }}</td><td>{{ materiel.categories }}</td><td><span class="availability-badge" :class="{ 'availability-badge--reserved': !materiel.disponible }">{{ materiel.disponible ? "Disponible" : "Réservé" }}</span></td><td>{{ materiel.maj }}</td></tr></tbody></table></div>
+      <div class="inventory-filters" aria-label="Filtres de l’inventaire"><input v-model="filters.recherche" type="search" aria-label="Rechercher par nom, série ou référence" placeholder="⌕ Nom, série ou référence…" /><select v-model="filters.categorieId" aria-label="Filtrer par catégorie"><option value="">Toutes catégories</option><option v-for="category in categories" :key="category.id" :value="category.id">{{ category.nom }}</option></select><select v-model="filters.modeSuivi" aria-label="Filtrer par mode de suivi"><option value="">Tous les modes</option><option value="individualise">Individualisé</option><option value="non_individualise">Non individualisé</option></select><select v-model="filters.tri" aria-label="Trier l’inventaire"><option value="nom_asc">Nom A–Z</option><option value="nom_desc">Nom Z–A</option><option value="recent">Modifiés récemment</option><option value="ancien">Modifiés anciennement</option></select><button class="button button--secondary" @click="resetFilters">Réinitialiser</button></div>
+      <div v-if="chargement" class="loading">Chargement du matériel…</div>
+      <div v-else-if="materiels.length" class="inventory-table-wrap"><table class="data-table"><thead><tr><th>Matériel</th><th>Référence</th><th>Mode de suivi</th><th>Catégories</th><th>Mise à jour</th><th></th></tr></thead><tbody><tr v-for="item in materiels" :key="item.id"><td><strong>{{ item.nom }}</strong></td><td>{{ reference(item) }}</td><td>{{ modeLabel(item.modeSuivi) }}</td><td><span v-for="category in item.categories" :key="category.id" class="context-badge category-chip">{{ category.nom }}</span><span v-if="!item.categories.length">—</span></td><td>{{ formatDate(item.modifieLe) }}</td><td><button class="button button--small button--secondary" @click="openDetail(item)">Consulter</button></td></tr></tbody></table></div>
+      <div v-else class="empty-state"><strong>Aucun matériel trouvé</strong><p>Modifiez les filtres ou créez une première fiche.</p></div>
     </section>
+
+    <ModalShell v-if="modal === 'form'" :label="detail?.id ? 'Modification' : 'Création'" :title="detail?.id ? 'Modifier le matériel' : 'Nouveau matériel'" @close="closeModal"><form class="modal__body form-grid" @submit.prevent="saveMaterial"><p v-if="erreur" class="form-error form-grid__wide" role="alert">{{ erreur }}</p><label class="form-grid__wide">Nom<input v-model="form.nom" required maxlength="160" autofocus /></label><label>Mode de suivi<select v-model="form.modeSuivi"><option value="individualise">Individualisé</option><option value="non_individualise">Non individualisé</option></select></label><label>Numéro d’inventaire<input v-model="form.numeroInventaire" maxlength="180" /></label><label>Numéro de série<input v-model="form.numeroSerie" maxlength="180" /></label><label>Référence constructeur<input v-model="form.referenceConstructeur" maxlength="180" /></label><fieldset class="category-picker form-grid__wide"><legend>Catégories facultatives</legend><label v-for="category in categories" :key="category.id" class="checkbox-label"><input v-model="form.categorieIds" type="checkbox" :value="category.id" /> {{ category.nom }}</label><span v-if="!categories.length" class="muted">Aucune catégorie.</span></fieldset><div class="modal__footer form-grid__wide"><button class="button button--secondary" type="button" :disabled="traitement" @click="closeModal">Annuler</button><button class="button button--primary" :disabled="traitement">{{ traitement ? "Enregistrement…" : "Enregistrer" }}</button></div></form></ModalShell>
+
+    <ModalShell v-else-if="modal === 'detail' && detail" label="Fiche matériel" :title="detail.nom" wide @close="closeModal"><template v-if="detail.droits.gerer" #actions><button class="button button--secondary" :disabled="traitement" @click="openEdit">Modifier</button></template><div class="modal__body material-detail"><p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p><p v-if="message" class="form-success" role="status">{{ message }}</p><dl class="material-facts"><div><dt>Mode</dt><dd>{{ modeLabel(detail.modeSuivi) }}</dd></div><div><dt>N° inventaire</dt><dd>{{ detail.numeroInventaire || '—' }}</dd></div><div><dt>N° série</dt><dd>{{ detail.numeroSerie || '—' }}</dd></div><div><dt>Référence</dt><dd>{{ detail.referenceConstructeur || '—' }}</dd></div><div><dt>Catégories</dt><dd>{{ detail.categories.map((item) => item.nom).join(', ') || 'Aucune' }}</dd></div><div><dt>Création</dt><dd>{{ formatDate(detail.creeLe) }} par {{ detail.auteurCreation.identifiant }}</dd></div></dl><section v-if="detail.droits.voirPiecesJointes" class="detail-section"><div class="section-heading"><div><h2>Pièces jointes</h2><p>PDF, JPEG ou PNG — 10 Mo maximum.</p></div></div><form class="attachment-form" @submit.prevent="upload"><input type="file" aria-label="Choisir une pièce jointe" accept="application/pdf,image/jpeg,image/png" @change="fichier = $event.target.files[0]" /><button class="button button--primary" :disabled="!fichier || traitement">{{ traitement ? "Ajout…" : "Ajouter" }}</button></form><ul class="attachment-list"><li v-for="piece in detail.piecesJointes" :key="piece.id"><div><strong>{{ piece.nomFichier }}</strong><small>{{ Math.ceil(piece.taille / 1024) }} Ko · {{ formatDate(piece.ajouteLe) }} · {{ piece.auteur.identifiant }}</small></div><button class="button button--small button--secondary" :disabled="traitement" @click="download(piece)">Télécharger</button><button class="button button--small button--danger" :disabled="traitement" @click="removeAttachment(piece)">Retirer</button></li></ul><p v-if="!detail.piecesJointes.length" class="muted">Aucune pièce jointe.</p></section><section v-if="detail.droits.voirHistorique" class="detail-section"><div class="section-heading"><div><h2>Historique</h2><p>Créations, modifications et mouvements de documents.</p></div><button class="button button--secondary" @click="loadHistory">Afficher</button></div><ul v-if="historique.length" class="history-list"><li v-for="event in historique" :key="event.id"><strong>{{ ({ creation: 'Création', modification: 'Modification', ajout_piece_jointe: 'Ajout de pièce jointe', retrait_piece_jointe: 'Retrait de pièce jointe' })[event.type] }}</strong><span>{{ formatDate(event.creeLe) }} · {{ event.auteur.identifiant }}</span></li></ul></section></div><footer class="modal__footer modal__footer--between"><small>Matériel actif · dernière mise à jour {{ formatDate(detail.modifieLe) }}</small><button class="button button--secondary" :disabled="traitement" @click="closeModal">Fermer</button></footer></ModalShell>
+
+    <ModalShell v-else-if="modal === 'categories'" label="Inventaire" title="Gérer les catégories" @close="closeModal"><div class="modal__body"><p v-if="erreur" class="form-error">{{ erreur }}</p><form class="inline-form" @submit.prevent="addCategory"><input v-model="nouveauNomCategorie" required maxlength="100" placeholder="Nouvelle catégorie" /><button class="button button--primary">Ajouter</button></form><ul class="category-list"><li v-for="category in categories" :key="category.id"><strong>{{ category.nom }}</strong><div><button class="button button--small button--secondary" @click="renameCategory(category)">Renommer</button><button class="button button--small button--danger" @click="deleteCategory(category)">Supprimer</button></div></li></ul></div></ModalShell>
   </AppLayout>
 </template>

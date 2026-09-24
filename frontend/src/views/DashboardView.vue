@@ -42,9 +42,6 @@ onMounted(async () => {
         <article v-if="!estGestionnaire" class="metric-card">
           <span class="metric-card__icon">P</span><div><strong>{{ dashboard.indicateurs.projetsActifs }}</strong><small>Projets actifs</small></div>
         </article>
-        <article v-if="dashboard.indicateurs.alertesInventaire !== null" class="metric-card">
-          <span class="metric-card__icon">A</span><div><strong>{{ dashboard.indicateurs.alertesInventaire }}</strong><small>Alertes inventaire</small></div>
-        </article>
       </section>
 
       <div class="dashboard-grid">
@@ -57,7 +54,7 @@ onMounted(async () => {
           <div v-if="dashboard.projets.length" class="project-table">
             <div class="project-table__head"><span>Projet</span><span>Visibilité</span><span>Avancement</span><span>Statut</span></div>
             <div v-for="projet in dashboard.projets" :key="projet.id" class="project-table__row">
-              <span><strong>{{ projet.nom }}</strong><small>{{ projet.id }}</small></span>
+              <span><strong>{{ projet.nom }}</strong><small>Responsable : {{ projet.responsable.identifiant }}</small></span>
               <span><span class="visibility-badge" :class="`visibility-badge--${projet.visibilite}`">{{ projet.visibilite === 'public' ? 'Public' : 'Privé' }}</span></span>
               <span>{{ projet.progression }} %</span>
               <span><span class="status-badge">Actif</span></span>
@@ -71,7 +68,7 @@ onMounted(async () => {
         <aside class="dashboard-aside">
           <section class="panel quick-actions">
             <h2>Actions rapides</h2>
-            <RouterLink class="button button--soft" to="/inventaire">Gérer l’inventaire</RouterLink>
+            <RouterLink class="button button--soft" to="/inventaire">{{ estAdmin || estGestionnaire ? "Gérer l’inventaire" : "Consulter l’inventaire" }}</RouterLink>
             <RouterLink v-if="!estGestionnaire" class="button button--secondary" to="/projets/nouveau">Créer un projet</RouterLink>
             <RouterLink v-if="estAdmin" class="button button--secondary" to="/utilisateurs">Attribuer le rôle gestionnaire</RouterLink>
           </section>
@@ -79,7 +76,7 @@ onMounted(async () => {
           <div class="panel__header"><h2>Activité récente</h2></div>
           <div class="material-list">
             <article v-for="materiel in dashboard.materielsRecents" :key="materiel.id">
-              <span class="material-icon">I</span><div><h3>{{ materiel.nom }}</h3><small>{{ materiel.id }} · {{ materiel.categorie }}</small></div>
+              <span class="material-icon">I</span><div><h3>{{ materiel.nom }}</h3><small>{{ materiel.reference }} · {{ materiel.categorie }}</small></div>
             </article>
           </div>
           </section>

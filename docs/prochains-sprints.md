@@ -1,6 +1,6 @@
 # SUIVI — Contenu des prochains sprints
 
-**Mise à jour :** 23 septembre 2026. **Statut :** Sprint 2 implémenté ; les durées, dates, responsables et capacités des sprints suivants restent à planifier avec l’équipe.
+**Mise à jour :** 24 septembre 2026. **Statut :** Sprint 3 implémenté et migration PostgreSQL appliquée ; recette métier complète et acceptation formelle restent à consigner.
 
 ## Décisions de planification
 
@@ -41,6 +41,8 @@ Les décisions D-14 à D-19 fixent les comportements nécessaires au Sprint 2. L
 ## Sprint 3 — Inventaire et pièces jointes
 
 **Objectif :** rendre l’inventaire actif exploitable et permettre de conserver les justificatifs associés à chaque article.
+
+**Avancement au 24 septembre 2026 :** le périmètre applicatif est implémenté et la migration PostgreSQL a été appliquée sur la stack Docker locale. Les arbitrages encore ouverts sont couverts par des hypothèses de prototype documentées dans la [réalisation technique](sprint-03-realisation.md). La recette métier complète et l’acceptation formelle restent à exécuter.
 
 | Contenu | Stories | Résultat attendu |
 | --- | --- | --- |

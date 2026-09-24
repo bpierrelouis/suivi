@@ -7,6 +7,7 @@ import dashboardRoutes from "./routes/dashboard.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import projetRoutes from "./routes/projet.routes.js";
 import utilisateurRoutes from "./routes/utilisateur.routes.js";
+import materielRoutes from "./routes/materiel.routes.js";
 import { errorHandler, notFound } from "./middlewares/error.middleware.js";
 
 export const app = express();
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/projets", projetRoutes);
 app.use("/api/utilisateurs", utilisateurRoutes);
+app.use("/api/materiels", materielRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

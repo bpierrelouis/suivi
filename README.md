@@ -16,7 +16,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 
 ## État du projet
 
-Le Sprint 1 a livré le socle Vue/Express/Prisma, la connexion simulée et les tableaux de bord adaptés aux rôles. Le périmètre applicatif du Sprint 2 est implémenté : administration du gestionnaire, projets, membres, Kanban, clôture automatique et documentation Markdown exportable en DOCX. La gestion des projets passe avant celle de l’inventaire. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
+Le Sprint 1 a livré le socle Vue/Express/Prisma, la connexion simulée et les tableaux de bord adaptés aux rôles. Le Sprint 2 a livré l’administration du gestionnaire, les projets, les membres, le Kanban, la clôture automatique et la documentation Markdown exportable en DOCX. Le périmètre applicatif du Sprint 3 est implémenté : inventaire actif, catégories, recherche et tri, historique et pièces jointes contrôlées. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
 
 Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
 
@@ -31,6 +31,7 @@ Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories,
 - [Stack technique initiale et décisions d’architecture](docs/stack-technique.md).
 - [Réalisation technique du Sprint 1](docs/sprint-01-realisation.md).
 - [Réalisation technique du Sprint 2](docs/sprint-02-realisation.md).
+- [Réalisation technique du Sprint 3](docs/sprint-03-realisation.md).
 - [Compte rendu de réunion client](docs/compte-rendu-reunion-client.md) — source des besoins.
 - [User stories et critères d’acceptation](docs/user-stories.md).
 - [Backlog produit et proposition de lots](docs/backlog.md).
@@ -38,4 +39,4 @@ Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories,
 - [Contenu des prochains sprints](docs/prochains-sprints.md).
 - [Questions et décisions à valider](docs/decisions-et-questions.md).
 
-La documentation a été actualisée le 23 septembre 2026 avec la réalisation du Sprint 2. Le contenu des prochains sprints formalise les priorités fonctionnelles sans engager de durée ni de date de livraison.
+La documentation a été actualisée le 24 septembre 2026 avec la réalisation applicative du Sprint 3. Le contenu des prochains sprints formalise les priorités fonctionnelles sans engager de durée ni de date de livraison.

@@ -1,6 +1,6 @@
 # SUIVI — Backlog produit
 
-**Date :** 23 septembre 2026. **Statut :** Sprint 2 implémenté ; recette PostgreSQL et acceptation formelle à consigner.
+**Date :** 24 septembre 2026. **Statut :** Sprint 3 implémenté et migration PostgreSQL appliquée ; recette métier complète et acceptation formelle à consigner.
 
 ## Priorisation et états
 
@@ -20,16 +20,16 @@ Les sprints S2 à S5 décrivent la suite fonctionnelle, sans durée ni date. Les
 | [US-02](user-stories.md#us-02) | Compte administrateur prédéfini | E1 | P0 | S1 | US-01, Q-21 | Terminé selon le retour d’équipe ; recette détaillée à consigner |
 | [US-03](user-stories.md#us-03) | Attribution du gestionnaire | E1 | P1 | S2 | US-01, US-02 ; D-14 | Implémenté ; recette à exécuter |
 | [US-04](user-stories.md#us-04) | Tableau de bord par profil | E1 | P0 | S1 | US-01, US-02, US-30 ; Q-14 | Terminé selon le retour d’équipe ; recette détaillée à consigner |
-| [US-05](user-stories.md#us-05) | Consultation du matériel actif | E2 | P1 | S3 | US-01 | À préparer ; réservations branchées en S4 |
-| [US-06](user-stories.md#us-06) | Création de matériel | E2 | P1 | S3 | US-01, US-02 ; Q-08, Q-23 | À arbitrer |
-| [US-07](user-stories.md#us-07) | Modification de matériel | E2 | P1 | S3 | US-06 ; Q-08, Q-09, Q-23 | À arbitrer |
-| [US-08](user-stories.md#us-08) | Catégories et associations | E2 | P1 | S3 | US-06 ; Q-10 | À préparer ; initialisation à préciser |
-| [US-09](user-stories.md#us-09) | Recherche, filtres et tri | E2 | P1 | S3 puis S4 | US-05, US-08 ; Q-08, Q-25 | À arbitrer ; critères projet/disponibilité complétés en S4 |
+| [US-05](user-stories.md#us-05) | Consultation du matériel actif | E2 | P1 | S3 | US-01 | Implémenté ; réservations branchées en S4 |
+| [US-06](user-stories.md#us-06) | Création de matériel | E2 | P1 | S3 | US-01, US-02 ; Q-08, Q-23 | Implémenté avec hypothèses provisoires |
+| [US-07](user-stories.md#us-07) | Modification de matériel | E2 | P1 | S3 | US-06 ; Q-08, Q-09, Q-23 | Implémenté avec hypothèses provisoires |
+| [US-08](user-stories.md#us-08) | Catégories et associations | E2 | P1 | S3 | US-06 ; Q-10 | Implémenté ; initialisation à valider |
+| [US-09](user-stories.md#us-09) | Recherche, filtres et tri | E2 | P1 | S3 puis S4 | US-05, US-08 ; Q-08, Q-25 | Tranche S3 implémentée ; projet/disponibilité en S4 |
 | [US-10](user-stories.md#us-10) | Suppression/archivage de matériel | E2 | P1 | S4 | US-06, US-12 ; US-24, US-27 | À préparer |
 | [US-11](user-stories.md#us-11) | Archives du matériel | E2 | P1 | S4 | US-10, US-12, US-25 | À préparer |
-| [US-12](user-stories.md#us-12) | Historique du matériel actif | E2 | P1 | S3 | US-06, US-07 | À préparer |
+| [US-12](user-stories.md#us-12) | Historique du matériel actif | E2 | P1 | S3 | US-06, US-07 | Implémenté ; recette à exécuter |
 | [US-13](user-stories.md#us-13) | Exports de l’inventaire | E2 | P2 | S5 | US-09, US-29 ; Q-11 | À arbitrer ; formats envisagés |
-| [US-33](user-stories.md#us-33) | Pièces jointes d’un matériel | E2 | P1 | S3 | US-05, US-06 ; Q-29 | Nouveau besoin client ; contraintes à arbitrer |
+| [US-33](user-stories.md#us-33) | Pièces jointes d’un matériel | E2 | P1 | S3 | US-05, US-06 ; Q-29 | Implémenté avec contraintes provisoires à valider |
 | [US-14](user-stories.md#us-14) | Création de projet | E3 | P1 | S2 | US-01 ; D-15 | Implémenté ; recette à exécuter |
 | [US-15](user-stories.md#us-15) | Consultation des projets | E3 | P1 | S2 | US-14 | Implémenté ; recette à exécuter |
 | [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | S2 puis S4 | US-14, US-17 ; D-15, D-19 | Tranche S2 implémentée ; archivage S4 restant |

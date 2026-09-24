@@ -56,11 +56,7 @@ async function logout() {
 
     <div class="workspace">
       <header class="topbar">
-        <label class="global-search">
-          <span class="sr-only">Rechercher dans S.U.I.V.I.</span>
-          <span aria-hidden="true">⌕</span>
-          <input type="search" placeholder="Rechercher dans S.U.I.V.I." disabled />
-        </label>
+        <div class="topbar__context"><strong>Espace laboratoire</strong><span>Inventaire et suivi des projets</span></div>
         <div class="topbar__account">
           <button class="notification-button" type="button" aria-label="Notifications à venir" disabled>○<span></span></button>
           <span class="account__avatar">{{ initiales }}</span>

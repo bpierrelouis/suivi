@@ -6,6 +6,9 @@ export function notFound(req, res) {
 
 export function errorHandler(error, req, res, next) {
   if (res.headersSent) return next(error);
+  if (error?.type === "entity.too.large") {
+    return res.status(413).json({ error: "FICHIER_TROP_VOLUMINEUX" });
+  }
   if (error instanceof AppError) {
     return res.status(error.status).json({ error: error.code });
   }

@@ -1,5 +1,8 @@
-import { buildDashboard } from "../services/dashboard.service.js";
+import { dashboardRepository } from "../repositories/dashboard.repository.js";
+import { createDashboardService } from "../services/dashboard.service.js";
 
-export function getDashboard(req, res) {
-  res.json(buildDashboard(req.utilisateur));
+const service = createDashboardService(dashboardRepository);
+
+export async function getDashboard(req, res) {
+  res.json(await service.build(req.utilisateur));
 }
