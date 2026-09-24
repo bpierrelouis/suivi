@@ -7,6 +7,7 @@ import ProjectsView from "../views/ProjectsView.vue";
 import ProjectDetailView from "../views/ProjectDetailView.vue";
 import ProjectCreateView from "../views/ProjectCreateView.vue";
 import UsersView from "../views/UsersView.vue";
+import NotificationsView from "../views/NotificationsView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,6 +26,7 @@ const router = createRouter({
       ],
     },
     { path: "/utilisateurs", name: "utilisateurs", component: UsersView, meta: { administrateur: true } },
+    { path: "/notifications", name: "notifications", component: NotificationsView },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 });

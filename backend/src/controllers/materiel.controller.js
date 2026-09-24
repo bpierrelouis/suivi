@@ -1,8 +1,12 @@
 import { z } from "zod";
 import { materielRepository } from "../repositories/materiel.repository.js";
 import { createMaterielService } from "../services/materiel.service.js";
+import { reservationRepository } from "../repositories/reservation.repository.js";
+import { projetRepository } from "../repositories/projet.repository.js";
+import { createReservationService } from "../services/reservation.service.js";
 
 const service = createMaterielService(materielRepository);
+const reservations = createReservationService(reservationRepository, projetRepository);
 const uuid = z.uuid();
 const optionalText = z.union([z.string().trim().max(180), z.literal(""), z.null()]).optional().transform((value) => value || null);
 const materielSchema = z.object({
@@ -30,10 +34,15 @@ export async function listMateriels(req, res) {
   if (!filters.success) return res.status(400).json({ error: "FILTRES_INVALIDES" });
   res.json({ materiels: await service.list(req.utilisateur, filters.data) });
 }
+export async function listArchivedMateriels(req, res) { const filters = filtersSchema.safeParse(req.query); if (!filters.success) return res.status(400).json({ error: "FILTRES_INVALIDES" }); res.json({ materiels: await service.listArchived(req.utilisateur, filters.data) }); }
+export async function getArchivedMateriel(req, res) { const value = id(req.params.id, res); if (value) res.json({ materiel: await service.getArchived(req.utilisateur, value) }); }
 export async function getMateriel(req, res) { const value = id(req.params.id, res); if (value) res.json({ materiel: await service.get(req.utilisateur, value) }); }
 export async function createMateriel(req, res) { const body = materielSchema.safeParse(req.body); if (!body.success) return res.status(400).json({ error: "MATERIEL_INVALIDE" }); res.status(201).json(await service.create(req.utilisateur, body.data)); }
 export async function updateMateriel(req, res) { const value = id(req.params.id, res); const body = materielSchema.safeParse(req.body); if (!value || !body.success) return body.success ? undefined : res.status(400).json({ error: "MATERIEL_INVALIDE" }); await service.update(req.utilisateur, value, body.data); res.status(204).send(); }
 export async function getHistory(req, res) { const value = id(req.params.id, res); if (value) res.json({ historique: await service.history(req.utilisateur, value) }); }
+export async function getArchivedHistory(req, res) { const value = id(req.params.id, res); if (value) res.json({ historique: await service.archivedHistory(req.utilisateur, value) }); }
+export async function archiveMateriel(req, res) { const value = id(req.params.id, res); if (value) res.json(await service.archive(req.utilisateur, value)); }
+export async function getMaterialReservations(req, res) { const value = id(req.params.id, res); if (!value) return; const archived = req.query.archive === "true"; res.json({ reservations: await reservations.listForMaterial(req.utilisateur, value, archived) }); }
 export async function listCategories(req, res) { res.json({ categories: await service.listCategories() }); }
 export async function createCategory(req, res) { const body = categorieSchema.safeParse(req.body); if (!body.success) return res.status(400).json({ error: "CATEGORIE_INVALIDE" }); res.status(201).json({ categorie: await service.createCategory(req.utilisateur, body.data.nom) }); }
 export async function updateCategory(req, res) { const value = id(req.params.id, res); const body = categorieSchema.safeParse(req.body); if (!value || !body.success) return body.success ? undefined : res.status(400).json({ error: "CATEGORIE_INVALIDE" }); res.json({ categorie: await service.updateCategory(req.utilisateur, value, body.data.nom) }); }

@@ -8,6 +8,7 @@ import healthRoutes from "./routes/health.routes.js";
 import projetRoutes from "./routes/projet.routes.js";
 import utilisateurRoutes from "./routes/utilisateur.routes.js";
 import materielRoutes from "./routes/materiel.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 import { errorHandler, notFound } from "./middlewares/error.middleware.js";
 
 export const app = express();
@@ -24,6 +25,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/projets", projetRoutes);
 app.use("/api/utilisateurs", utilisateurRoutes);
 app.use("/api/materiels", materielRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

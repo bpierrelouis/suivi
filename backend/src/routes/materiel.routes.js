@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { addAttachment, createCategory, createMateriel, deleteCategory, downloadAttachment, getHistory, getMateriel, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
+import { addAttachment, archiveMateriel, createCategory, createMateriel, deleteCategory, downloadAttachment, getArchivedHistory, getArchivedMateriel, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
 import { requireSession } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -8,11 +8,16 @@ router.get("/categories", listCategories);
 router.post("/categories", createCategory);
 router.patch("/categories/:id", updateCategory);
 router.delete("/categories/:id", deleteCategory);
+router.get("/archives", listArchivedMateriels);
+router.get("/archives/:id", getArchivedMateriel);
+router.get("/archives/:id/historique", getArchivedHistory);
 router.get("/", listMateriels);
 router.post("/", createMateriel);
 router.get("/:id", getMateriel);
 router.patch("/:id", updateMateriel);
+router.post("/:id/archivage", archiveMateriel);
 router.get("/:id/historique", getHistory);
+router.get("/:id/reservations", getMaterialReservations);
 router.post("/:id/pieces-jointes", express.raw({ type: ["application/pdf", "image/jpeg", "image/png"], limit: "10mb" }), addAttachment);
 router.get("/:id/pieces-jointes/:pieceId", downloadAttachment);
 router.delete("/:id/pieces-jointes/:pieceId", removeAttachment);

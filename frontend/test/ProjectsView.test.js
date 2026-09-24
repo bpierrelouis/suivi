@@ -35,7 +35,7 @@ describe("ProjectsView", () => {
     const wrapper = mount(ProjectsView, { global });
     await flushPromises();
 
-    expect(api).toHaveBeenCalledWith("/projets");
+    expect(api).toHaveBeenCalledWith("/projets?statut=actif");
     expect(wrapper.text()).toContain("Modernisation du laboratoire");
     expect(wrapper.text()).toContain("Privé");
     expect(wrapper.text()).toContain("Membre");

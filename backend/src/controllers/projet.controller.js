@@ -44,7 +44,9 @@ function parseIds(req, res, includeTask = false) {
 }
 
 export async function listProjets(req, res) {
-  res.json({ projets: await projetService.list(req.utilisateur) });
+  const statut = z.enum(["actif", "archive"]).default("actif").safeParse(req.query.statut);
+  if (!statut.success) return res.status(400).json({ error: "FILTRES_INVALIDES" });
+  res.json({ projets: await projetService.list(req.utilisateur, statut.data) });
 }
 
 export async function getProjet(req, res) {
@@ -130,4 +132,11 @@ export async function exportDocumentation(req, res) {
     "Content-Length": buffer.length,
   });
   res.send(buffer);
+}
+
+export async function archiveProjet(req, res) {
+  const ids = parseIds(req, res);
+  if (!ids) return;
+  await projetService.archive(req.utilisateur, ids.projetId);
+  res.status(204).send();
 }

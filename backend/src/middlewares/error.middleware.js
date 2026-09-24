@@ -15,6 +15,9 @@ export function errorHandler(error, req, res, next) {
   if (error?.code === "P2002") {
     return res.status(409).json({ error: "CONFLIT_UNICITE" });
   }
+  if (error?.code === "P2004" || error?.meta?.database_error?.code === "23P01" || error?.code === "23P01") {
+    return res.status(409).json({ error: "CRENEAU_INDISPONIBLE" });
+  }
   console.error(error);
   res.status(500).json({ error: "ERREUR_INTERNE" });
 }

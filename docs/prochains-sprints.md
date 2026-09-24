@@ -1,6 +1,6 @@
 # SUIVI — Contenu des prochains sprints
 
-**Mise à jour :** 24 septembre 2026. **Statut :** Sprint 3 implémenté et migration PostgreSQL appliquée ; recette métier complète et acceptation formelle restent à consigner.
+**Mise à jour :** 24 septembre 2026. **Statut :** Sprint 4 implémenté et migration PostgreSQL appliquée ; acceptation formelle reste à consigner.
 
 ## Décisions de planification
 
@@ -64,6 +64,8 @@ La suppression et les archives du matériel restent au Sprint 4, car leur recett
 ## Sprint 4 — Réservations, archivage et traçabilité
 
 **Objectif :** relier les projets à l’inventaire en garantissant la cohérence des réservations et des archives.
+
+**Avancement au 24 septembre 2026 :** le périmètre applicatif est implémenté et validé sur la stack Docker locale. Les choix de prototype et les résultats de recette sont consignés dans la [réalisation technique du Sprint 4](sprint-04-realisation.md).
 
 Ce sprint regroupe US-10, US-11, US-20 à US-25, US-27, US-28 et US-31, ainsi que les tranches restantes de US-09 et US-29. Il couvre les réservations sans chevauchement, leur modification et leur annulation, l’archivage des projets et matériels, les historiques et les notifications.
 

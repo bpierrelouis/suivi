@@ -43,22 +43,58 @@ enum TypeEvenementMateriel {
   modification
   ajout_piece_jointe
   retrait_piece_jointe
+  archivage
+}
+
+enum StatutReservation {
+  active
+  annulee
+  liberee
+}
+
+enum TypeEvenementReservation {
+  creation
+  modification
+  annulation
+  liberation
+}
+
+enum TypeEvenementProjet {
+  creation
+  modification
+  ajout_membre
+  retrait_membre
+  creation_tache
+  modification_tache
+  suppression_tache
+  archivage
+}
+
+enum TypeNotification {
+  materiel_archive
+  reservation_liberee
 }
 
 model Utilisateur {
-  id                      String                @id @default(uuid()) @db.Uuid
-  identifiant             String                @unique
-  motDePasse              String                @map("mot_de_passe")
-  role                    Role                  @default(utilisateur)
-  creeLe                  DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
-  derniereConnexion       DateTime?             @map("derniere_connexion") @db.Timestamptz(3)
-  projetsResponsables     Projet[]              @relation("ResponsableProjet")
+  id                      String                  @id @default(uuid()) @db.Uuid
+  identifiant             String                  @unique
+  motDePasse              String                  @map("mot_de_passe")
+  role                    Role                    @default(utilisateur)
+  creeLe                  DateTime                @default(now()) @map("cree_le") @db.Timestamptz(3)
+  derniereConnexion       DateTime?               @map("derniere_connexion") @db.Timestamptz(3)
+  projetsResponsables     Projet[]                @relation("ResponsableProjet")
   participations          Participation[]
-  tachesAssignees         Tache[]               @relation("ResponsableTache")
-  documentationsModifiees DocumentationProjet[] @relation("AuteurDocumentation")
-  materielsCrees          Materiel[]            @relation("AuteurCreationMateriel")
-  historiquesMateriel     HistoriqueMateriel[]  @relation("AuteurEvenementMateriel")
-  piecesJointesMateriel   PieceJointeMateriel[] @relation("AuteurPieceJointeMateriel")
+  tachesAssignees         Tache[]                 @relation("ResponsableTache")
+  documentationsModifiees DocumentationProjet[]   @relation("AuteurDocumentation")
+  materielsCrees          Materiel[]              @relation("AuteurCreationMateriel")
+  historiquesMateriel     HistoriqueMateriel[]    @relation("AuteurEvenementMateriel")
+  piecesJointesMateriel   PieceJointeMateriel[]   @relation("AuteurPieceJointeMateriel")
+  materielsArchives       Materiel[]              @relation("AuteurArchivageMateriel")
+  reservationsCreees      Reservation[]           @relation("CreateurReservation")
+  reservationsAnnulees    Reservation[]           @relation("AuteurAnnulationReservation")
+  historiquesReservation  HistoriqueReservation[] @relation("AuteurEvenementReservation")
+  historiquesProjet       HistoriqueProjet[]      @relation("AuteurEvenementProjet")
+  notifications           Notification[]          @relation("DestinataireNotification")
 
   @@map("utilisateurs")
 }
@@ -76,6 +112,10 @@ model Materiel {
   categories            MaterielCategorie[]
   historique            HistoriqueMateriel[]
   piecesJointes         PieceJointeMateriel[]
+  archiveLe             DateTime?             @map("archive_le") @db.Timestamptz(3)
+  archiveParId          String?               @map("archive_par_id") @db.Uuid
+  archivePar            Utilisateur?          @relation("AuteurArchivageMateriel", fields: [archiveParId], references: [id], onDelete: Restrict)
+  reservations          Reservation[]
   creeLe                DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
   modifieLe             DateTime              @updatedAt @map("modifie_le") @db.Timestamptz(3)
 
@@ -147,11 +187,80 @@ model Projet {
   participations Participation[]
   taches         Tache[]
   documentation  DocumentationProjet?
+  reservations   Reservation[]
+  historique     HistoriqueProjet[]
   creeLe         DateTime             @default(now()) @map("cree_le") @db.Timestamptz(3)
   modifieLe      DateTime             @updatedAt @map("modifie_le") @db.Timestamptz(3)
 
   @@index([statut, visibilite])
   @@map("projets")
+}
+
+model Reservation {
+  id              String                  @id @default(uuid()) @db.Uuid
+  materielId      String                  @map("materiel_id") @db.Uuid
+  materiel        Materiel                @relation(fields: [materielId], references: [id], onDelete: Restrict)
+  projetId        String                  @map("projet_id") @db.Uuid
+  projet          Projet                  @relation(fields: [projetId], references: [id], onDelete: Restrict)
+  reserveParId    String                  @map("reserve_par_id") @db.Uuid
+  reservePar      Utilisateur             @relation("CreateurReservation", fields: [reserveParId], references: [id], onDelete: Restrict)
+  debut           DateTime                @db.Timestamptz(3)
+  fin             DateTime                @db.Timestamptz(3)
+  statut          StatutReservation       @default(active)
+  annuleLe        DateTime?               @map("annule_le") @db.Timestamptz(3)
+  annuleParId     String?                 @map("annule_par_id") @db.Uuid
+  annulePar       Utilisateur?            @relation("AuteurAnnulationReservation", fields: [annuleParId], references: [id], onDelete: Restrict)
+  motifAnnulation String?                 @map("motif_annulation")
+  historique      HistoriqueReservation[]
+  creeLe          DateTime                @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe       DateTime                @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@index([projetId, debut])
+  @@index([materielId, debut])
+  @@map("reservations")
+}
+
+model HistoriqueReservation {
+  id            String                   @id @default(uuid()) @db.Uuid
+  reservationId String                   @map("reservation_id") @db.Uuid
+  reservation   Reservation              @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+  type          TypeEvenementReservation
+  details       Json?
+  auteurId      String?                  @map("auteur_id") @db.Uuid
+  auteur        Utilisateur?             @relation("AuteurEvenementReservation", fields: [auteurId], references: [id], onDelete: Restrict)
+  creeLe        DateTime                 @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@index([reservationId, creeLe])
+  @@map("historique_reservations")
+}
+
+model HistoriqueProjet {
+  id       String              @id @default(uuid()) @db.Uuid
+  projetId String              @map("projet_id") @db.Uuid
+  projet   Projet              @relation(fields: [projetId], references: [id], onDelete: Restrict)
+  type     TypeEvenementProjet
+  details  Json?
+  auteurId String?             @map("auteur_id") @db.Uuid
+  auteur   Utilisateur?        @relation("AuteurEvenementProjet", fields: [auteurId], references: [id], onDelete: Restrict)
+  creeLe   DateTime            @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@index([projetId, creeLe])
+  @@map("historique_projets")
+}
+
+model Notification {
+  id             String           @id @default(uuid()) @db.Uuid
+  destinataireId String           @map("destinataire_id") @db.Uuid
+  destinataire   Utilisateur      @relation("DestinataireNotification", fields: [destinataireId], references: [id], onDelete: Restrict)
+  type           TypeNotification
+  titre          String
+  message        String
+  details        Json?
+  luLe           DateTime?        @map("lu_le") @db.Timestamptz(3)
+  creeLe         DateTime         @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@index([destinataireId, luLe, creeLe])
+  @@map("notifications")
 }
 
 model Tache {

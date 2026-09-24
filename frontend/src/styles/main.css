@@ -180,6 +180,18 @@ input:disabled, select:disabled, textarea:disabled { color: #4b5870; background:
 .category-list li > div { display: flex; gap: 7px; }
 .history-list li { display: flex; padding: 8px 0; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--line); font-size: 0.74rem; }
 .history-list span { color: var(--muted); }
+.segmented-control { display: inline-flex; margin: 0 0 16px; padding: 3px; gap: 3px; border: 1px solid var(--line); border-radius: 10px; background: #f5f7fb; }
+.segmented-control button { padding: 8px 13px; border: 0; border-radius: 7px; color: var(--muted); background: transparent; cursor: pointer; font-size: 0.72rem; font-weight: 700; }
+.segmented-control button.active { color: var(--blue); background: white; box-shadow: 0 1px 4px rgba(31, 49, 78, 0.12); }
+.notification-count { min-width: 20px; margin-left: auto; padding: 2px 6px; border-radius: 99px; color: white; background: var(--danger); text-align: center; font-size: 0.64rem; }
+.notification-list, .reservation-list { display: flex; flex-direction: column; gap: 10px; }
+.notification-card, .reservation-card { display: flex; padding: 16px 18px; align-items: center; justify-content: space-between; gap: 20px; }
+.notification-card--unread { border-left: 4px solid var(--blue); background: #f8fbff; }
+.notification-card h2 { margin: 8px 0 4px; font-size: 0.95rem; }
+.notification-card p, .reservation-card p { margin: 0 0 5px; color: #455169; font-size: 0.76rem; }
+.notification-card small, .reservation-card small { color: var(--muted); }
+.reservation-form { margin-bottom: 16px; padding: 15px; border: 1px solid var(--line); border-radius: 11px; background: #fafbfd; }
+.reservation-card { border: 1px solid var(--line); border-radius: 10px; }
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 100; display: grid; padding: 38px 20px; place-items: center; background: rgba(21, 33, 54, 0.43); }
 .modal { display: flex; overflow: hidden; width: min(720px, calc(100vw - 40px)); max-height: calc(100vh - 76px); flex-direction: column; border-radius: 17px; background: white; box-shadow: var(--shadow); }

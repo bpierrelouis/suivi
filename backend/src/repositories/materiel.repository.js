@@ -11,6 +11,8 @@ const summarySelect = {
   creeLe: true,
   modifieLe: true,
   categories: { select: { categorie: { select: categorySelect } } },
+  statut: true,
+  archiveLe: true,
 };
 
 export function findActiveMateriels({ recherche, categorieId, modeSuivi, tri = "nom_asc" } = {}) {
@@ -46,6 +48,21 @@ export function findActiveMaterielById(id) {
         },
       },
     },
+  });
+}
+
+export function findArchivedMateriels(filters = {}) {
+  const { recherche, categorieId, modeSuivi, tri = "recent" } = filters;
+  return prisma.materiel.findMany({
+    where: { statut: "archive", ...(recherche ? { OR: ["nom", "numeroSerie", "referenceConstructeur", "numeroInventaire"].map((field) => ({ [field]: { contains: recherche, mode: "insensitive" } })) } : {}), ...(categorieId ? { categories: { some: { categorieId } } } : {}), ...(modeSuivi ? { modeSuivi } : {}) },
+    orderBy: tri === "nom_asc" ? { nom: "asc" } : tri === "nom_desc" ? { nom: "desc" } : { archiveLe: "desc" }, select: summarySelect,
+  });
+}
+
+export function findArchivedMaterielById(id) {
+  return prisma.materiel.findFirst({
+    where: { id, statut: "archive" },
+    select: { ...summarySelect, auteurCreation: { select: { id: true, identifiant: true } }, archivePar: { select: { id: true, identifiant: true } }, piecesJointes: { orderBy: { ajouteLe: "desc" }, select: { id: true, nomFichier: true, typeMime: true, taille: true, ajouteLe: true, auteur: { select: { id: true, identifiant: true } } } } },
   });
 }
 
@@ -135,8 +152,29 @@ export function deleteAttachment(id, materielId, auteurId) {
   });
 }
 
+export function archiveMateriel(id, auteurId) {
+  return prisma.$transaction(async (transaction) => {
+    const materiel = await transaction.materiel.update({ where: { id }, data: { statut: "archive", archiveLe: new Date(), archiveParId: auteurId }, select: { id: true, nom: true } });
+    const reservations = await transaction.reservation.findMany({ where: { materielId: id, statut: "active", fin: { gt: new Date() } }, select: { id: true, projetId: true, projet: { select: { nom: true, participations: { select: { utilisateurId: true } } } } } });
+    if (reservations.length) {
+      const reservationIds = reservations.map((item) => item.id);
+      await transaction.reservation.updateMany({ where: { id: { in: reservationIds } }, data: { statut: "liberee", annuleLe: new Date(), annuleParId: auteurId, motifAnnulation: "archivage_materiel" } });
+      await transaction.historiqueReservation.createMany({ data: reservationIds.map((reservationId) => ({ reservationId, auteurId, type: "liberation", details: { motif: "archivage_materiel" } })) });
+      const recipients = new Map();
+      for (const reservation of reservations) for (const participation of reservation.projet.participations) {
+        const key = `${participation.utilisateurId}:${reservation.projetId}`;
+        recipients.set(key, { destinataireId: participation.utilisateurId, type: "materiel_archive", titre: "Matériel archivé", message: `${materiel.nom} a été archivé. La réservation du projet ${reservation.projet.nom} a été libérée.`, details: { materielId: id, projetId: reservation.projetId } });
+      }
+      if (recipients.size) await transaction.notification.createMany({ data: [...recipients.values()] });
+    }
+    await transaction.historiqueMateriel.create({ data: { materielId: id, auteurId, type: "archivage", details: { reservationsLiberees: reservations.length } } });
+    return { id, reservationsLiberees: reservations.length };
+  });
+}
+
 export const materielRepository = {
-  findActiveMateriels, findActiveMaterielById, createMateriel, updateMateriel, findMaterielHistory,
+  findActiveMateriels, findActiveMaterielById, findArchivedMateriels, findArchivedMaterielById, createMateriel, updateMateriel, findMaterielHistory,
   listCategories, createCategorie, updateCategorie, deleteCategorie, findCategoriesByIds,
   createAttachment, findAttachment, deleteAttachment,
+  archiveMateriel,
 };

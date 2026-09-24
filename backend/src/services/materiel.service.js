@@ -35,6 +35,12 @@ export function createMaterielService(repository) {
     if (!materiel) throw notFound("MATERIEL_INTROUVABLE");
     return materiel;
   }
+  async function requireArchived(user, id) {
+    if (user.role !== "administrateur") throw forbidden("ARCHIVES_MATERIEL_RESERVEES_ADMINISTRATEUR");
+    const materiel = await repository.findArchivedMaterielById(id);
+    if (!materiel) throw notFound("MATERIEL_INTROUVABLE");
+    return materiel;
+  }
   async function validateCategories(ids) {
     const unique = [...new Set(ids)];
     if (unique.length && await repository.findCategoriesByIds(unique) !== unique.length) throw conflict("CATEGORIE_INVALIDE");
@@ -49,6 +55,8 @@ export function createMaterielService(repository) {
       const item = await requireActive(id);
       return { ...mapMateriel(item, MANAGERS.has(user.role)), droits: { gerer: MANAGERS.has(user.role), voirHistorique: MANAGERS.has(user.role), voirPiecesJointes: MANAGERS.has(user.role) } };
     },
+    async listArchived(user, filters) { if (user.role !== "administrateur") throw forbidden("ARCHIVES_MATERIEL_RESERVEES_ADMINISTRATEUR"); return (await repository.findArchivedMateriels(filters)).map((item) => mapMateriel(item)); },
+    async getArchived(user, id) { const item = await requireArchived(user, id); return { ...mapMateriel(item, true), droits: { gerer: false, voirHistorique: true, voirPiecesJointes: true }, archive: { le: item.archiveLe, par: item.archivePar } }; },
     async create(user, data) {
       assertManager(user);
       data.categorieIds = await validateCategories(data.categorieIds);
@@ -60,13 +68,17 @@ export function createMaterielService(repository) {
       return repository.updateMateriel(id, data, user.id);
     },
     async history(user, id) { assertManager(user); await requireActive(id); return repository.findMaterielHistory(id); },
+    async archivedHistory(user, id) { await requireArchived(user, id); return repository.findMaterielHistory(id); },
+    async archive(user, id) { assertManager(user); await requireActive(id); return repository.archiveMateriel(id, user.id); },
     listCategories() { return repository.listCategories(); },
     async createCategory(user, nom) { assertManager(user); return repository.createCategorie(nom); },
     async updateCategory(user, id, nom) { assertManager(user); return repository.updateCategorie(id, nom); },
     async deleteCategory(user, id) { assertManager(user); return repository.deleteCategorie(id); },
     async addAttachment(user, id, file) { assertManager(user); await requireActive(id); return repository.createAttachment(id, validateFile(file), user.id); },
     async downloadAttachment(user, id, pieceId) {
-      assertManager(user); await requireActive(id);
+      assertManager(user);
+      const active = await repository.findActiveMaterielById(id);
+      if (!active) await requireArchived(user, id);
       const piece = await repository.findAttachment(pieceId, id);
       if (!piece) throw notFound("PIECE_JOINTE_INTROUVABLE");
       return piece;

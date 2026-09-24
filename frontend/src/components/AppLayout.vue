@@ -1,10 +1,12 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth.js";
+import { api } from "../services/api.js";
 
 const auth = useAuthStore();
 const router = useRouter();
+const nonLues = ref(0);
 const initiales = computed(() => auth.utilisateur?.identifiant.slice(0, 2).toUpperCase() || "SU");
 const roleLabel = computed(() => ({
   administrateur: "Administrateur",
@@ -16,6 +18,9 @@ async function logout() {
   await auth.deconnexion();
   await router.push({ name: "connexion" });
 }
+function updateNotificationCount(event) { nonLues.value = event.detail; }
+onMounted(async () => { window.addEventListener("notifications-updated", updateNotificationCount); try { nonLues.value = (await api("/notifications")).nonLues; } catch { nonLues.value = 0; } });
+onUnmounted(() => window.removeEventListener("notifications-updated", updateNotificationCount));
 </script>
 
 <template>
@@ -42,9 +47,10 @@ async function logout() {
         <RouterLink v-if="auth.utilisateur?.role === 'administrateur'" to="/utilisateurs" class="nav__link">
           <span class="nav__icon" aria-hidden="true">U</span> Utilisateurs
         </RouterLink>
-        <span class="nav__link nav__link--disabled" aria-disabled="true">
+        <RouterLink to="/notifications" class="nav__link">
           <span class="nav__icon" aria-hidden="true">N</span> Notifications
-        </span>
+          <span v-if="nonLues" class="notification-count">{{ nonLues }}</span>
+        </RouterLink>
       </nav>
 
       <div class="account">
@@ -58,7 +64,7 @@ async function logout() {
       <header class="topbar">
         <div class="topbar__context"><strong>Espace laboratoire</strong><span>Inventaire et suivi des projets</span></div>
         <div class="topbar__account">
-          <button class="notification-button" type="button" aria-label="Notifications à venir" disabled>○<span></span></button>
+          <RouterLink class="notification-button" to="/notifications" :aria-label="`${nonLues} notification(s) non lue(s)`">○<span v-if="nonLues">{{ nonLues }}</span></RouterLink>
           <span class="account__avatar">{{ initiales }}</span>
           <span><strong>{{ auth.utilisateur?.identifiant }}</strong><small>{{ roleLabel }}</small></span>
         </div>

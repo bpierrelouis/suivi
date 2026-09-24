@@ -19,6 +19,10 @@ const nouvelleTache = reactive({ titre: "", description: "", responsableId: "" }
 const documentation = ref("");
 const onglet = ref("description");
 const edition = ref(false);
+const materiels = ref([]);
+const reservations = ref([]);
+const reservationForm = reactive({ materielId: "", debut: "", fin: "" });
+const reservationEditee = ref("");
 const rafraichirProjets = inject("rafraichirProjets", async () => {});
 
 const colonnes = [
@@ -40,6 +44,8 @@ const relationLabel = computed(() => ({
 
 function dateInput(value) { return value ? value.slice(0, 10) : ""; }
 function formatDate(value) { return value ? new Intl.DateTimeFormat("fr-FR").format(new Date(value)) : "Non renseignée"; }
+function formatDateTime(value) { return value ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "—"; }
+function localInput(value) { if (!value) return ""; const date = new Date(value); const offset = date.getTimezoneOffset(); return new Date(date.getTime() - offset * 60_000).toISOString().slice(0, 16); }
 function close() { router.push({ name: "projets" }); }
 function hydrate(data) {
   projet.value = data;
@@ -61,6 +67,12 @@ async function charger() {
     ]);
     hydrate(data);
     utilisateurs.value = users.utilisateurs;
+    reservations.value = data.reservations || [];
+    if (data.droits.gererReservations) {
+      const [inventory, bookingData] = await Promise.all([api("/materiels?modeSuivi=individualise"), api(`/projets/${data.id}/reservations`)]);
+      materiels.value = inventory.materiels;
+      reservations.value = bookingData.reservations;
+    }
   } catch (error) {
     erreur.value = error.status === 404 ? "Ce projet n’existe pas ou ne vous est pas accessible." : "Impossible de charger le projet.";
   } finally {
@@ -77,9 +89,7 @@ async function action(callback, success) {
     await charger();
     await rafraichirProjets();
   } catch (error) {
-    erreur.value = error.message === "PROJET_ARCHIVE_VERROUILLE"
-      ? "Le projet est archivé et ne peut plus être modifié."
-      : "L’opération n’a pas pu être effectuée.";
+    erreur.value = ({ PROJET_ARCHIVE_VERROUILLE: "Le projet est archivé et ne peut plus être modifié.", CRENEAU_INDISPONIBLE: "Ce matériel est déjà réservé sur tout ou partie de ce créneau.", CRENEAU_DEMI_HEURE_REQUIS: "Les horaires doivent se terminer par 00 ou 30.", INTERVALLE_RESERVATION_INVALIDE: "L’heure de fin doit être postérieure à l’heure de début.", MATERIEL_NON_RESERVABLE: "Ce matériel n’est pas réservable individuellement." })[error.message] || "L’opération n’a pas pu être effectuée.";
   }
 }
 
@@ -130,6 +140,18 @@ function saveDocumentation() {
     body: JSON.stringify({ contenu: documentation.value }),
   }), "Documentation enregistrée.");
 }
+function resetReservation() { Object.assign(reservationForm, { materielId: "", debut: "", fin: "" }); reservationEditee.value = ""; }
+function editReservation(item) { reservationEditee.value = item.id; Object.assign(reservationForm, { materielId: item.materiel.id, debut: localInput(item.debut), fin: localInput(item.fin) }); onglet.value = "reservations"; }
+function saveReservation() {
+  return action(async () => {
+    const payload = { debut: new Date(reservationForm.debut).toISOString(), fin: new Date(reservationForm.fin).toISOString() };
+    if (reservationEditee.value) await api(`/projets/${projet.value.id}/reservations/${reservationEditee.value}`, { method: "PATCH", body: JSON.stringify(payload) });
+    else await api(`/projets/${projet.value.id}/reservations`, { method: "POST", body: JSON.stringify({ ...payload, materielId: reservationForm.materielId }) });
+    resetReservation();
+  }, reservationEditee.value ? "Réservation modifiée." : "Réservation créée.");
+}
+function cancelReservation(item) { if (!window.confirm("Annuler cette réservation et libérer le créneau ?")) return; return action(() => api(`/projets/${projet.value.id}/reservations/${item.id}/annulation`, { method: "POST" }), "Réservation annulée."); }
+function archiveProject() { if (!window.confirm("Archiver définitivement ce projet ? Ses réservations en cours et futures seront libérées.")) return; return action(() => api(`/projets/${projet.value.id}/archivage`, { method: "POST" }), "Projet archivé."); }
 async function exportDocumentation() {
   try {
     const { blob, disposition } = await apiBlob(`/projets/${projet.value.id}/documentation/export`);
@@ -150,14 +172,16 @@ onMounted(charger);
 
 <template>
   <ModalShell :label="projet ? relationLabel : ''" :title="projet?.nom || 'Projet'" wide @close="close">
-    <template v-if="projet?.droits.modifier && onglet === 'description'" #actions><button class="button button--secondary" type="button" @click="edition = !edition">{{ edition ? "Annuler" : "Modifier" }}</button></template>
+    <template v-if="projet && onglet === 'description' && (projet.droits.modifier || projet.droits.archiver)" #actions><button v-if="projet.droits.modifier" class="button button--secondary" type="button" @click="edition = !edition">{{ edition ? "Annuler" : "Modifier" }}</button><button v-if="projet.droits.archiver" class="button button--danger" type="button" @click="archiveProject">Archiver</button></template>
     <div v-if="chargement" class="loading">Chargement du projet…</div>
     <div v-else-if="!projet" class="modal__body"><p class="form-error" role="alert">{{ erreur }}</p></div>
     <template v-else>
       <nav class="project-tabs" aria-label="Rubriques du projet">
         <button :class="{ active: onglet === 'description' }" @click="onglet = 'description'">Description</button>
         <button :class="{ active: onglet === 'membres' }" @click="onglet = 'membres'">Membres</button>
+        <button v-if="projet.droits.voirReservations" :class="{ active: onglet === 'reservations' }" @click="onglet = 'reservations'">Réservations</button>
         <button :class="{ active: onglet === 'documentation' }" @click="onglet = 'documentation'">Documentation</button>
+        <button :class="{ active: onglet === 'historique' }" @click="onglet = 'historique'">Historique</button>
       </nav>
       <div class="modal__body project-modal-body">
         <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p><p v-if="message" class="form-success" role="status">{{ message }}</p>
@@ -187,10 +211,23 @@ onMounted(charger);
           <ul class="member-list"><li v-for="membre in projet.membres" :key="membre.id"><span class="account__avatar">{{ membre.identifiant.slice(0, 2).toUpperCase() }}</span><div><strong>{{ membre.identifiant }}</strong><small>{{ membre.id === projet.responsable.id ? "Responsable" : "Membre" }}</small></div><button v-if="projet.droits.retirerMembre && membre.id !== projet.responsable.id" class="icon-button icon-button--danger" aria-label="Retirer le membre" @click="removeMember(membre)">×</button></li></ul>
         </section>
 
-        <section v-else class="documentation-section">
+        <section v-else-if="onglet === 'reservations'" class="reservation-section">
+          <div class="section-heading"><div><h2>Réservations de matériel</h2><p>Créneaux semi-ouverts, sans chevauchement. Les heures doivent finir par 00 ou 30.</p></div></div>
+          <form v-if="projet.droits.gererReservations" class="form-grid reservation-form" @submit.prevent="saveReservation">
+            <label class="form-grid__wide">Matériel individualisé<select v-model="reservationForm.materielId" required :disabled="Boolean(reservationEditee)"><option value="">Choisir un matériel</option><option v-for="item in materiels" :key="item.id" :value="item.id">{{ item.nom }}</option></select></label>
+            <label>Début<input v-model="reservationForm.debut" type="datetime-local" step="1800" required /></label><label>Fin<input v-model="reservationForm.fin" type="datetime-local" step="1800" required /></label>
+            <div class="form-actions form-grid__wide"><button v-if="reservationEditee" type="button" class="button button--secondary" @click="resetReservation">Annuler la modification</button><button class="button button--primary">{{ reservationEditee ? 'Enregistrer le créneau' : 'Réserver' }}</button></div>
+          </form>
+          <div v-if="reservations.length" class="reservation-list"><article v-for="item in reservations" :key="item.id" class="reservation-card"><div><strong>{{ item.materiel.nom }}</strong><p>{{ formatDateTime(item.debut) }} → {{ formatDateTime(item.fin) }}</p><small>Créée par {{ item.reservePar.identifiant }} · {{ ({ active: 'Active', annulee: 'Annulée', liberee: 'Libérée' })[item.statut] }}</small></div><div v-if="item.statut === 'active' && projet.statut === 'actif'" class="page-actions"><button class="button button--small button--secondary" @click="editReservation(item)">Modifier</button><button class="button button--small button--danger" @click="cancelReservation(item)">Annuler</button></div></article></div>
+          <p v-else class="muted">Aucune réservation pour ce projet.</p>
+        </section>
+
+        <section v-else-if="onglet === 'documentation'" class="documentation-section">
           <div class="section-heading"><div><h2>Documentation Markdown</h2><p>Rédigez et prévisualisez la documentation du projet.</p></div><button class="button button--secondary" @click="exportDocumentation">Exporter en DOCX</button></div>
           <div class="documentation-grid"><div><label>Source Markdown<textarea v-model="documentation" :disabled="!projet.droits.modifier" rows="16" placeholder="# Présentation du projet"></textarea></label><button v-if="projet.droits.modifier" class="button button--primary documentation-save" @click="saveDocumentation">Enregistrer la documentation</button></div><article class="markdown-preview"><span class="context-badge">Aperçu</span><div v-if="documentation" v-html="markdownHtml"></div><p v-else class="muted">La documentation est vide.</p></article></div>
         </section>
+
+        <section v-else class="history-section"><div class="section-heading"><div><h2>Historique du projet</h2><p>Les évolutions du projet restent consultables après son archivage.</p></div></div><ul v-if="projet.historique.length" class="history-list"><li v-for="event in projet.historique" :key="event.id"><strong>{{ ({ creation: 'Création', modification: 'Informations modifiées', ajout_membre: 'Membre ajouté', retrait_membre: 'Membre retiré', creation_tache: 'Tâche créée', modification_tache: 'Tâche modifiée', suppression_tache: 'Tâche supprimée', archivage: 'Projet archivé' })[event.type] }}</strong><span>{{ formatDateTime(event.creeLe) }} · {{ event.auteur?.identifiant || 'Système' }}</span></li></ul><p v-else class="muted">Aucun événement enregistré.</p></section>
       </div>
       <footer class="modal__footer modal__footer--between"><small>Projet {{ projet.visibilite === 'public' ? 'public' : 'privé' }} · {{ projet.membres.length }} membre{{ projet.membres.length > 1 ? 's' : '' }} · {{ projet.statut === 'actif' ? 'actif' : 'archivé' }}</small><button class="button button--secondary" @click="close">Fermer</button></footer>
     </template>

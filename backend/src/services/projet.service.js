@@ -43,10 +43,15 @@ function toDetail(projet, utilisateur) {
     })),
     taches: projet.taches || [],
     documentation: projet.documentation || { contenu: "", modifieLe: null, auteur: null },
+    historique: projet.historique || [],
+    reservations: projet.reservations || [],
     droits: {
       modifier: peutModifier,
       ajouterMembre: peutModifier,
       retirerMembre: projet.statut === "actif" && utilisateur.role === "administrateur",
+      archiver: projet.statut === "actif" && (utilisateur.role === "administrateur" || projet.responsable.id === utilisateur.id),
+      gererReservations: peutModifier,
+      voirReservations: true,
     },
   };
 }
@@ -62,9 +67,9 @@ export function createProjetService(repository, utilisateurs = null) {
   if (!repository) throw new TypeError("Un repository de projets est requis.");
 
   return {
-    async list(utilisateur) {
+    async list(utilisateur, statut) {
       const accessFilter = visibleProjetFilter(utilisateur);
-      const projets = await repository.findVisibleProjets(accessFilter);
+      const projets = await repository.findVisibleProjets(accessFilter, statut);
       return projets.map((projet) => toSummary(projet, utilisateur));
     },
 
@@ -82,7 +87,7 @@ export function createProjetService(repository, utilisateurs = null) {
 
     async update(utilisateur, id, data) {
       await getCommandProjet(repository, utilisateur, id);
-      return repository.updateProjet(id, data);
+      return repository.updateProjet(id, data, utilisateur.id);
     },
 
     async addMember(utilisateur, projetId, utilisateurId) {
@@ -91,7 +96,7 @@ export function createProjetService(repository, utilisateurs = null) {
       const membre = await utilisateurs.findById(utilisateurId);
       if (!membre) throw notFound("UTILISATEUR_INTROUVABLE");
       if (membre.role === "gestionnaire") throw conflict("GESTIONNAIRE_INTERDIT_AUX_PROJETS");
-      return repository.addProjetMember(projetId, utilisateurId);
+      return repository.addProjetMember(projetId, utilisateurId, utilisateur.id);
     },
 
     async removeMember(utilisateur, projetId, utilisateurId) {
@@ -99,7 +104,7 @@ export function createProjetService(repository, utilisateurs = null) {
       if (utilisateur.role !== "administrateur") throw forbidden("RETRAIT_MEMBRE_RESERVE_ADMINISTRATEUR");
       if (projet.responsableId === utilisateurId) throw conflict("RESPONSABLE_NON_RETIRABLE");
       if (!isProjetMember(projet, utilisateurId)) throw notFound("MEMBRE_INTROUVABLE");
-      await repository.removeProjetMember(projetId, utilisateurId);
+      await repository.removeProjetMember(projetId, utilisateurId, utilisateur.id);
     },
 
     async createTask(utilisateur, projetId, data) {
@@ -107,7 +112,7 @@ export function createProjetService(repository, utilisateurs = null) {
       if (data.responsableId && !isProjetMember(projet, data.responsableId)) {
         throw conflict("RESPONSABLE_TACHE_NON_MEMBRE");
       }
-      return repository.createTache(projetId, data);
+      return repository.createTache(projetId, data, utilisateur.id);
     },
 
     async updateTask(utilisateur, projetId, taskId, data) {
@@ -116,18 +121,26 @@ export function createProjetService(repository, utilisateurs = null) {
       if (data.responsableId && !isProjetMember(projet, data.responsableId)) {
         throw conflict("RESPONSABLE_TACHE_NON_MEMBRE");
       }
-      await repository.updateTacheAndCloseIfComplete(taskId, projetId, data);
+      await repository.updateTacheAndCloseIfComplete(taskId, projetId, data, utilisateur.id);
     },
 
     async deleteTask(utilisateur, projetId, taskId) {
       await getCommandProjet(repository, utilisateur, projetId);
       if (!await repository.findTache(taskId, projetId)) throw notFound("TACHE_INTROUVABLE");
-      await repository.deleteTache(taskId);
+      await repository.deleteTache(taskId, projetId, utilisateur.id);
     },
 
     async saveDocumentation(utilisateur, projetId, contenu) {
       await getCommandProjet(repository, utilisateur, projetId);
       return repository.saveDocumentation(projetId, contenu, utilisateur.id);
+    },
+
+    async archive(utilisateur, projetId) {
+      const projet = await repository.findProjetForCommand(projetId);
+      if (!projet) throw notFound("PROJET_INTROUVABLE");
+      if (projet.statut !== "actif") throw conflict("PROJET_DEJA_ARCHIVE");
+      if (utilisateur.role !== "administrateur" && projet.responsableId !== utilisateur.id) throw forbidden("ARCHIVAGE_PROJET_INTERDIT");
+      await repository.archiveProjet(projetId, utilisateur.id);
     },
   };
 }
