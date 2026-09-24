@@ -53,17 +53,18 @@ onUnmounted(() => window.removeEventListener("notifications-updated", updateNoti
         </RouterLink>
       </nav>
 
-      <button class="logout-button" type="button" @click="logout"><span aria-hidden="true">↪</span> Déconnexion</button>
+      <div class="sidebar-account">
+        <div class="sidebar-account__profile">
+          <span class="account__avatar">{{ initiales }}</span>
+          <span class="sidebar-account__identity"><strong>{{ auth.utilisateur?.identifiant }}</strong><small>{{ roleLabel }}</small></span>
+        </div>
+        <button class="logout-button" type="button" @click="logout"><span aria-hidden="true">↪</span><span class="logout-button__label">Déconnexion</span></button>
+      </div>
     </aside>
 
     <div class="workspace">
       <header class="topbar">
         <div class="topbar__context"><strong>Espace laboratoire</strong><span>Inventaire et suivi des projets</span></div>
-        <div class="topbar__account">
-          <RouterLink class="notification-button" to="/notifications" :aria-label="`${nonLues} notification(s) non lue(s)`">○<span v-if="nonLues">{{ nonLues }}</span></RouterLink>
-          <span class="account__avatar">{{ initiales }}</span>
-          <span><strong>{{ auth.utilisateur?.identifiant }}</strong><small>{{ roleLabel }}</small></span>
-        </div>
       </header>
       <main class="main-content">
         <slot />
