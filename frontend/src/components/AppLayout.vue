@@ -53,10 +53,6 @@ onUnmounted(() => window.removeEventListener("notifications-updated", updateNoti
         </RouterLink>
       </nav>
 
-      <div class="account">
-        <strong>{{ roleLabel }}</strong>
-        <small>Session active</small>
-      </div>
       <button class="logout-button" type="button" @click="logout"><span aria-hidden="true">↪</span> Déconnexion</button>
     </aside>
 

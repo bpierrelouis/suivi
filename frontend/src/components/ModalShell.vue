@@ -3,14 +3,15 @@ defineProps({
   label: { type: String, default: "" },
   title: { type: String, required: true },
   wide: { type: Boolean, default: false },
+  stable: { type: Boolean, default: false },
 });
 
 defineEmits(["close"]);
 </script>
 
 <template>
-  <div class="modal-backdrop" role="presentation" @mousedown.self="$emit('close')">
-    <section class="modal" :class="{ 'modal--wide': wide }" role="dialog" aria-modal="true" :aria-labelledby="$attrs['aria-labelledby'] || 'modal-title'" @keydown.esc="$emit('close')">
+  <div class="modal-backdrop" role="presentation">
+    <section class="modal" :class="{ 'modal--wide': wide, 'modal--stable': stable }" role="dialog" aria-modal="true" :aria-labelledby="$attrs['aria-labelledby'] || 'modal-title'" @keydown.esc="$emit('close')">
       <header class="modal__header">
         <div>
           <span v-if="label" class="context-badge">{{ label }}</span>
