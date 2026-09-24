@@ -63,9 +63,6 @@ onUnmounted(() => window.removeEventListener("notifications-updated", updateNoti
     </aside>
 
     <div class="workspace">
-      <header class="topbar">
-        <div class="topbar__context"><strong>Espace laboratoire</strong><span>Inventaire et suivi des projets</span></div>
-      </header>
       <main class="main-content">
         <slot />
       </main>
