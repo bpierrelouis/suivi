@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { createMaterielService } from "../src/services/materiel.service.js";
 
 const admin = { id: "admin-1", role: "administrateur" };
@@ -21,8 +22,9 @@ function repository(overrides = {}) {
     async createMateriel(data, authorId) { return { id: "created", data, authorId }; },
     async updateMateriel() {}, async findMaterielHistory() { return []; }, async listCategories() { return []; },
     async createCategorie(nom) { return { id: "cat", nom }; }, async updateCategorie() {}, async deleteCategorie() {},
-    async createAttachment(id, file, authorId) { return { id, file, authorId }; },
-    async findAttachment() { return { id: "piece", nomFichier: "facture.pdf", contenu: Buffer.from("%PDF-1.7"), typeMime: "application/pdf" }; },
+    async createAttachmentUpload(id, file, authorId) { return { id: "piece", materielId: id, auteurId: authorId, ...file }; },
+    async findPendingAttachment() { return null; }, async confirmAttachment() {}, async discardAttachment() {},
+    async findAttachment() { return { id: "piece", nomFichier: "facture.pdf", cleObjet: "materiels/material-1/piece", typeMime: "application/pdf", taille: 8, empreinte: "a".repeat(64) }; },
     async deleteAttachment() {}, ...overrides,
   };
 }
@@ -53,11 +55,26 @@ test("un utilisateur ne peut pas créer de matériel", async () => {
   await assert.rejects(() => service.create(user, { nom: "Caméra", categorieIds: [] }), { code: "ACCES_INTERDIT" });
 });
 
-test("les pièces jointes vérifient le type et la signature", async () => {
-  const service = createMaterielService(repository());
-  await assert.rejects(() => service.addAttachment(admin, "material-1", { nomFichier: "faux.pdf", typeMime: "application/pdf", contenu: Buffer.from("texte") }), { code: "CONTENU_FICHIER_INVALIDE" });
-  const result = await service.addAttachment(admin, "material-1", { nomFichier: "facture.pdf", typeMime: "application/pdf", contenu: Buffer.from("%PDF-1.7") });
-  assert.equal(result.file.nomFichier, "facture.pdf");
+test("les pièces jointes sont autorisées puis validées depuis le stockage objet", async () => {
+  const contenu = Buffer.from("%PDF-1.7");
+  const empreinte = createHash("sha256").update(contenu).digest("hex");
+  const pending = { id: "piece", nomFichier: "facture.pdf", typeMime: "application/pdf", taille: contenu.length, empreinte, cleObjet: "materiels/material-1/piece" };
+  const repo = repository({
+    async createAttachmentUpload() { return pending; },
+    async findPendingAttachment() { return pending; },
+    async confirmAttachment() { return { id: "piece", nomFichier: "facture.pdf" }; },
+  });
+  const storage = {
+    async createUploadUrl() { return "http://stockage/url-signee"; },
+    async inspect() { return { ContentLength: contenu.length, ContentType: "application/pdf", Metadata: { sha256: empreinte } }; },
+    async read() { return contenu; },
+    async delete() {},
+  };
+  const service = createMaterielService(repo, storage);
+  const authorization = await service.authorizeAttachment(admin, "material-1", { nomFichier: "facture.pdf", typeMime: "application/pdf", taille: contenu.length, empreinte });
+  const confirmed = await service.confirmAttachment(admin, "material-1", authorization.pieceJointe.id);
+  assert.match(authorization.uploadUrl, /url-signee/);
+  assert.equal(confirmed.nomFichier, "facture.pdf");
 });
 
 test("l'historique est refusé à l'utilisateur", async () => {

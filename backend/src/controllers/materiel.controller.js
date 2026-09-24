@@ -5,8 +5,9 @@ import { reservationRepository } from "../repositories/reservation.repository.js
 import { projetRepository } from "../repositories/projet.repository.js";
 import { createReservationService } from "../services/reservation.service.js";
 import { createInventoryPdf, createInventoryXlsx, inventoryExportFilename } from "../services/inventory-export.service.js";
+import { objectStorage } from "../services/object-storage.service.js";
 
-const service = createMaterielService(materielRepository);
+const service = createMaterielService(materielRepository, objectStorage);
 const reservations = createReservationService(reservationRepository, projetRepository);
 const uuid = z.uuid();
 const optionalText = z.union([z.string().trim().max(180), z.literal(""), z.null()]).optional().transform((value) => value || null);
@@ -26,6 +27,12 @@ const filtersSchema = z.object({
 });
 const exportSchema = filtersSchema.extend({ format: z.enum(["xlsx", "pdf"]), perimetre: z.enum(["all", "filtered"]).default("filtered") });
 const calendarSchema = z.object({ debut: z.iso.datetime({ offset: true }), fin: z.iso.datetime({ offset: true }), materielIds: z.string().optional() });
+const attachmentSchema = z.object({
+  nomFichier: z.string().trim().min(1).max(255),
+  typeMime: z.enum(["application/pdf", "image/jpeg", "image/png"]),
+  taille: z.number().int().positive().max(10 * 1024 * 1024),
+  empreinte: z.string().regex(/^[a-f0-9]{64}$/i),
+}).strict();
 
 function id(value, res) {
   const parsed = uuid.safeParse(value);
@@ -68,17 +75,19 @@ export async function listCategories(req, res) { res.json({ categories: await se
 export async function createCategory(req, res) { const body = categorieSchema.safeParse(req.body); if (!body.success) return res.status(400).json({ error: "CATEGORIE_INVALIDE" }); res.status(201).json({ categorie: await service.createCategory(req.utilisateur, body.data.nom) }); }
 export async function updateCategory(req, res) { const value = id(req.params.id, res); const body = categorieSchema.safeParse(req.body); if (!value || !body.success) return body.success ? undefined : res.status(400).json({ error: "CATEGORIE_INVALIDE" }); res.json({ categorie: await service.updateCategory(req.utilisateur, value, body.data.nom) }); }
 export async function deleteCategory(req, res) { const value = id(req.params.id, res); if (value) { await service.deleteCategory(req.utilisateur, value); res.status(204).send(); } }
-export async function addAttachment(req, res) {
-  const value = id(req.params.id, res); if (!value) return;
-  let nomFichier; try { nomFichier = decodeURIComponent(req.get("X-Filename") || ""); } catch { return res.status(400).json({ error: "NOM_FICHIER_INVALIDE" }); }
-  const piece = await service.addAttachment(req.utilisateur, value, { nomFichier, typeMime: req.get("Content-Type") || "", contenu: req.body });
-  res.status(201).json({ pieceJointe: piece });
+export async function authorizeAttachment(req, res) {
+  const value = id(req.params.id, res); const body = attachmentSchema.safeParse(req.body);
+  if (!value || !body.success) return body.success ? undefined : res.status(400).json({ error: "FICHIER_INVALIDE" });
+  res.status(201).json(await service.authorizeAttachment(req.utilisateur, value, body.data));
+}
+export async function confirmAttachment(req, res) {
+  const materielId = id(req.params.id, res); const pieceId = id(req.params.pieceId, res);
+  if (!materielId || !pieceId) return;
+  res.json({ pieceJointe: await service.confirmAttachment(req.utilisateur, materielId, pieceId) });
 }
 export async function downloadAttachment(req, res) {
   const materielId = id(req.params.id, res); const pieceId = id(req.params.pieceId, res); if (!materielId || !pieceId) return;
   const piece = await service.downloadAttachment(req.utilisateur, materielId, pieceId);
-  const ascii = piece.nomFichier.replace(/[^\x20-\x7E]/g, "_").replace(/["\\]/g, "_");
-  res.set({ "Content-Type": piece.typeMime, "Content-Length": piece.taille, "Content-Disposition": `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(piece.nomFichier)}` });
-  res.send(piece.contenu);
+  res.redirect(piece.url);
 }
 export async function removeAttachment(req, res) { const materielId = id(req.params.id, res); const pieceId = id(req.params.pieceId, res); if (materielId && pieceId) { await service.removeAttachment(req.utilisateur, materielId, pieceId); res.status(204).send(); } }

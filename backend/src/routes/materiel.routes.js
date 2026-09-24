@@ -1,5 +1,5 @@
-import express, { Router } from "express";
-import { addAttachment, archiveMateriel, createCategory, createMateriel, deleteCategory, downloadAttachment, exportMateriels, getArchivedHistory, getArchivedMateriel, getCalendar, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
+import { Router } from "express";
+import { archiveMateriel, authorizeAttachment, confirmAttachment, createCategory, createMateriel, deleteCategory, downloadAttachment, exportMateriels, getArchivedHistory, getArchivedMateriel, getCalendar, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
 import { requireSession } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -20,7 +20,8 @@ router.patch("/:id", updateMateriel);
 router.post("/:id/archivage", archiveMateriel);
 router.get("/:id/historique", getHistory);
 router.get("/:id/reservations", getMaterialReservations);
-router.post("/:id/pieces-jointes", express.raw({ type: ["application/pdf", "image/jpeg", "image/png"], limit: "10mb" }), addAttachment);
+router.post("/:id/pieces-jointes/autorisation", authorizeAttachment);
+router.post("/:id/pieces-jointes/:pieceId/confirmation", confirmAttachment);
 router.get("/:id/pieces-jointes/:pieceId", downloadAttachment);
 router.delete("/:id/pieces-jointes/:pieceId", removeAttachment);
 export default router;

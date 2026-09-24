@@ -15,7 +15,7 @@ Ce document définit le socle technique initial de SUIVI.
 | Validation | Zod | Validation des entrées et contrat d’erreur homogène |
 | ORM | Prisma ORM 7 | Modèle de données, requêtes typées en JavaScript et migrations |
 | Base | PostgreSQL 17 | Données métier relationnelles et transactions |
-| Fichiers | API compatible Amazon S3 ; MinIO en local | Pièces jointes, factures, bons de commande et exports |
+| Fichiers | API compatible Amazon S3 ; LocalStack S3 en local | Pièces jointes, factures, bons de commande et exports |
 | Authentification | JWT court dans cookie `HttpOnly`, avec renouvellement | Session applicative en attendant l’intégration Intradef |
 | Conteneurs | Docker Compose pour le développement et la recette locale | Environnement reproductible |
 | Tests | Vitest, Vue Test Utils et Supertest | Tests unitaires, composants et API |
@@ -81,7 +81,7 @@ Le flux recommandé est le suivant :
 4. le navigateur envoie directement le fichier vers S3 ;
 5. le frontend confirme la fin de l’envoi et l’API valide les métadonnées.
 
-Les URL signées donnent un accès temporaire sans transmettre les identifiants S3 au navigateur. Les clés doivent être uniques : envoyer un objet sur une clé existante peut remplacer l’objet. MinIO est proposé uniquement pour le développement local, car il expose une API compatible S3. En production, le service peut être Amazon S3 ou un stockage objet compatible validé par l’hébergeur Intradef.
+Les URL signées donnent un accès temporaire sans transmettre les identifiants S3 au navigateur. Les clés doivent être uniques : envoyer un objet sur une clé existante peut remplacer l’objet. LocalStack fournit l’API S3 pour le développement et la recette locale. En production, le service doit être Amazon S3 ou un stockage objet compatible validé par l’hébergeur Intradef ; le code applicatif ne dépend pas du fournisseur local.
 
 Contrôles minimaux : bucket privé, chiffrement au repos, TLS, liste blanche de types, taille maximale, nom de fichier neutralisé, contrôle d’autorisation à chaque téléchargement, journalisation et analyse antivirus asynchrone avant mise à disposition.
 
@@ -95,8 +95,8 @@ Le fichier Compose cible contiendra les services suivants :
 | `backend` | réseau Docker uniquement | aucune | API Express de production, non exposée sur l’hôte |
 | `migrate` | aucune | aucune | Tâche éphémère de migration et d’initialisation avant l’API |
 | `postgres` | réseau Docker uniquement | volume nommé | Base non exposée sur l’hôte |
-| `minio` | `9000` et console `9001` | volume nommé | Émulation S3 locale uniquement |
-| `minio-init` | aucune | aucune | Création idempotente du bucket puis arrêt |
+| `s3` | `9000` vers la passerelle S3 | volume nommé | Émulation S3 locale uniquement via LocalStack |
+| `s3-init` | aucune | aucune | Création idempotente du bucket privé et de sa règle CORS puis arrêt |
 
 Les services `frontend`, `backend` et `postgres` disposent d’un contrôle de santé. Le backend attend la réussite de la tâche de migration, qui attend elle-même PostgreSQL. Les données sont conservées dans des volumes nommés. Les secrets réels sont injectés par l’environnement ; le fichier `.env.example` ne contient que des valeurs de démonstration.
 
@@ -159,7 +159,7 @@ L’intégration continue doit installer les dépendances de façon déterminist
 | Tâches asynchrones | traitement dans l’API | file de messages + worker | Pour antivirus, exports lourds, notifications ou miniatures |
 | Sessions | JWT court + renouvellement | session serveur | Si la révocation immédiate et la simplicité priment sur le sans-état |
 | Base de production | PostgreSQL autohébergé | PostgreSQL administré | Recommandé dès que sauvegardes, haute disponibilité et astreinte comptent |
-| Stockage local | MinIO | LocalStack | Si d’autres services AWS doivent aussi être simulés |
+| Stockage local | LocalStack S3 | MinIO auto-hébergé | Si une distribution MinIO approuvée est disponible sur l’infrastructure cible |
 
 Redis, une file de messages, Kubernetes et une architecture en microservices ne sont pas nécessaires au démarrage. Ils ajoutent de l’exploitation sans répondre à un besoin actuellement établi.
 

@@ -35,17 +35,14 @@ export async function apiBlob(path) {
 }
 
 export async function apiFile(path, file) {
-  const response = await fetch(`${API_URL}${path}`, {
+  const bytes = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  const empreinte = [...new Uint8Array(digest)].map((value) => value.toString(16).padStart(2, "0")).join("");
+  const authorization = await api(`${path}/autorisation`, {
     method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": file.type, "X-Filename": encodeURIComponent(file.name) },
-    body: file,
+    body: JSON.stringify({ nomFichier: file.name, typeMime: file.type, taille: file.size, empreinte }),
   });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const error = new Error(data.error || "ERREUR_RESEAU");
-    error.status = response.status;
-    throw error;
-  }
-  return data;
+  const upload = await fetch(authorization.uploadUrl, { method: "PUT", headers: authorization.headers, body: file });
+  if (!upload.ok) throw new Error("ENVOI_STOCKAGE_ECHOUE");
+  return api(`${path}/${authorization.pieceJointe.id}/confirmation`, { method: "POST" });
 }

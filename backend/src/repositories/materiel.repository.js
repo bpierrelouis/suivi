@@ -78,6 +78,7 @@ export function findActiveMaterielById(id) {
       ...summarySelect,
       auteurCreation: { select: { id: true, identifiant: true } },
       piecesJointes: {
+        where: { etat: "disponible" },
         orderBy: { ajouteLe: "desc" },
         select: {
           id: true, nomFichier: true, typeMime: true, taille: true, ajouteLe: true,
@@ -99,7 +100,7 @@ export function findArchivedMateriels(filters = {}) {
 export function findArchivedMaterielById(id) {
   return prisma.materiel.findFirst({
     where: { id, statut: "archive" },
-    select: { ...summarySelect, auteurCreation: { select: { id: true, identifiant: true } }, archivePar: { select: { id: true, identifiant: true } }, piecesJointes: { orderBy: { ajouteLe: "desc" }, select: { id: true, nomFichier: true, typeMime: true, taille: true, ajouteLe: true, auteur: { select: { id: true, identifiant: true } } } } },
+    select: { ...summarySelect, auteurCreation: { select: { id: true, identifiant: true } }, archivePar: { select: { id: true, identifiant: true } }, piecesJointes: { where: { etat: "disponible" }, orderBy: { ajouteLe: "desc" }, select: { id: true, nomFichier: true, typeMime: true, taille: true, ajouteLe: true, auteur: { select: { id: true, identifiant: true } } } } },
   });
 }
 
@@ -165,20 +166,34 @@ export function findCategoriesByIds(ids) {
   return prisma.categorie.count({ where: { id: { in: ids } } });
 }
 
-export function createAttachment(materielId, file, auteurId) {
+export function createAttachmentUpload(materielId, file, auteurId) {
+  return prisma.pieceJointeMateriel.create({
+    data: { materielId, auteurId, nomFichier: file.nomFichier, typeMime: file.typeMime, taille: file.taille, cleObjet: file.cleObjet, empreinte: file.empreinte, etat: "en_attente" },
+    select: { id: true, nomFichier: true, typeMime: true, taille: true, cleObjet: true, empreinte: true, etat: true },
+  });
+}
+export function confirmAttachment(id, materielId, auteurId) {
   return prisma.$transaction(async (transaction) => {
-    const piece = await transaction.pieceJointeMateriel.create({
-      data: { materielId, auteurId, nomFichier: file.nomFichier, typeMime: file.typeMime, taille: file.contenu.length, contenu: file.contenu },
+    const pending = await transaction.pieceJointeMateriel.findFirst({ where: { id, materielId, auteurId, etat: "en_attente" } });
+    if (!pending) return null;
+    const piece = await transaction.pieceJointeMateriel.update({
+      where: { id }, data: { etat: "disponible" },
       select: { id: true, nomFichier: true, typeMime: true, taille: true, ajouteLe: true },
     });
     await transaction.historiqueMateriel.create({
-      data: { materielId, auteurId, type: "ajout_piece_jointe", details: { nomFichier: file.nomFichier } },
+      data: { materielId, auteurId, type: "ajout_piece_jointe", details: { nomFichier: pending.nomFichier, empreinte: pending.empreinte } },
     });
     return piece;
   });
 }
 export function findAttachment(id, materielId) {
-  return prisma.pieceJointeMateriel.findFirst({ where: { id, materielId }, select: { id: true, nomFichier: true, typeMime: true, taille: true, contenu: true } });
+  return prisma.pieceJointeMateriel.findFirst({ where: { id, materielId, etat: "disponible" }, select: { id: true, nomFichier: true, typeMime: true, taille: true, cleObjet: true, empreinte: true } });
+}
+export function findPendingAttachment(id, materielId, auteurId) {
+  return prisma.pieceJointeMateriel.findFirst({ where: { id, materielId, auteurId, etat: "en_attente" }, select: { id: true, nomFichier: true, typeMime: true, taille: true, cleObjet: true, empreinte: true } });
+}
+export function discardAttachment(id) {
+  return prisma.pieceJointeMateriel.deleteMany({ where: { id, etat: "en_attente" } });
 }
 export function deleteAttachment(id, materielId, auteurId) {
   return prisma.$transaction(async (transaction) => {
@@ -212,6 +227,6 @@ export function archiveMateriel(id, auteurId) {
 export const materielRepository = {
   findActiveMateriels, findActiveMaterielsForExport, findCalendarMateriels, findActiveMaterielById, findArchivedMateriels, findArchivedMaterielById, createMateriel, updateMateriel, findMaterielHistory,
   listCategories, createCategorie, updateCategorie, deleteCategorie, findCategoriesByIds,
-  createAttachment, findAttachment, deleteAttachment,
+  createAttachmentUpload, confirmAttachment, findAttachment, findPendingAttachment, discardAttachment, deleteAttachment,
   archiveMateriel,
 };

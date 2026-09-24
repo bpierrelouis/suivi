@@ -26,7 +26,8 @@
 
 - ajout, téléchargement et retrait depuis une fiche active par l’administrateur et le gestionnaire ;
 - conservation du nom, du type, de la taille, de l’auteur et de la date d’ajout ;
-- stockage transactionnel en base de données ;
+- contenu binaire stocké dans un bucket S3 privé, avec uniquement les métadonnées et l’état de validation dans PostgreSQL ;
+- envoi direct du navigateur par URL présignée courte, puis confirmation et contrôle côté API ;
 - validation du type déclaré et de la signature du contenu ;
 - PDF, JPEG et PNG autorisés, avec une taille maximale de 10 Mo ;
 - nom de fichier neutralisé avant stockage et téléchargement.
@@ -37,7 +38,7 @@ Les questions Q-08, Q-09, Q-10, Q-23, Q-25 et Q-29 n’ayant pas reçu d’arbit
 
 ## Organisation technique
 
-Le domaine inventaire suit la séparation déjà utilisée pour les projets : routes et contrôleurs HTTP, service métier testable, repository Prisma et contrôles d’accès côté serveur. Les créations et modifications écrivent leur événement d’historique dans la même transaction que la fiche. Les mouvements de pièces jointes sont également transactionnels.
+Le domaine inventaire suit la séparation déjà utilisée pour les projets : routes et contrôleurs HTTP, service métier testable, repository Prisma et contrôles d’accès côté serveur. Les créations et modifications écrivent leur événement d’historique dans la même transaction que la fiche. Pour une pièce jointe, l’API crée d’abord une métadonnée en attente, signe l’envoi S3, puis ne rend le document disponible qu’après contrôle de sa taille, de son type, de sa signature binaire et de son empreinte SHA-256. Un envoi invalide est supprimé du bucket et de la base.
 
 Une migration versionnée ajoute les matériels, catégories, associations, événements et pièces jointes. Les données de démonstration couvrent les deux modes de suivi et les associations multicatégories.
 
@@ -57,4 +58,4 @@ Une recette dans le navigateur a couvert la connexion administrateur et utilisat
 
 Cette passe a conduit aux améliorations suivantes : tableau de bord alimenté par PostgreSQL plutôt que par des valeurs fictives, progression calculée depuis les tâches, activité récente issue de l’inventaire, libellés de filtres accessibles, en-tête débarrassé d’une fausse recherche désactivée, états d’attente sur les écritures, confirmation avant retrait d’un document, fermeture des modales avec Échap et texte d’aide de l’inventaire centré sur l’usage.
 
-La recette des écritures et pièces jointes ainsi que l’acceptation formelle restent à consigner avec le validateur.
+Une nouvelle recette S3 a validé l’autorisation, l’envoi direct, la confirmation, l’affichage dans la fiche, le téléchargement signé avec empreinte identique et la suppression de l’objet. L’acceptation formelle reste à consigner avec le validateur.

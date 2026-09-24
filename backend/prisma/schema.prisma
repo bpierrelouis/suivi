@@ -165,7 +165,9 @@ model PieceJointeMateriel {
   nomFichier String      @map("nom_fichier")
   typeMime   String      @map("type_mime")
   taille     Int
-  contenu    Bytes
+  cleObjet   String      @unique @map("cle_objet")
+  empreinte  String
+  etat       String      @default("en_attente")
   auteurId   String      @map("auteur_id") @db.Uuid
   auteur     Utilisateur @relation("AuteurPieceJointeMateriel", fields: [auteurId], references: [id], onDelete: Restrict)
   ajouteLe   DateTime    @default(now()) @map("ajoute_le") @db.Timestamptz(3)
