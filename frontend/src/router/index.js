@@ -8,6 +8,7 @@ import ProjectDetailView from "../views/ProjectDetailView.vue";
 import ProjectCreateView from "../views/ProjectCreateView.vue";
 import UsersView from "../views/UsersView.vue";
 import NotificationsView from "../views/NotificationsView.vue";
+import CalendarView from "../views/CalendarView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,6 +28,7 @@ const router = createRouter({
     },
     { path: "/utilisateurs", name: "utilisateurs", component: UsersView, meta: { administrateur: true } },
     { path: "/notifications", name: "notifications", component: NotificationsView },
+    { path: "/calendrier", name: "calendrier", component: CalendarView },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 });

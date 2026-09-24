@@ -15,8 +15,8 @@ const summarySelect = {
   archiveLe: true,
 };
 
-export function findActiveMateriels({ recherche, categorieId, modeSuivi, tri = "nom_asc" } = {}) {
-  const where = {
+function activeMaterialWhere({ recherche, categorieId, modeSuivi } = {}) {
+  return {
     statut: "actif",
     ...(recherche ? {
       OR: ["nom", "numeroSerie", "referenceConstructeur", "numeroInventaire"].map((field) => ({
@@ -26,12 +26,49 @@ export function findActiveMateriels({ recherche, categorieId, modeSuivi, tri = "
     ...(categorieId ? { categories: { some: { categorieId } } } : {}),
     ...(modeSuivi ? { modeSuivi } : {}),
   };
-  const orderBy = {
+}
+
+function activeMaterialOrderBy(tri = "nom_asc") {
+  return {
     nom_desc: [{ nom: "desc" }],
     recent: [{ modifieLe: "desc" }],
     ancien: [{ modifieLe: "asc" }],
   }[tri] || [{ nom: "asc" }];
+}
+
+export function findActiveMateriels({ recherche, categorieId, modeSuivi, tri = "nom_asc" } = {}) {
+  const where = activeMaterialWhere({ recherche, categorieId, modeSuivi });
+  const orderBy = activeMaterialOrderBy(tri);
   return prisma.materiel.findMany({ where, orderBy, select: summarySelect });
+}
+
+export function findActiveMaterielsForExport(filters = {}) {
+  const now = new Date();
+  return prisma.materiel.findMany({
+    where: activeMaterialWhere(filters), orderBy: activeMaterialOrderBy(filters.tri),
+    select: {
+      ...summarySelect,
+      reservations: {
+        where: { statut: "active", debut: { lte: now }, fin: { gt: now } },
+        orderBy: { debut: "asc" }, take: 1,
+        select: { debut: true, fin: true, projet: { select: { id: true, nom: true, visibilite: true, participations: { select: { utilisateurId: true } } } } },
+      },
+    },
+  });
+}
+
+export function findCalendarMateriels(debut, fin, materielIds = []) {
+  return prisma.materiel.findMany({
+    where: { statut: "actif", modeSuivi: "individualise", ...(materielIds.length ? { id: { in: materielIds } } : {}) },
+    orderBy: { nom: "asc" },
+    select: {
+      id: true, nom: true, numeroInventaire: true, numeroSerie: true,
+      reservations: {
+        where: { statut: "active", debut: { lt: fin }, fin: { gt: debut } }, orderBy: { debut: "asc" },
+        select: { id: true, debut: true, fin: true, projet: { select: { id: true, nom: true, visibilite: true, participations: { select: { utilisateurId: true } } } } },
+      },
+    },
+  });
 }
 
 export function findActiveMaterielById(id) {
@@ -173,7 +210,7 @@ export function archiveMateriel(id, auteurId) {
 }
 
 export const materielRepository = {
-  findActiveMateriels, findActiveMaterielById, findArchivedMateriels, findArchivedMaterielById, createMateriel, updateMateriel, findMaterielHistory,
+  findActiveMateriels, findActiveMaterielsForExport, findCalendarMateriels, findActiveMaterielById, findArchivedMateriels, findArchivedMaterielById, createMateriel, updateMateriel, findMaterielHistory,
   listCategories, createCategorie, updateCategorie, deleteCategorie, findCategoriesByIds,
   createAttachment, findAttachment, deleteAttachment,
   archiveMateriel,

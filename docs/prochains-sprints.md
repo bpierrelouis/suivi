@@ -1,6 +1,6 @@
 # SUIVI — Contenu des prochains sprints
 
-**Mise à jour :** 24 septembre 2026. **Statut :** Sprint 4 implémenté et migration PostgreSQL appliquée ; acceptation formelle reste à consigner.
+**Mise à jour :** 24 septembre 2026. **Statut :** Sprint 5 implémenté et validé sur la stack Docker locale ; acceptation formelle reste à consigner.
 
 ## Décisions de planification
 
@@ -75,7 +75,9 @@ Pour le cycle de vie d’un projet, terminer sa dernière tâche non terminée d
 
 **Objectif :** compléter l’exploitation des données avec les vues et fichiers prévus dans le cadrage.
 
-Ce sprint regroupe [US-13](user-stories.md#us-13) pour les exports d’inventaire et [US-26](user-stories.md#us-26) pour le calendrier de disponibilité. Les formats, colonnes, périodes, vues et actions doivent suivre les décisions Q-11, Q-16 et Q-22.
+**Avancement au 24 septembre 2026 :** le périmètre applicatif est implémenté et validé sur la stack Docker locale. Les choix de prototype et les résultats de recette sont consignés dans la [réalisation technique du Sprint 5](sprint-05-realisation.md).
+
+Ce sprint regroupe [US-13](user-stories.md#us-13) pour les exports d’inventaire et [US-26](user-stories.md#us-26) pour le calendrier de disponibilité. Il propose des exports Excel et PDF, complets ou filtrés, ainsi qu’une vue hebdomadaire respectant les droits d’accès aux projets. Les arbitrages formels Q-11 et Q-16 restent à faire valider.
 
 ## Conditions communes d’achèvement
 

@@ -1,6 +1,6 @@
 # SUIVI — Backlog produit
 
-**Date :** 24 septembre 2026. **Statut :** Sprint 3 implémenté et migration PostgreSQL appliquée ; recette métier complète et acceptation formelle à consigner.
+**Date :** 24 septembre 2026. **Statut :** Sprints 1 à 5 implémentés ; acceptation formelle à consigner.
 
 ## Priorisation et états
 
@@ -24,29 +24,29 @@ Les sprints S2 à S5 décrivent la suite fonctionnelle, sans durée ni date. Les
 | [US-06](user-stories.md#us-06) | Création de matériel | E2 | P1 | S3 | US-01, US-02 ; Q-08, Q-23 | Implémenté avec hypothèses provisoires |
 | [US-07](user-stories.md#us-07) | Modification de matériel | E2 | P1 | S3 | US-06 ; Q-08, Q-09, Q-23 | Implémenté avec hypothèses provisoires |
 | [US-08](user-stories.md#us-08) | Catégories et associations | E2 | P1 | S3 | US-06 ; Q-10 | Implémenté ; initialisation à valider |
-| [US-09](user-stories.md#us-09) | Recherche, filtres et tri | E2 | P1 | S3 puis S4 | US-05, US-08 ; Q-08, Q-25 | Tranche S3 implémentée ; projet/disponibilité en S4 |
-| [US-10](user-stories.md#us-10) | Suppression/archivage de matériel | E2 | P1 | S4 | US-06, US-12 ; US-24, US-27 | À préparer |
-| [US-11](user-stories.md#us-11) | Archives du matériel | E2 | P1 | S4 | US-10, US-12, US-25 | À préparer |
+| [US-09](user-stories.md#us-09) | Recherche, filtres et tri | E2 | P1 | S3 puis S4 | US-05, US-08 ; Q-08, Q-25 | Implémenté |
+| [US-10](user-stories.md#us-10) | Suppression/archivage de matériel | E2 | P1 | S4 | US-06, US-12 ; US-24, US-27 | Implémenté avec archivage sans restauration |
+| [US-11](user-stories.md#us-11) | Archives du matériel | E2 | P1 | S4 | US-10, US-12, US-25 | Implémenté |
 | [US-12](user-stories.md#us-12) | Historique du matériel actif | E2 | P1 | S3 | US-06, US-07 | Implémenté ; recette à exécuter |
-| [US-13](user-stories.md#us-13) | Exports de l’inventaire | E2 | P2 | S5 | US-09, US-29 ; Q-11 | À arbitrer ; formats envisagés |
+| [US-13](user-stories.md#us-13) | Exports de l’inventaire | E2 | P2 | S5 | US-09, US-29 ; Q-11 | Implémenté en Excel et PDF avec hypothèses provisoires |
 | [US-33](user-stories.md#us-33) | Pièces jointes d’un matériel | E2 | P1 | S3 | US-05, US-06 ; Q-29 | Implémenté avec contraintes provisoires à valider |
 | [US-14](user-stories.md#us-14) | Création de projet | E3 | P1 | S2 | US-01 ; D-15 | Implémenté ; recette à exécuter |
 | [US-15](user-stories.md#us-15) | Consultation des projets | E3 | P1 | S2 | US-14 | Implémenté ; recette à exécuter |
-| [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | S2 puis S4 | US-14, US-17 ; D-15, D-19 | Tranche S2 implémentée ; archivage S4 restant |
+| [US-16](user-stories.md#us-16) | Modification de projet | E3 | P1 | S2 puis S4 | US-14, US-17 ; D-15, D-19 | Implémenté |
 | [US-17](user-stories.md#us-17) | Ajout de membres | E3 | P1 | S2 | US-14 ; D-17 | Implémenté ; recette à exécuter |
 | [US-18](user-stories.md#us-18) | Retrait de membres | E3 | P1 | S2 | US-17 ; D-17 | Implémenté pour membre non responsable ; recette à exécuter |
 | [US-19](user-stories.md#us-19) | Tâches Kanban avec responsable de tâche facultatif | E3 | P1 | S2 | US-14, US-17 ; D-16 | Implémenté ; recette à exécuter |
-| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | S4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12, Q-26 | Équivalence, clôture automatique sur dernière tâche terminée et absence de réouverture décidées ; autres actions à arbitrer |
-| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | S4 | US-20 ; Q-12 | Droits de lecture et absence de réouverture décidés ; autres actions à arbitrer |
-| [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | S4 | US-14 à US-21 | À préparer |
+| [US-20](user-stories.md#us-20) | Clôture/archivage de projet | E3 | P1 | S4 | US-14, US-19, US-24, US-25 ; Q-06, Q-12, Q-26 | Implémenté avec absence de réouverture |
+| [US-21](user-stories.md#us-21) | Consultation des archives projets | E3 | P1 | S4 | US-20 ; Q-12 | Implémenté |
+| [US-31](user-stories.md#us-31) | Historique des modifications d’un projet | E3 | P1 | S4 | US-14 à US-21 | Implémenté |
 | [US-32](user-stories.md#us-32) | Documentation Markdown et export DOCX | E3 | P1 | S2 | US-14, US-15 ; D-18 | Implémenté et rendu DOCX vérifié ; recette applicative à exécuter |
-| [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | S4 | US-05, US-14, US-17 ; Q-22 | À arbitrer |
-| [US-23](user-stories.md#us-23) | Modification de réservation | E4 | P1 | S4 | US-22 ; Q-22 | À arbitrer |
-| [US-24](user-stories.md#us-24) | Annulation de réservation | E4 | P1 | S4 | US-22 ; Q-22 | À arbitrer |
-| [US-25](user-stories.md#us-25) | Historique des réservations | E4 | P1 | S4 | US-22, US-23, US-24 | À préparer |
-| [US-26](user-stories.md#us-26) | Calendrier de disponibilité | E4 | P2 | S5 | US-22, US-23, US-24 ; Q-16, Q-22 | Retenu ; modalités à arbitrer |
-| [US-27](user-stories.md#us-27) | Notification de suppression | E5 | P1 | S4 | US-17, US-22, US-24 ; Q-02, Q-15 | À arbitrer ; intégré à US-10 |
-| [US-28](user-stories.md#us-28) | Lecture des notifications | E5 | P1 | S4 | US-27 ; Q-15 | À arbitrer |
+| [US-22](user-stories.md#us-22) | Création de réservation | E4 | P1 | S4 | US-05, US-14, US-17 ; Q-22 | Implémenté avec créneaux semi-ouverts |
+| [US-23](user-stories.md#us-23) | Modification de réservation | E4 | P1 | S4 | US-22 ; Q-22 | Implémenté |
+| [US-24](user-stories.md#us-24) | Annulation de réservation | E4 | P1 | S4 | US-22 ; Q-22 | Implémenté |
+| [US-25](user-stories.md#us-25) | Historique des réservations | E4 | P1 | S4 | US-22, US-23, US-24 | Implémenté |
+| [US-26](user-stories.md#us-26) | Calendrier de disponibilité | E4 | P2 | S5 | US-22, US-23, US-24 ; Q-16, Q-22 | Implémenté avec vue hebdomadaire provisoire |
+| [US-27](user-stories.md#us-27) | Notification de suppression | E5 | P1 | S4 | US-17, US-22, US-24 ; Q-02, Q-15 | Implémenté lors de l’archivage matériel |
+| [US-28](user-stories.md#us-28) | Lecture des notifications | E5 | P1 | S4 | US-27 ; Q-15 | Implémenté |
 | [US-29](user-stories.md#us-29) | Confidentialité et droits | E5 | P0 | S1 puis tous les sprints | Chaque surface de données livrée | Validation progressive |
 | [US-30](user-stories.md#us-30) | Maquettes et parcours | E6 | P0 | S1 | Q-04, Q-14, Q-17, Q-20 | Terminé selon le retour d’équipe ; recette détaillée à consigner |
 

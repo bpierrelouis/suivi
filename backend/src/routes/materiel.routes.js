@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { addAttachment, archiveMateriel, createCategory, createMateriel, deleteCategory, downloadAttachment, getArchivedHistory, getArchivedMateriel, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
+import { addAttachment, archiveMateriel, createCategory, createMateriel, deleteCategory, downloadAttachment, exportMateriels, getArchivedHistory, getArchivedMateriel, getCalendar, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
 import { requireSession } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -11,6 +11,8 @@ router.delete("/categories/:id", deleteCategory);
 router.get("/archives", listArchivedMateriels);
 router.get("/archives/:id", getArchivedMateriel);
 router.get("/archives/:id/historique", getArchivedHistory);
+router.get("/export", exportMateriels);
+router.get("/calendrier", getCalendar);
 router.get("/", listMateriels);
 router.post("/", createMateriel);
 router.get("/:id", getMateriel);

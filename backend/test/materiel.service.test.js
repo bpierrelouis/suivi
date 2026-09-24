@@ -64,3 +64,26 @@ test("l'historique est refusé à l'utilisateur", async () => {
   const service = createMaterielService(repository());
   await assert.rejects(() => service.history(user, "material-1"), { code: "ACCES_INTERDIT" });
 });
+
+test("le calendrier masque les projets auxquels le profil n'a pas accès", async () => {
+  const reservation = {
+    id: "reservation-1",
+    debut: new Date("2026-09-24T08:00:00Z"),
+    fin: new Date("2026-09-24T10:00:00Z"),
+    projet: {
+      id: "project-1",
+      nom: "Projet confidentiel",
+      visibilite: "prive",
+      participations: [{ utilisateurId: "user-1" }],
+    },
+  };
+  const service = createMaterielService(repository({
+    async findCalendarMateriels() { return [{ id: "material-1", nom: "Oscilloscope", reservations: [reservation] }]; },
+  }));
+
+  const managerCalendar = await service.calendar(manager, reservation.debut, reservation.fin);
+  const memberCalendar = await service.calendar(user, reservation.debut, reservation.fin);
+
+  assert.deepEqual(managerCalendar[0].reservations[0].projet, { id: null, nom: "Réservé" });
+  assert.deepEqual(memberCalendar[0].reservations[0].projet, { id: "project-1", nom: "Projet confidentiel" });
+});

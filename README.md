@@ -16,7 +16,7 @@ SUIVI est un projet d’application destiné à un laboratoire pour gérer son i
 
 ## État du projet
 
-Le Sprint 1 a livré le socle Vue/Express/Prisma, la connexion simulée et les tableaux de bord adaptés aux rôles. Le Sprint 2 a livré l’administration du gestionnaire, les projets, les membres, le Kanban, la clôture automatique et la documentation Markdown exportable en DOCX. Le Sprint 3 a livré l’inventaire actif, les catégories, la recherche, l’historique et les pièces jointes. Le Sprint 4 livre les réservations sans chevauchement, les archives, les historiques détaillés et les notifications internes. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
+Le Sprint 1 a livré le socle Vue/Express/Prisma, la connexion simulée et les tableaux de bord adaptés aux rôles. Le Sprint 2 a livré l’administration du gestionnaire, les projets, les membres, le Kanban, la clôture automatique et la documentation Markdown exportable en DOCX. Le Sprint 3 a livré l’inventaire actif, les catégories, la recherche, l’historique et les pièces jointes. Le Sprint 4 a livré les réservations sans chevauchement, les archives, les historiques détaillés et les notifications internes. Le Sprint 5 ajoute le calendrier hebdomadaire des disponibilités et les exports Excel/PDF de l’inventaire actif. L’environnement Intradef reste simulé, avec une connexion gérée par l’application.
 
 Le suivi des tâches et de l’avancement est disponible sur le [tableau Trello du projet](https://trello.com/b/DgAQwynT).
 
@@ -33,6 +33,7 @@ Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories,
 - [Réalisation technique du Sprint 2](docs/sprint-02-realisation.md).
 - [Réalisation technique du Sprint 3](docs/sprint-03-realisation.md).
 - [Réalisation technique du Sprint 4](docs/sprint-04-realisation.md).
+- [Réalisation technique du Sprint 5](docs/sprint-05-realisation.md).
 - [Compte rendu de réunion client](docs/compte-rendu-reunion-client.md) — source des besoins.
 - [User stories et critères d’acceptation](docs/user-stories.md).
 - [Backlog produit et proposition de lots](docs/backlog.md).
@@ -40,4 +41,4 @@ Le [dossier documentaire](docs/README.md) regroupe le cadrage, les user stories,
 - [Contenu des prochains sprints](docs/prochains-sprints.md).
 - [Questions et décisions à valider](docs/decisions-et-questions.md).
 
-La documentation a été actualisée le 24 septembre 2026 avec la réalisation applicative du Sprint 4. Le contenu des prochains sprints formalise les priorités fonctionnelles sans engager de durée ni de date de livraison.
+La documentation a été actualisée le 24 septembre 2026 avec la réalisation applicative du Sprint 5. Le contenu des sprints formalise les priorités fonctionnelles sans engager de durée ni de date de livraison.

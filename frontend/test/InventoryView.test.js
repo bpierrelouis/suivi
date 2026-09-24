@@ -6,7 +6,7 @@ import { api } from "../src/services/api.js";
 let role = "utilisateur";
 vi.mock("../src/services/api.js", () => ({ api: vi.fn(), apiBlob: vi.fn(), apiFile: vi.fn() }));
 vi.mock("../src/stores/auth.js", () => ({ useAuthStore: () => ({ utilisateur: { role } }) }));
-const global = { stubs: { AppLayout: { template: "<main><slot /></main>" }, ModalShell: { template: "<section><slot name='actions' /><slot /></section>" } } };
+const global = { stubs: { AppLayout: { template: "<main><slot /></main>" }, ModalShell: { template: "<section><slot name='actions' /><slot /></section>" }, RouterLink: { template: "<a><slot /></a>" } } };
 
 describe("InventoryView", () => {
   beforeEach(() => {
@@ -21,6 +21,6 @@ describe("InventoryView", () => {
 
   it("masque les actions de gestion à un utilisateur", async () => {
     const wrapper = mount(InventoryView, { global }); await flushPromises();
-    expect(wrapper.text()).not.toContain("Nouveau matériel"); expect(wrapper.find(".page-actions").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("Nouveau matériel"); expect(wrapper.text()).not.toContain("Exporter l’inventaire"); expect(wrapper.text()).toContain("Calendrier");
   });
 });

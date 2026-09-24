@@ -1,4 +1,5 @@
 import { conflict, forbidden, notFound } from "../errors/app.error.js";
+import { prepareInventoryRows } from "./inventory-export.service.js";
 
 const MANAGERS = new Set(["administrateur", "gestionnaire"]);
 
@@ -27,6 +28,10 @@ function validateFile(file) {
       : file.contenu[0] === 0xff && file.contenu[1] === 0xd8 && file.contenu.at(-2) === 0xff && file.contenu.at(-1) === 0xd9;
   if (!signatureOk) throw conflict("CONTENU_FICHIER_INVALIDE");
   return { ...file, nomFichier: safeFilename(file.nomFichier) };
+}
+
+function canSeeProject(user, project) {
+  return user.role === "administrateur" || (user.role === "utilisateur" && (project.visibilite === "public" || project.participations.some(({ utilisateurId }) => utilisateurId === user.id)));
 }
 
 export function createMaterielService(repository) {
@@ -70,6 +75,25 @@ export function createMaterielService(repository) {
     async history(user, id) { assertManager(user); await requireActive(id); return repository.findMaterielHistory(id); },
     async archivedHistory(user, id) { await requireArchived(user, id); return repository.findMaterielHistory(id); },
     async archive(user, id) { assertManager(user); await requireActive(id); return repository.archiveMateriel(id, user.id); },
+    async exportData(user, filters, scope) {
+      assertManager(user);
+      const effectiveFilters = scope === "all" ? {} : filters;
+      const [items, category] = await Promise.all([
+        repository.findActiveMaterielsForExport(effectiveFilters),
+        effectiveFilters.categorieId ? repository.listCategories().then((rows) => rows.find(({ id }) => id === effectiveFilters.categorieId)) : null,
+      ]);
+      return { rows: prepareInventoryRows(items, user), filters: { ...effectiveFilters, categorieNom: category?.nom || "" } };
+    },
+    async calendar(user, debut, fin, materielIds) {
+      const items = await repository.findCalendarMateriels(debut, fin, materielIds);
+      return items.map((item) => ({
+        ...item,
+        reservations: item.reservations.map((reservation) => ({
+          id: reservation.id, debut: reservation.debut, fin: reservation.fin,
+          projet: canSeeProject(user, reservation.projet) ? { id: reservation.projet.id, nom: reservation.projet.nom } : { id: null, nom: "Réservé" },
+        })),
+      }));
+    },
     listCategories() { return repository.listCategories(); },
     async createCategory(user, nom) { assertManager(user); return repository.createCategorie(nom); },
     async updateCategory(user, id, nom) { assertManager(user); return repository.updateCategorie(id, nom); },

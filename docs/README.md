@@ -1,6 +1,6 @@
 # SUIVI — Dossier documentaire
 
-**Mise à jour :** 23 septembre 2026. **Statut :** périmètre applicatif du Sprint 2 implémenté ; recette PostgreSQL à consigner.
+**Mise à jour :** 24 septembre 2026. **Statut :** périmètre applicatif des Sprints 1 à 5 implémenté ; acceptation formelle à consigner.
 
 ## Documents
 
@@ -14,6 +14,9 @@
 | [Premier sprint](sprint-01.md) | Objectif, travaux, démonstration et conditions de réalisation. |
 | [Réalisation technique du Sprint 1](sprint-01-realisation.md) | Fonctionnalités livrées, hypothèse d’authentification simulée, démarrage et tests. |
 | [Réalisation technique du Sprint 2](sprint-02-realisation.md) | Tranches réalisées, architecture applicative, données de démonstration et contrôles du Sprint 2. |
+| [Réalisation technique du Sprint 3](sprint-03-realisation.md) | Inventaire actif, catégories, recherche, historique et pièces jointes. |
+| [Réalisation technique du Sprint 4](sprint-04-realisation.md) | Réservations, archivage, historiques et notifications. |
+| [Réalisation technique du Sprint 5](sprint-05-realisation.md) | Calendrier hebdomadaire et exports Excel/PDF de l’inventaire. |
 | [Prochains sprints](prochains-sprints.md) | Ordre validé après S1 et contenu proposé des sprints 2 à 5. |
 | [Règles de gestion et droits](regles-de-gestion.md) | Contraintes métier et matrice des autorisations. |
 | [Dictionnaire de données](dictionnaire-donnees.md) | Entités, informations attendues et relations conceptuelles. |

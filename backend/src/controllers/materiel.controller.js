@@ -4,6 +4,7 @@ import { createMaterielService } from "../services/materiel.service.js";
 import { reservationRepository } from "../repositories/reservation.repository.js";
 import { projetRepository } from "../repositories/projet.repository.js";
 import { createReservationService } from "../services/reservation.service.js";
+import { createInventoryPdf, createInventoryXlsx, inventoryExportFilename } from "../services/inventory-export.service.js";
 
 const service = createMaterielService(materielRepository);
 const reservations = createReservationService(reservationRepository, projetRepository);
@@ -23,6 +24,8 @@ const filtersSchema = z.object({
   modeSuivi: z.enum(["individualise", "non_individualise"]).optional(),
   tri: z.enum(["nom_asc", "nom_desc", "recent", "ancien"]).optional(),
 });
+const exportSchema = filtersSchema.extend({ format: z.enum(["xlsx", "pdf"]), perimetre: z.enum(["all", "filtered"]).default("filtered") });
+const calendarSchema = z.object({ debut: z.iso.datetime({ offset: true }), fin: z.iso.datetime({ offset: true }), materielIds: z.string().optional() });
 
 function id(value, res) {
   const parsed = uuid.safeParse(value);
@@ -33,6 +36,24 @@ export async function listMateriels(req, res) {
   const filters = filtersSchema.safeParse(req.query);
   if (!filters.success) return res.status(400).json({ error: "FILTRES_INVALIDES" });
   res.json({ materiels: await service.list(req.utilisateur, filters.data) });
+}
+export async function exportMateriels(req, res) {
+  const query = exportSchema.safeParse(req.query);
+  if (!query.success) return res.status(400).json({ error: "EXPORT_INVALIDE" });
+  const { format, perimetre, ...filters } = query.data;
+  const data = await service.exportData(req.utilisateur, filters, perimetre);
+  const buffer = format === "xlsx" ? await createInventoryXlsx(data.rows, data.filters, perimetre) : await createInventoryPdf(data.rows, data.filters, perimetre);
+  res.set({ "Content-Type": format === "xlsx" ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf", "Content-Disposition": `attachment; filename="${inventoryExportFilename(format)}"`, "Content-Length": buffer.length });
+  res.send(buffer);
+}
+export async function getCalendar(req, res) {
+  const query = calendarSchema.safeParse(req.query);
+  if (!query.success) return res.status(400).json({ error: "PERIODE_CALENDRIER_INVALIDE" });
+  const debut = new Date(query.data.debut); const fin = new Date(query.data.fin);
+  if (fin <= debut || fin - debut > 93 * 24 * 60 * 60 * 1000) return res.status(400).json({ error: "PERIODE_CALENDRIER_INVALIDE" });
+  const materielIds = query.data.materielIds ? [...new Set(query.data.materielIds.split(","))].slice(0, 100) : [];
+  if (materielIds.some((value) => !uuid.safeParse(value).success)) return res.status(400).json({ error: "IDENTIFIANT_INVALIDE" });
+  res.json({ debut, fin, materiels: await service.calendar(req.utilisateur, debut, fin, materielIds) });
 }
 export async function listArchivedMateriels(req, res) { const filters = filtersSchema.safeParse(req.query); if (!filters.success) return res.status(400).json({ error: "FILTRES_INVALIDES" }); res.json({ materiels: await service.listArchived(req.utilisateur, filters.data) }); }
 export async function getArchivedMateriel(req, res) { const value = id(req.params.id, res); if (value) res.json({ materiel: await service.getArchived(req.utilisateur, value) }); }
