@@ -1,0 +1,1479 @@
+<title>Présentation SUIVI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout : deck Swiper.js plein viewport, une diapositive = 100dvh, colonne de contenu centrée.
+   Identité "produit tech" assumée : palette reprise à l'identique du thème sombre réel de
+   l'application SUIVI (frontend/src/styles/main.css), surfaces vitrées, halos de couleur,
+   trame technique en fond — engagement total sur le sombre, aucune alternance clair/sombre. */
+:root{
+  --void:#05070d;
+  --bg:#0b1220;
+  --bg-deep:#060a14;
+  --surface:rgba(255,255,255,.04);
+  --surface-strong:rgba(255,255,255,.075);
+  --border:rgba(255,255,255,.09);
+  --border-strong:rgba(255,255,255,.18);
+  --ink:#eef1fa;
+  --mist:#8b96b3;
+  --label:#9db8fd;
+  --grid-line:rgba(255,255,255,.055);
+  --glow-1:rgba(91,141,251,.36);
+  --glow-2:rgba(45,212,200,.22);
+  --glow-1-deep:rgba(91,141,251,.45);
+  --glow-2-deep:rgba(168,127,240,.3);
+  --navy:#141d30;
+  --blue:#5b8dfb;
+  --blue-dark:#457be0;
+  --cyan:#2dd4c8;
+  --success:#34c98d;
+  --warning:#f0a83c;
+  --purple:#a87ff0;
+  --danger:#ff6b5b;
+  --blue-light:#9db8fd;
+  --font-display:'Unbounded',-apple-system,sans-serif;
+  --font-body:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono','Courier New',monospace;
+  color-scheme: dark;
+}
+:root[data-deck-theme="light"]{
+  --void:#e7ecf5;
+  --bg:#f6f8fc;
+  --bg-deep:#2864e8;
+  --surface:rgba(13,32,70,.035);
+  --surface-strong:rgba(13,32,70,.065);
+  --border:rgba(13,32,70,.11);
+  --border-strong:rgba(13,32,70,.2);
+  --ink:#121a2e;
+  --mist:#5c6578;
+  --label:#1f55cc;
+  --grid-line:rgba(13,32,70,.05);
+  --glow-1:rgba(40,100,232,.10);
+  --glow-2:rgba(16,165,155,.08);
+  --glow-1-deep:rgba(255,255,255,.22);
+  --glow-2-deep:rgba(255,255,255,.14);
+  color-scheme: light;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--ink);
+  font-family:var(--font-body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;font-weight:600;}
+p{margin:0;}
+::selection{background:var(--blue);color:#061023;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;} }
+
+.grad-text{
+  background:linear-gradient(120deg,var(--ink) 10%,var(--blue) 55%,var(--cyan) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* ---------- atmosphere : halos + trame technique, par diapositive ---------- */
+.slide__glow{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.slide__glow::before,.slide__glow::after{
+  content:"";position:absolute;border-radius:50%;filter:blur(90px);
+  animation:drift 26s ease-in-out infinite alternate;
+}
+.slide__glow::before{
+  width:46vw;height:46vw;top:-14vw;right:-10vw;
+  background:radial-gradient(circle,var(--glow-1),transparent 68%);
+}
+.slide__glow::after{
+  width:38vw;height:38vw;bottom:-12vw;left:-8vw;
+  background:radial-gradient(circle,var(--glow-2),transparent 70%);
+  animation-delay:-9s;animation-duration:32s;
+}
+.slide--navy .slide__glow::before{background:radial-gradient(circle,var(--glow-1-deep),transparent 68%);}
+.slide--navy .slide__glow::after{background:radial-gradient(circle,var(--glow-2-deep),transparent 70%);}
+@keyframes drift{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(-4%,5%) scale(1.08);}
+}
+.slide__grid{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 55%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 55%,transparent 100%);
+}
+
+/* ---------- entrance choreography (slide change) ---------- */
+.slide-inner.enter{animation:rise .55s cubic-bezier(.16,1,.3,1) both;}
+@keyframes rise{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ---------- shell ---------- */
+.deck-shell{
+  position:relative;
+  height:100dvh;
+  width:100%;
+}
+.top-chrome{
+  position:fixed;
+  top:env(safe-area-inset-top,0px);
+  left:0;right:0;
+  height:3px;
+  background:rgba(255,255,255,.06);
+  z-index:40;
+}
+.top-chrome__fill{
+  height:100%;
+  width:6.25%;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  box-shadow:0 0 12px rgba(91,141,251,.7);
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+.brand-chip{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 18px);
+  left:22px;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.04em;
+  color:#fff;
+  background:rgba(10,22,48,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  padding:6px 14px 6px 8px;
+  border-radius:99px;
+  pointer-events:none;
+}
+.brand-chip__mark{
+  width:20px;height:20px;border-radius:6px;
+  background:var(--blue);
+  display:grid;place-items:center;
+  color:#fff;font-size:11px;font-weight:800;
+  font-family:var(--font-body);
+}
+.counter-chip{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 18px);
+  right:22px;
+  z-index:40;
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.03em;
+  color:#AFC0E8;
+  background:rgba(10,22,48,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  padding:5px 11px;
+  border-radius:99px;
+  pointer-events:none;
+}
+.counter-chip strong{color:#fff;}
+.part-chip{
+  position:fixed;
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  left:50%;
+  transform:translateX(-50%);
+  z-index:40;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  max-width:min(60vw,480px);
+  color:#fff;
+  background:rgba(10,22,48,.82);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.14);
+  padding:7px 16px 8px 12px;
+  border-radius:14px;
+  pointer-events:none;
+  transition:border-color .3s ease;
+}
+.part-chip__dot{
+  width:8px;height:8px;border-radius:50%;
+  margin-top:5px;
+  background:var(--blue-light);
+  flex-shrink:0;
+  transition:background .3s ease;
+}
+.part-chip__text{display:flex;flex-direction:column;gap:1px;min-width:0;}
+.part-chip__label{font-size:12px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
+.part-chip__principale{
+  font-size:10.5px;
+  font-weight:400;
+  color:#C3CFEC;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media (max-width:760px){.part-chip{display:none;}}
+
+/* ---------- swiper mechanics (hand-rolled minimum; Swiper JS drives the transform) ---------- */
+.swiper{height:100dvh;width:100%;position:relative;overflow:hidden;}
+.swiper-wrapper{display:flex;height:100%;}
+.swiper-slide{flex-shrink:0;width:100%;height:100%;position:relative;}
+
+/* ---------- slide surfaces ---------- */
+.slide{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.slide--light{background:var(--bg);color:var(--ink);}
+.slide--navy{
+  background:var(--bg-deep);color:#fff;
+  /* panneau "statement" toujours sombre/saturé : surcharge locale, indépendante du thème actif */
+  --ink:#fff;--mist:#C7D3EA;--label:#9db8fd;
+  --surface:rgba(255,255,255,.08);--surface-strong:rgba(255,255,255,.14);
+  --border:rgba(255,255,255,.14);--border-strong:rgba(255,255,255,.24);
+}
+.slide-scroll{
+  position:relative;
+  z-index:1;
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:96px clamp(22px,5vw,88px) 64px;
+  display:flex;
+  flex-direction:column;
+}
+.slide-inner{
+  max-width:1180px;
+  width:100%;
+  margin:0 auto;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.slide--center .slide-inner{justify-content:center;}
+
+.eyebrow{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--label);
+  margin-bottom:16px;
+}
+.eyebrow::before{
+  content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);
+  box-shadow:0 0 10px 2px rgba(45,212,200,.7);
+  flex-shrink:0;
+}
+h1.slide-title{
+  font-size:clamp(25px,3.1vw,38px);
+  font-weight:600;
+  letter-spacing:-.01em;
+  line-height:1.15;
+  margin-bottom:10px;
+}
+.slide-lede{
+  font-size:15px;
+  color:var(--mist);
+  max-width:640px;
+  margin-bottom:8px;
+}
+
+/* ---------- reusable card grid ---------- */
+.grid{display:grid;gap:16px;margin-top:30px;}
+.grid--3{grid-template-columns:repeat(3,1fr);}
+.grid--2{grid-template-columns:repeat(2,1fr);}
+.grid--5{grid-template-columns:repeat(5,1fr);}
+@media (max-width:980px){
+  .grid--5{grid-template-columns:repeat(3,1fr);}
+}
+@media (max-width:760px){
+  .grid--3,.grid--2{grid-template-columns:1fr;}
+  .grid--5{grid-template-columns:1fr 1fr;}
+}
+.card{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 16px 36px -20px rgba(0,0,0,.6);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;
+}
+.card--row{flex-direction:row;align-items:flex-start;gap:14px;}
+.card--row>div{min-width:0;flex:1;}
+.card--row>.badge-num,.card--row>.badge-sq{flex:0 0 auto;}
+.card h3{font-size:16.5px;font-weight:600;margin-bottom:8px;color:var(--ink);}
+.card p{font-size:13px;line-height:1.55;color:var(--mist);}
+.badge-num{
+  width:38px;height:38px;border-radius:50%;
+  display:grid;place-items:center;
+  color:#061023;font-weight:700;font-size:15px;
+  font-family:var(--font-display);
+  margin-bottom:14px;
+  flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 6px 20px -6px rgba(0,0,0,.6);
+}
+.badge-sq{
+  width:34px;height:34px;border-radius:9px;
+  margin-bottom:14px;
+  flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 6px 18px -6px rgba(0,0,0,.6);
+}
+.tag-pill{
+  display:inline-flex;align-items:center;
+  font-family:var(--font-mono);
+  font-size:10.5px;font-weight:500;letter-spacing:.02em;
+  padding:5px 11px;border-radius:99px;
+  width:fit-content;
+  border:1px solid currentColor;
+}
+
+/* ---------- footer rule ---------- */
+.slide-foot{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--mist);
+  padding-top:22px;
+}
+
+/* ---------- pagination / nav ---------- */
+.swiper-pagination{
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 14px);
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  z-index:40;
+  flex-wrap:wrap;
+  max-width:min(88vw,620px);
+  background:rgba(10,22,48,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  padding:8px 16px;
+  border-radius:99px;
+}
+.swiper-pagination-bullet{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.28);
+  cursor:pointer;
+  transition:all .25s ease;
+  border:0;padding:0;
+}
+.swiper-pagination-bullet:hover{background:rgba(255,255,255,.5);}
+.swiper-pagination-bullet-active{
+  width:22px;border-radius:4px;
+  background:var(--blue-light);
+}
+.swiper-button-prev,.swiper-button-next{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:40;
+  width:44px;height:44px;
+  border-radius:50%;
+  background:rgba(10,22,48,.78);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color:#fff;
+  box-shadow:0 6px 18px -8px rgba(10,22,48,.45);
+  transition:background .2s ease, opacity .2s ease, transform .2s ease;
+}
+.swiper-button-prev:hover,.swiper-button-next:hover{background:rgba(10,22,48,.92);}
+.swiper-button-prev{left:18px;}
+.swiper-button-next{right:18px;}
+.swiper-button-disabled{opacity:.25;pointer-events:none;}
+.swiper-button-prev svg,.swiper-button-next svg{width:18px;height:18px;}
+@media (max-width:680px){
+  .swiper-button-prev,.swiper-button-next{width:36px;height:36px;}
+  .swiper-button-prev{left:8px;}
+  .swiper-button-next{right:8px;}
+}
+
+/* ---------- misc content blocks reused across slides ---------- */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;}
+@media (max-width:760px){.stat-row{grid-template-columns:1fr;}}
+.stat-tile{
+  position:relative;
+  background:linear-gradient(165deg,rgba(91,141,251,.14),rgba(255,255,255,.03));
+  border:1px solid var(--border-strong);
+  border-radius:16px;padding:28px 18px;text-align:center;
+  overflow:hidden;
+}
+.stat-tile strong{display:block;font-family:var(--font-display);font-weight:600;font-size:clamp(34px,4.4vw,50px);font-variant-numeric:tabular-nums;}
+.stat-tile strong{background:linear-gradient(120deg,var(--ink),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-tile span{display:block;font-size:11.5px;color:var(--mist);margin-top:8px;letter-spacing:.01em;}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px 28px;margin-top:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.panel ul{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;}
+@media (max-width:760px){.panel ul{grid-template-columns:1fr;}}
+.panel li{font-size:13px;color:var(--ink);padding-left:16px;position:relative;line-height:1.45;}
+.panel li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:2px;background:var(--cyan);box-shadow:0 0 6px 1px rgba(45,212,200,.6);}
+
+.flow-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.flow-box{
+  background:var(--surface-strong);
+  border:1.5px solid var(--border-strong);
+  border-radius:12px;
+  padding:14px 16px;
+  min-width:150px;flex:1;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.flow-box strong{display:block;font-size:13.5px;color:#fff;margin-bottom:3px;}
+.flow-box span{display:block;font-size:10.5px;color:var(--mist);}
+.flow-arrow{color:var(--cyan);font-size:20px;flex-shrink:0;text-shadow:0 0 10px rgba(45,212,200,.6);}
+@media (max-width:760px){.flow-arrow{transform:rotate(90deg);}}
+
+.code-block{
+  background:#05080f;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px 22px;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  color:var(--cyan);
+  overflow-x:auto;
+  white-space:pre;
+  margin-top:20px;
+  box-shadow:inset 0 0 40px -20px rgba(45,212,200,.3);
+}
+
+.table-wrap{overflow-x:auto;margin-top:22px;border-radius:14px;border:1px solid var(--border);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+table.rights{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--surface);}
+table.rights th{background:rgba(91,141,251,.14);color:var(--ink);text-align:left;padding:11px 14px;font-weight:600;white-space:nowrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;}
+table.rights td{padding:10px 14px;border-bottom:1px solid var(--border);white-space:nowrap;}
+table.rights tr:last-child td{border-bottom:0;}
+.yes{color:var(--success);font-weight:700;}
+.no{color:var(--mist);}
+.cond{color:var(--warning);font-weight:700;}
+
+.shot-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.shot-card h3{font-size:14px;margin-bottom:10px;}
+.shot-placeholder{
+  aspect-ratio:16/9;
+  border:1.5px dashed var(--border-strong);
+  border-radius:10px;
+  display:grid;place-items:center;
+  color:var(--mist);
+  font-size:12px;
+  font-style:italic;
+  background:rgba(255,255,255,.02);
+}
+.shot-img{
+  display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;
+  border-radius:10px;border:1px solid var(--border-strong);
+  box-shadow:0 14px 32px -18px rgba(0,0,0,.55);
+}
+
+.hero-kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:var(--cyan);text-transform:uppercase;margin-bottom:18px;}
+.hero-title{font-size:clamp(50px,9vw,118px);font-weight:700;letter-spacing:-.02em;line-height:.92;margin-bottom:24px;}
+.hero-sub{font-family:var(--font-body);font-weight:600;font-size:clamp(16px,1.9vw,21px);color:var(--label);margin-bottom:14px;}
+.hero-desc{font-size:14.5px;color:#C7D3EA;max-width:560px;margin-bottom:10px;}
+.hero-names{font-size:14.5px;font-weight:700;color:#fff;margin-top:30px;}
+.hero-date{font-size:12px;color:var(--mist);margin-top:6px;}
+.hero-version{position:absolute;bottom:env(safe-area-inset-bottom,22px);left:clamp(22px,5vw,88px);font-size:10.5px;color:var(--mist);opacity:.75;}
+
+.acte-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;}
+@media (max-width:900px){.acte-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.acte-grid{grid-template-columns:1fr;}}
+.acte-card .role-line{font-size:10.5px;font-weight:700;letter-spacing:.03em;margin-bottom:8px;}
+.acte-card h3{font-size:16px;margin-bottom:4px;}
+.acte-card small{display:block;font-size:11px;color:var(--mist);margin-bottom:12px;}
+.acte-card p{margin-bottom:5px;}
+.acte-thumb{
+  display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;
+  border-radius:8px;border:1px solid var(--border-strong);margin-top:10px;
+}
+
+.quote-panel{
+  position:relative;
+  background:linear-gradient(135deg,var(--bg-deep),color-mix(in srgb,var(--bg-deep) 75%,var(--cyan)));
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:18px;padding:26px 30px;margin-top:26px;
+  overflow:hidden;
+  --ink:#fff;--mist:#C7D3EA;
+}
+.quote-panel strong{color:var(--ink);}
+.quote-panel span{color:var(--mist);}
+.quote-panel p{font-size:15px;line-height:1.5;}
+
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px;}
+@media (max-width:900px){.team-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.team-grid{grid-template-columns:1fr;}}
+.team-card{text-align:center;padding:26px 16px;}
+.team-card .badge-num{margin:0 auto 14px;}
+.team-card h3{font-size:16px;margin-bottom:4px;}
+.team-card .role-sub{font-size:11px;color:var(--mist);font-style:italic;margin-bottom:10px;min-height:28px;}
+.team-card .fill-note{font-size:11.5px;color:var(--ink);opacity:.85;margin-bottom:16px;min-height:32px;}
+.team-card .acte-tag{margin:0 auto;}
+
+.kbd-hint{
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
+  left:22px;
+  z-index:40;
+  font-size:11px;
+  color:#C3CFEC;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(10,22,48,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  padding:5px 12px;
+  border-radius:99px;
+  pointer-events:none;
+}
+@media (max-width:760px){.kbd-hint{display:none;}}
+.theme-switch{
+  position:fixed;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
+  right:22px;
+  z-index:40;
+  font-family:var(--font-body);
+  font-size:11.5px;
+  font-weight:600;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(10,22,48,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.16);
+  padding:6px 14px 6px 12px;
+  border-radius:99px;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.theme-switch:hover{background:rgba(10,22,48,.92);}
+@media (max-width:980px){.theme-switch{display:none;}}
+.kbd-hint kbd{
+  font-family:var(--font-mono);
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:5px;
+  padding:2px 6px;
+  font-size:10px;
+  color:#fff;
+}
+
+@media (max-width:600px){
+  .slide-scroll{padding:80px 18px 48px;}
+}
+</style>
+
+<div class="deck-shell">
+  <div class="top-chrome"><div class="top-chrome__fill" id="progressFill"></div></div>
+  <div class="brand-chip"><span class="brand-chip__mark">S</span>SUIVI</div>
+  <div class="part-chip" id="partChip" title="Contexte, besoin, équipe et utilisateurs"><span class="part-chip__dot" id="partDot"></span><span id="partLabel">Nom 1 · 4 min 30</span></div>
+  <div class="counter-chip"><strong id="curIndex">01</strong> / <span id="totalIndex">16</span></div>
+  <button class="theme-switch" id="themeSwitch" type="button" aria-label="Changer de thème (clair / sombre)" title="Thème clair / sombre — utile si le projecteur rend mal le sombre">
+    <span id="themeSwitchIcon" aria-hidden="true">☾</span><span id="themeSwitchLabel">Sombre</span>
+  </button>
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+
+      <!-- 1 — Couverture -->
+      <div class="swiper-slide">
+        <div class="slide slide--navy slide--center">
+          <div class="slide-scroll" style="padding-top:0;">
+            <div class="slide-inner">
+              <div class="hero-kicker">Présentation projet · WD12</div>
+              <h1 class="hero-title grad-text">SUIVI</h1>
+              <p class="hero-sub">Suivi des Usages, Inventaires, Vie des projets et IA</p>
+              <p class="hero-desc">L'application qui réunit l'inventaire, les projets et les réservations d'un laboratoire.</p>
+              <p class="hero-names">Nom 1 · Nom 2 · Nom 3 · Nom 4</p>
+              <p class="hero-date">Lundi 5 octobre 2026</p>
+            </div>
+          </div>
+          <p class="hero-version">Version de démonstration : commit c84e8af · 1ᵉʳ octobre 2026</p>
+        </div>
+      </div>
+
+      <!-- 2 — Contexte et besoin -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Contexte · Nom 1</div>
+              <h1 class="slide-title">Trois questions que se pose le laboratoire</h1>
+              <div class="grid grid--3">
+                <div class="card">
+                  <div class="badge-num" style="background:var(--blue)">1</div>
+                  <h3>Où est ce matériel ?</h3>
+                  <p>Retrouver vite un appareil, ses références et ses documents : factures, bons de commande.</p>
+                </div>
+                <div class="card">
+                  <div class="badge-num" style="background:var(--success)">2</div>
+                  <h3>Est-il libre jeudi ?</h3>
+                  <p>Réserver un appareil pour un projet, sans risque de double réservation.</p>
+                </div>
+                <div class="card">
+                  <div class="badge-num" style="background:var(--purple)">3</div>
+                  <h3>Qui a fait quoi ?</h3>
+                  <p>Garder la trace des modifications, des réservations et de la vie des projets.</p>
+                </div>
+              </div>
+              <div class="quote-panel">
+                <p><strong>SUIVI réunit l'inventaire, les projets et les réservations</strong> <span>dans un seul outil, avec les bons droits pour chacun et une trace de tout.</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 — Équipe -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Équipe · Nom 1</div>
+              <h1 class="slide-title">Quatre personnes, trois rôles dans l'application</h1>
+              <p class="slide-lede">Administrateur, gestionnaire, utilisateur : ce sont les trois seuls rôles de SUIVI. Un « responsable » n'est pas un rôle à part — c'est simplement l'utilisateur qui a créé le projet présenté en démonstration.</p>
+              <div class="team-grid">
+                <div class="card team-card">
+                  <div class="badge-num" style="background:var(--blue);margin-left:auto;margin-right:auto;">1</div>
+                  <h3>Nom 1</h3>
+                  <p class="role-sub">[Rôle dans le projet]</p>
+                  <p class="fill-note">[Une réalisation concrète, visible dans l'application]</p>
+                  <span class="tag-pill acte-tag" style="background:rgba(91,141,251,.14);color:var(--blue);">Partie 1 · Contexte, équipe, utilisateurs</span>
+                </div>
+                <div class="card team-card">
+                  <div class="badge-num" style="background:var(--success);margin-left:auto;margin-right:auto;">2</div>
+                  <h3>Nom 2</h3>
+                  <p class="role-sub">[Rôle dans le projet]</p>
+                  <p class="fill-note">[Une réalisation concrète, visible dans l'application]</p>
+                  <span class="tag-pill acte-tag" style="background:rgba(52,201,141,.14);color:var(--success);">Partie 2 · Technologies, architecture</span>
+                </div>
+                <div class="card team-card">
+                  <div class="badge-num" style="background:var(--purple);margin-left:auto;margin-right:auto;">3</div>
+                  <h3>Nom 3</h3>
+                  <p class="role-sub">[Rôle dans le projet]</p>
+                  <p class="fill-note">[Une réalisation concrète, visible dans l'application]</p>
+                  <span class="tag-pill acte-tag" style="background:rgba(168,127,240,.14);color:var(--purple);">Partie 3 · Démonstration (solo)</span>
+                </div>
+                <div class="card team-card">
+                  <div class="badge-num" style="background:var(--warning);margin-left:auto;margin-right:auto;">4</div>
+                  <h3>Nom 4</h3>
+                  <p class="role-sub">[Rôle dans le projet]</p>
+                  <p class="fill-note">[Une réalisation concrète, visible dans l'application]</p>
+                  <span class="tag-pill acte-tag" style="background:rgba(240,168,60,.14);color:var(--warning);">Partie 4 · Droits, bilan, conclusion</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 — Profils -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Les profils · Nom 1</div>
+              <h1 class="slide-title">Trois profils, trois façons d'utiliser SUIVI</h1>
+              <div class="grid grid--3">
+                <div class="card" style="padding:0;overflow:hidden;">
+                  <div style="background:var(--blue);color:#fff;padding:18px 20px;">
+                    <h3 style="color:#fff;margin-bottom:2px;">Administrateur</h3>
+                    <small style="font-size:11px;opacity:.9;">Un seul, compte prédéfini</small>
+                  </div>
+                  <div style="padding:18px 20px;">
+                    <p>• Gère toutes les données et tous les projets</p><br/>
+                    <p>• Voit les archives et les historiques</p><br/>
+                    <p>• Crée, modifie et désactive les comptes</p><br/>
+                    <p>• Change le rôle de n'importe quel compte</p>
+                  </div>
+                </div>
+                <div class="card" style="padding:0;overflow:hidden;">
+                  <div style="background:var(--warning);color:#fff;padding:18px 20px;">
+                    <h3 style="color:#fff;margin-bottom:2px;">Gestionnaire</h3>
+                    <small style="font-size:11px;opacity:.9;">Zéro ou un à la fois</small>
+                  </div>
+                  <div style="padding:18px 20px;">
+                    <p>• Tient l'inventaire et les catégories</p><br/>
+                    <p>• Exporte l'inventaire en Excel ou PDF</p><br/>
+                    <p>• Traite les demandes de réapprovisionnement</p><br/>
+                    <p>• Aucun accès aux projets</p>
+                  </div>
+                </div>
+                <div class="card" style="padding:0;overflow:hidden;">
+                  <div style="background:var(--success);color:#fff;padding:18px 20px;">
+                    <h3 style="color:#fff;margin-bottom:2px;">Utilisateur</h3>
+                    <small style="font-size:11px;opacity:.9;">Créé à sa première connexion</small>
+                  </div>
+                  <div style="padding:18px 20px;">
+                    <p>• Consulte l'inventaire actif</p><br/>
+                    <p>• Crée des projets, réserve du matériel</p><br/>
+                    <p>• Signale une rupture de stock</p><br/>
+                    <p>• Notifié si un matériel réservé est archivé</p><br/>
+                    <p>• Selon le projet : responsable (créateur), membre ou simple lecteur</p>
+                  </div>
+                </div>
+              </div>
+              <p style="margin-top:22px;font-size:13.5px;"><strong>Les droits sont vérifiés par l'API à chaque requête</strong> <span style="color:var(--mist);">: cacher un bouton ne suffit pas.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 — Technologies -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Technologies · Nom 2</div>
+              <h1 class="slide-title">Chaque choix répond à un besoin</h1>
+              <div class="grid grid--2">
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">1</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--blue);">Interface</div><h3>Vue 3 + Vite</h3><p>Tableaux, Kanban, pages dédiées : des écrans qui changent selon le profil.</p></div>
+                </div>
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--success);margin-bottom:0;">2</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--success);">API</div><h3>Express 5 · Node.js 24</h3><p>Un seul endroit où tous les droits sont vérifiés.</p></div>
+                </div>
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--purple);margin-bottom:0;">3</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--purple);">Données</div><h3>PostgreSQL 17</h3><p>Des données très liées, et une base qui bloque elle-même les doubles réservations.</p></div>
+                </div>
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--warning);margin-bottom:0;">4</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--warning);">Accès aux données</div><h3>Prisma 7</h3><p>Un modèle central, des migrations versionnées, des transactions.</p></div>
+                </div>
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--danger);margin-bottom:0;">5</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--danger);">Fichiers</div><h3>Stockage S3 privé</h3><p>Les factures restent hors de la base, dans un espace privé.</p></div>
+                </div>
+                <div class="card card--row">
+                  <div class="badge-num" style="background:var(--cyan);margin-bottom:0;">6</div>
+                  <div><div class="eyebrow" style="margin-bottom:2px;color:var(--cyan);">Déploiement</div><h3>Docker Compose + Nginx</h3><p>Toute l'application démarre en une commande.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 — Architecture -->
+      <div class="swiper-slide">
+        <div class="slide slide--navy">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Architecture · Nom 2</div>
+              <h1 class="slide-title" style="color:#fff;">Une porte d'entrée, des droits vérifiés</h1>
+              <p style="font-size:12px;font-style:italic;color:#9FB4DC;margin-top:18px;">Une requête →</p>
+              <div class="flow-row">
+                <div class="flow-box"><strong>Navigateur</strong><span>Interface Vue</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box"><strong>Nginx</strong><span>Point d'entrée unique</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box"><strong>API Express</strong><span>Droits et règles métier</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box"><strong>PostgreSQL</strong><span>Données et infos fichiers</span></div>
+              </div>
+              <p style="font-size:12px;font-style:italic;color:#9FB4DC;margin-top:22px;">Un fichier joint →</p>
+              <div class="flow-row">
+                <div class="flow-box" style="border-color:var(--success);"><strong>API Express</strong><span>Vérifie le droit, crée un lien signé</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="border-color:var(--success);"><strong>Navigateur</strong><span>Envoie le fichier avec ce lien</span></div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="border-color:var(--success);"><strong>Stockage S3 privé</strong><span>Garde le fichier, jamais public</span></div>
+              </div>
+              <div class="panel" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);">
+                <ul style="--c:#fff;">
+                  <li style="color:#DCE6FA;">Session : jeton court dans un cookie HttpOnly</li>
+                  <li style="color:#DCE6FA;">API et base non exposées sur le réseau hôte</li>
+                  <li style="color:#DCE6FA;">Données entrantes toujours validées (Zod)</li>
+                  <li style="color:#DCE6FA;">Mots de passe chiffrés (bcrypt), jamais stockés en clair</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 — Réalisation -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Réalisation · Nom 2</div>
+              <h1 class="slide-title">Cinq sprints, puis des itérations ciblées avec le client</h1>
+              <div class="grid grid--5">
+                <div class="card" style="align-items:center;text-align:center;"><div class="badge-num" style="background:var(--blue);">S1</div><h3 style="font-size:14px;">Fondations</h3><p>Connexion, maquettes, tableau de bord</p></div>
+                <div class="card" style="align-items:center;text-align:center;"><div class="badge-num" style="background:var(--blue);">S2</div><h3 style="font-size:14px;">Projets</h3><p>Visibilité, membres, Kanban, documentation</p></div>
+                <div class="card" style="align-items:center;text-align:center;"><div class="badge-num" style="background:var(--blue);">S3</div><h3 style="font-size:14px;">Inventaire</h3><p>Fiches, catégories, recherche, historiques</p></div>
+                <div class="card" style="align-items:center;text-align:center;"><div class="badge-num" style="background:var(--blue);">S4</div><h3 style="font-size:14px;">Cohérence métier</h3><p>Réservations, archives, notifications</p></div>
+                <div class="card" style="align-items:center;text-align:center;"><div class="badge-num" style="background:var(--blue);">S5</div><h3 style="font-size:14px;">Extensions</h3><p>Calendrier, exports Excel/PDF</p></div>
+              </div>
+              <div class="quote-panel">
+                <p style="font-size:14px;font-weight:700;color:#fff;margin-bottom:12px;">Itérations complémentaires demandées par le client</p>
+                <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:9px 24px;">
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Quantité, seuil d'alerte et signalement de rupture sur le matériel non individualisé</li>
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Gestion complète des comptes par l'administrateur (création, rôle, désactivation)</li>
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Fiche projet en page dédiée, avec son propre lien</li>
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Colonne Kanban « En revue » entre En cours et Fait</li>
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Statut de projet affiché : en attente, actif ou clôturé</li>
+                  <li style="font-size:12.5px;color:#DCE6FA;padding-left:14px;position:relative;">Thème clair / sombre et page Paramètres personnelle</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 — Démonstration -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Démonstration · Nom 3 · 4 min 30</div>
+              <h1 class="slide-title">Un appareil, un projet, du début à la fin</h1>
+              <div class="panel">
+                <p style="font-style:italic;font-size:14px;">Le labo reçoit un analyseur de spectre. Une équipe le réserve pour sa campagne de mesures. Le projet se termine, l'appareil redevient libre.</p>
+              </div>
+              <p style="margin-top:14px;font-size:12px;color:var(--mist);">Jouée en solo par Nom 3, qui se connecte successivement avec les quatre comptes de démonstration.</p>
+              <div class="acte-grid">
+                <div class="card acte-card">
+                  <div class="badge-num" style="background:var(--blue);">1</div>
+                  <div class="role-line" style="color:var(--blue);">ACTE 1</div>
+                  <h3>Gestionnaire</h3>
+                  <p>Ajoute l'analyseur et joint sa facture.</p>
+                  <p>Fixe un seuil d'alerte, exporte l'inventaire.</p>
+                  <img class="acte-thumb" src="img/inventaire.png" alt="Inventaire du laboratoire" loading="lazy" />
+                </div>
+                <div class="card acte-card">
+                  <div class="badge-num" style="background:var(--success);">2</div>
+                  <div class="role-line" style="color:var(--success);">ACTE 2</div>
+                  <h3>Utilisateur <small style="font-size:11px;font-weight:400;">(crée le projet)</small></h3>
+                  <p>Fait avancer le Kanban jusqu'à En revue.</p>
+                  <p>Ajoute un membre, exporte la documentation.</p>
+                  <img class="acte-thumb" src="img/projet-kanban.png" alt="Kanban du projet, colonne En revue" loading="lazy" />
+                </div>
+                <div class="card acte-card">
+                  <div class="badge-num" style="background:var(--purple);">3</div>
+                  <div class="role-line" style="color:var(--purple);">ACTE 3</div>
+                  <h3>Utilisateur <small style="font-size:11px;font-weight:400;">(membre)</small></h3>
+                  <p>Réserve, se fait refuser un chevauchement.</p>
+                  <p>Ouvre le calendrier et la page du projet.</p>
+                  <img class="acte-thumb" src="img/dashboard.png" alt="Tableau de bord" loading="lazy" />
+                </div>
+                <div class="card acte-card">
+                  <div class="badge-num" style="background:var(--warning);">4</div>
+                  <div class="role-line" style="color:var(--warning);">ACTE 4</div>
+                  <h3>Administrateur</h3>
+                  <p>Archive un matériel ; le projet se clôt seul.</p>
+                  <p>Consulte la page Paramètres et les comptes.</p>
+                  <img class="acte-thumb" src="img/utilisateurs.png" alt="Gestion des utilisateurs" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 — Parcours de démonstration -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Démonstration · Nom 3 · pas à pas</div>
+              <h1 class="slide-title">Le script, minute par minute</h1>
+              <p class="slide-lede">Le même scénario, découpé en huit actions. Support de suivi pendant la démonstration en direct dans l'application.</p>
+              <div class="grid grid--2" style="margin-top:22px;">
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">1</div>
+                  <div><h3>0:00 – Connexion</h3><p>Compte utilisateur déjà membre du projet de démonstration.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">2</div>
+                  <div><h3>0:25 – Tableau de bord</h3><p>Informations limitées au profil connecté, raccourcis vers l'inventaire et les projets.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--success);margin-bottom:0;">3</div>
+                  <div><h3>0:50 – Inventaire</h3><p>Recherche du matériel préparé, fiche, catégories et disponibilité.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--success);margin-bottom:0;">4</div>
+                  <div><h3>1:25 – Projet et membres</h3><p>Visibilité privée, membres, documentation : le gestionnaire reste exclu.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--purple);margin-bottom:0;">5</div>
+                  <div><h3>2:05 – Kanban</h3><p>Une tâche avance jusqu'à En revue ; la dernière tâche peut clôturer le projet.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--purple);margin-bottom:0;">6</div>
+                  <div><h3>2:45 – Réservation</h3><p>Créneau de 30 minutes sur un matériel individualisé ; un chevauchement est refusé.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--warning);margin-bottom:0;">7</div>
+                  <div><h3>3:35 – Documentation</h3><p>Aperçu Markdown déjà rempli, export Word du projet.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--warning);margin-bottom:0;">8</div>
+                  <div><h3>4:00 – Calendrier</h3><p>La réservation apparaît ; un projet inaccessible reste masqué sous « Réservé ».</p></div>
+                </div>
+              </div>
+              <p style="margin-top:18px;font-size:12px;color:var(--mist);">Plan de secours en captures : Annexe D.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 — Règles métier -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Règles métier · Nom 4</div>
+              <h1 class="slide-title">La cohérence des droits, vérifiée à chaque requête</h1>
+              <div class="grid grid--3">
+                <div class="card"><div class="badge-sq" style="background:var(--blue);"></div><h3>Projet privé invisible</h3><p>Un projet privé n'est jamais découvert par un utilisateur extérieur.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--warning);"></div><h3>Gestionnaire hors projets</h3><p>Le gestionnaire ne peut accéder à aucun projet, quelle que soit sa visibilité.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--purple);"></div><h3>Un seul gestionnaire actif</h3><p>Nommer un nouveau gestionnaire rétrograde automatiquement le précédent.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--success);"></div><h3>Réservation sans conflit</h3><p>Deux créneaux incompatibles sur le même matériel ne peuvent jamais coexister.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--danger);"></div><h3>Archivage traçable</h3><p>L'archivage conserve l'historique et libère les réservations concernées.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--cyan);"></div><h3>Clôture automatique</h3><p>La dernière tâche active terminée clôture le projet et le matériel réservé.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 — Bilan -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Bilan · Nom 4</div>
+              <h1 class="slide-title">Ce qui est vérifié, ce qui reste à faire</h1>
+              <div class="stat-row">
+                <div class="stat-tile"><strong>46</strong><span>tests automatisés côté serveur</span></div>
+                <div class="stat-tile"><strong>14</strong><span>tests automatisés côté interface</span></div>
+                <div class="stat-tile"><strong>23</strong><span>décisions de cadrage appliquées et tracées</span></div>
+              </div>
+              <div class="panel">
+                <h3 style="font-size:15px;">Limites assumées</h3>
+                <ul>
+                  <li>Connexion Intradef simulée dans le prototype</li>
+                  <li>Aucune fonction d'IA livrée, malgré le nom</li>
+                  <li>Réservation depuis le projet, pas depuis le calendrier</li>
+                  <li>Suppression de compte = désactivation, jamais physique</li>
+                  <li>Notifications limitées à l'archivage d'un matériel réservé</li>
+                  <li>Sauvegardes et volumes cibles encore à définir</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 — Évolutions -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Évolutions · Nom 4</div>
+              <h1 class="slide-title">Quatre pistes réalistes pour la suite</h1>
+              <div class="grid grid--2">
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">1</div>
+                  <div><h3>Connexion Intradef réelle</h3><p>Brancher l'authentification du réseau cible à la place de la connexion simulée. Le reste de l'application ne change pas.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--danger);margin-bottom:0;">2</div>
+                  <div><h3>Antivirus des pièces jointes</h3><p>Analyser chaque fichier avant de le rendre téléchargeable. Le circuit d'envoi par lien signé s'y prête déjà.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--success);margin-bottom:0;">3</div>
+                  <div><h3>QR code sur chaque appareil</h3><p>Scanner l'étiquette pour ouvrir la fiche ou réserver, directement depuis la paillasse.</p></div>
+                </div>
+                <div class="card card--row" style="gap:16px;">
+                  <div class="badge-num" style="background:var(--purple);margin-bottom:0;">4</div>
+                  <div><h3>Une IA hébergée en interne</h3><p>Chercher dans l'inventaire en langage courant, sans que les données quittent le réseau.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 — Conclusion -->
+      <div class="swiper-slide">
+        <div class="slide slide--navy slide--center">
+          <div class="slide-scroll" style="padding-top:0;">
+            <div class="slide-inner">
+              <div class="eyebrow">Conclusion · Nom 4</div>
+              <h1 style="font-size:clamp(26px,4.2vw,46px);color:#fff;line-height:1.18;max-width:900px;margin:18px 0 26px;"><span class="grad-text">Un seul outil</span> pour savoir ce que le labo possède, qui l'utilise et ce qui s'est passé.</h1>
+              <p class="hero-sub">Merci. Place à vos questions.</p>
+              <p class="hero-names">Nom 1 · Nom 2 · Nom 3 · Nom 4</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13 — Annexe A -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe A · Matrice des droits</div>
+              <h1 class="slide-title">Qui peut faire quoi</h1>
+              <div class="table-wrap">
+                <table class="rights">
+                  <thead><tr><th>Action</th><th>Administrateur</th><th>Gestionnaire</th><th>Utilisateur</th></tr></thead>
+                  <tbody>
+                    <tr><td>Consulter l'inventaire actif</td><td class="yes">Oui</td><td class="yes">Oui</td><td class="yes">Oui</td></tr>
+                    <tr><td>Gérer le matériel et les catégories</td><td class="yes">Oui</td><td class="yes">Oui</td><td class="no">Non</td></tr>
+                    <tr><td>Exporter l'inventaire</td><td class="yes">Oui</td><td class="yes">Oui</td><td class="no">Non</td></tr>
+                    <tr><td>Voir l'historique d'un matériel actif</td><td class="yes">Oui</td><td class="cond">Oui, projets masqués</td><td class="no">Non</td></tr>
+                    <tr><td>Voir le matériel archivé</td><td class="yes">Oui</td><td class="no">Non</td><td class="no">Non</td></tr>
+                    <tr><td>Créer un projet</td><td class="yes">Oui</td><td class="no">Non</td><td class="yes">Oui</td></tr>
+                    <tr><td>Voir un projet privé</td><td class="yes">Oui</td><td class="no">Non</td><td class="cond">Si membre</td></tr>
+                    <tr><td>Modifier un projet, ses tâches, ses réservations</td><td class="yes">Oui</td><td class="no">Non</td><td class="cond">Si membre</td></tr>
+                    <tr><td>Archiver un projet</td><td class="yes">Oui</td><td class="no">Non</td><td class="cond">Si responsable</td></tr>
+                    <tr><td>Créer, modifier, désactiver un compte</td><td class="yes">Oui</td><td class="no">Non</td><td class="no">Non</td></tr>
+                    <tr><td>Changer le rôle d'un compte</td><td class="yes">Oui</td><td class="no">Non</td><td class="no">Non</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14 — Annexe B -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe B · Réservations</div>
+              <h1 class="slide-title">Pourquoi une double réservation est impossible</h1>
+              <div class="grid" style="grid-template-columns:1fr;gap:14px;margin-top:28px;">
+                <div class="card card--row" style="align-items:center;gap:18px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">1</div>
+                  <div style="flex:1;"><h3 style="margin-bottom:2px;">Créneaux de 30 minutes</h3></div>
+                  <p style="flex:2;color:var(--mist);">L'API refuse un horaire qui ne finit pas par 00 ou 30.</p>
+                </div>
+                <div class="card card--row" style="align-items:center;gap:18px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">2</div>
+                  <div style="flex:1;"><h3 style="margin-bottom:2px;">Intervalles [début, fin[</h3></div>
+                  <p style="flex:2;color:var(--mist);">10 h–11 h puis 11 h–12 h se suivent sans se chevaucher.</p>
+                </div>
+                <div class="card card--row" style="align-items:center;gap:18px;">
+                  <div class="badge-num" style="background:var(--blue);margin-bottom:0;">3</div>
+                  <div style="flex:1;"><h3 style="margin-bottom:2px;">Contrainte en base</h3></div>
+                  <p style="flex:2;color:var(--mist);">PostgreSQL rejette deux réservations actives qui se recouvrent, même envoyées au même instant.</p>
+                </div>
+              </div>
+              <div class="quote-panel" style="margin-top:20px;">
+                <p><strong>Ce n'est pas qu'une vérification côté application</strong> <span>: la contrainte est posée directement sur la table, au niveau de la base de données. Même deux requêtes envoyées exactement au même instant ne peuvent pas créer un chevauchement — PostgreSQL rejette la seconde.</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15 — Annexe C -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe C · Dernières évolutions livrées</div>
+              <h1 class="slide-title">Ajouts réalisés après le cinquième sprint</h1>
+              <div class="grid grid--3">
+                <div class="card"><div class="badge-sq" style="background:var(--danger);"></div><h3>Réapprovisionnement</h3><p>Quantité et seuil d'alerte sur le matériel non individualisé. Signalement de rupture par un utilisateur, traitement par l'administrateur ou le gestionnaire.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--blue);"></div><h3>Gestion des comptes</h3><p>L'administrateur crée, modifie, change le rôle et désactive un compte. Chaque profil change son propre mot de passe.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--success);"></div><h3>Page projet dédiée</h3><p>La fiche d'un projet devient une page à part entière, avec sa propre adresse, plutôt qu'une fenêtre.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--purple);"></div><h3>Kanban « En revue »</h3><p>Une quatrième colonne fixe, entre En cours et Fait, sans incidence sur la clôture automatique.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--warning);"></div><h3>Statut de projet</h3><p>Un tag en attente, actif ou clôturé, calculé automatiquement à partir des dates et de l'archivage.</p></div>
+                <div class="card"><div class="badge-sq" style="background:#1F55CC;"></div><h3>Thème et Paramètres</h3><p>Thème clair ou sombre mémorisé, page personnelle pour le compte et le mot de passe.</p></div>
+              </div>
+              <div class="grid grid--2" style="margin-top:16px;">
+                <div class="shot-card"><h3>Thème clair</h3><img class="shot-img" style="aspect-ratio:16/9.3;" src="img/parametres-clair.png" alt="Page Paramètres en thème clair" loading="lazy" /></div>
+                <div class="shot-card"><h3>Thème sombre</h3><img class="shot-img" style="aspect-ratio:16/9.3;" src="img/parametres-sombre.png" alt="Page Paramètres en thème sombre" loading="lazy" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16 — Annexe D -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe D · Plan de secours</div>
+              <h1 class="slide-title">La démo en captures réelles</h1>
+              <p class="slide-lede">Captures de l'application au commit c84e8af, à utiliser si la démonstration en direct échoue.</p>
+              <div class="grid grid--2" style="margin-top:20px;">
+                <div class="shot-card"><h3>Acte 1 · Gestionnaire — Inventaire</h3><img class="shot-img" src="img/inventaire.png" alt="Inventaire du laboratoire avec quantité et seuil d'alerte" loading="lazy" /></div>
+                <div class="shot-card"><h3>Acte 2 · Utilisateur — Kanban du projet</h3><img class="shot-img" src="img/projet-kanban.png" alt="Tableau Kanban d'un projet avec la colonne En revue" loading="lazy" /></div>
+                <div class="shot-card"><h3>Acte 3 · Tableau de bord</h3><img class="shot-img" src="img/dashboard.png" alt="Tableau de bord administrateur avec les indicateurs" loading="lazy" /></div>
+                <div class="shot-card"><h3>Acte 4 · Administrateur — Comptes</h3><img class="shot-img" src="img/utilisateurs.png" alt="Gestion des utilisateurs : rôle, statut, actions" loading="lazy" /></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 17 — Annexe E -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe E · Répartition de l'oral</div>
+              <h1 class="slide-title">Qui parle, de quoi, combien de temps</h1>
+              <p class="slide-lede">Reprise à l'identique de CONSIGNES.md — 18 minutes au total, puis 10 minutes de questions hors chronométrage.</p>
+              <div class="table-wrap">
+                <table class="rights">
+                  <thead><tr><th>Intervenant</th><th>Partie principale</th><th>Durée cible</th><th>Questions à prendre en priorité</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Nom 1</strong></td><td>Contexte, besoin, équipe et utilisateurs</td><td>4 min 30</td><td>Besoin client, périmètre, organisation de l'équipe</td></tr>
+                    <tr><td><strong>Nom 2</strong></td><td>Technologies, architecture et méthode</td><td>4 min 30</td><td>Choix techniques, sécurité, déploiement</td></tr>
+                    <tr><td><strong>Nom 3</strong></td><td>Démonstration fonctionnelle</td><td>4 min 30</td><td>Parcours utilisateur, ergonomie, fonctions métier</td></tr>
+                    <tr><td><strong>Nom 4</strong></td><td>Droits, qualité, limites, évolutions et conclusion</td><td>4 min 30</td><td>Tests, règles de gestion, améliorations futures</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="margin-top:18px;font-size:12px;color:var(--mist);">Une personne répond d'abord ; une seconde complète seulement si elle apporte un élément nouveau. Si la réponse n'est pas connue, dire ce qui reste à valider plutôt que d'improviser.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18 — Annexe F -->
+      <div class="swiper-slide">
+        <div class="slide slide--navy">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe F · Architecture complète</div>
+              <h1 class="slide-title" style="color:#fff;">Vue cible, au-delà du schéma simplifié</h1>
+              <p class="slide-lede">Déploiement Docker, réseau Intradef, stockage objet et sauvegardes — hypothèses de cible marquées en pointillés.</p>
+              <div class="shot-card" style="margin-top:18px;background:rgba(255,255,255,.06);">
+                <img class="shot-img" style="aspect-ratio:16/9.6;object-fit:contain;background:#fff;padding:10px;" src="img/architecture-complete.png" alt="Schéma complet de l'architecture logicielle cible" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19 — Annexe G -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe G · Modèle de données</div>
+              <h1 class="slide-title">Huit entités, des relations simples</h1>
+              <div class="grid grid--3" style="margin-top:20px;">
+                <div class="card"><div class="badge-sq" style="background:var(--blue);"></div><h3>Utilisateur</h3><p>Rôle administrateur, gestionnaire ou utilisateur. Crée des projets, participe, réserve.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--success);"></div><h3>Projet</h3><p>Un responsable, une visibilité, des membres (Participation), des tâches et une documentation.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--success);"></div><h3>Participation</h3><p>Relie un utilisateur à un projet dont il est membre, en plus du responsable.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--purple);"></div><h3>Tâche</h3><p>Appartient à un projet, état À faire / En cours / En revue / Fait, responsable facultatif.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--warning);"></div><h3>Matériel</h3><p>Individualisé ou non, catégories, pièces jointes, quantité et seuil d'alerte si non individualisé.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--danger);"></div><h3>Réservation</h3><p>Relie un matériel individualisé et un projet sur un créneau ; contrainte d'exclusion en base.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--cyan);"></div><h3>Demande de réapprovisionnement</h3><p>Signalée par un utilisateur sur un matériel en rupture, traitée par l'administrateur ou le gestionnaire.</p></div>
+                <div class="card"><div class="badge-sq" style="background:#1F55CC;"></div><h3>Notification</h3><p>Un destinataire, un type (aujourd'hui : archivage d'un matériel réservé), lue ou non.</p></div>
+                <div class="card"><div class="badge-sq" style="background:var(--blue-dark);"></div><h3>Historiques</h3><p>Un journal daté et attribué par domaine : projet, matériel, réservation.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 20 — Annexe H -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe H · Stratégie de tests</div>
+              <h1 class="slide-title">46 tests serveur, 14 tests interface</h1>
+              <p class="slide-lede">Tests unitaires avec dépendances simulées (dépôts de données côté serveur, store Pinia côté interface) : rapides, sans base de données réelle.</p>
+              <div class="grid grid--2" style="margin-top:20px;">
+                <div class="card">
+                  <h3>Serveur · 9 fichiers</h3>
+                  <p>Politique d'accès aux projets (qui voit quoi), services métier isolés (projets, matériel, réservations, utilisateurs, notifications, tableau de bord), formats d'export réels (DOCX, Excel, PDF) vérifiés à la signature du fichier.</p>
+                </div>
+                <div class="card">
+                  <h3>Interface · 9 fichiers</h3>
+                  <p>Composants partagés (disposition, fenêtres modales, badges de rôle), vues métier (calendrier, inventaire, notifications, projets), utilitaires (appels API, rendu Markdown).</p>
+                </div>
+              </div>
+              <div class="panel">
+                <h3 style="font-size:15px;">Également vérifié manuellement</h3>
+                <ul>
+                  <li>Démarrage complet de la pile Docker et contrôles de santé</li>
+                  <li>Refus d'accès par rôle, en contournant l'interface (appels directs à l'API)</li>
+                  <li>Non-régression après chaque fonctionnalité ajoutée hors sprint</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 21 — Annexe I -->
+      <div class="swiper-slide">
+        <div class="slide slide--light">
+          <div class="slide-scroll">
+            <div class="slide-inner">
+              <div class="eyebrow">Annexe I · Questions encore ouvertes</div>
+              <h1 class="slide-title">Ce qui reste à trancher avec le client</h1>
+              <p class="slide-lede">Au-delà des limites déjà annoncées (diapositive 10) — issues du registre de suivi du projet.</p>
+              <div class="table-wrap">
+                <table class="rights">
+                  <thead><tr><th>Sujet</th><th>Question ouverte</th></tr></thead>
+                  <tbody>
+                    <tr><td>Reprise de données</td><td>Quel inventaire existant reprendre, quels volumes réels de comptes et de matériel prévoir ?</td></tr>
+                    <tr><td>Exploitation</td><td>Politique de sauvegarde et de restauration, objectifs de performance et de disponibilité</td></tr>
+                    <tr><td>Notifications</td><td>Regroupement, durée de conservation, retour à « non lu » ; un seul déclencheur existe à ce jour</td></tr>
+                    <tr><td>Export</td><td>L'export complet doit-il inclure les archives pour l'administrateur, et avec quelles colonnes exactes ?</td></tr>
+                    <tr><td>Calendrier</td><td>Profils, vues et périodes précises à couvrir au-delà de la consultation de base</td></tr>
+                    <tr><td>Inventaire</td><td>Règle d'unicité attendue pour les identifiants techniques (numéro de série, d'inventaire)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="swiper-button-prev" aria-label="Diapositive précédente" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="swiper-button-next" aria-label="Diapositive suivante" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div class="swiper-pagination" id="pagination"></div>
+  <div class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> pour naviguer</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.1.4/swiper-bundle.min.js"></script>
+<script>
+(function(){
+  var totalSlides = document.querySelectorAll('.swiper-slide').length;
+  document.getElementById('totalIndex').textContent = String(totalSlides).padStart(2,'0');
+
+  // Répartition de l'oral — reprise à l'identique de CONSIGNES.md (intervenant, partie
+  // principale, durée cible, questions à prendre en priorité), indices 0-based.
+  var PARTS = [
+    { from: 0,  to: 3,  nom: 'Nom 1', label: 'Nom 1 · 4 min 30', color: '#5b8dfb',
+      principale: 'Contexte, besoin, équipe et utilisateurs',
+      questions: 'Besoin client, périmètre, organisation de l’équipe' },
+    { from: 4,  to: 6,  nom: 'Nom 2', label: 'Nom 2 · 4 min 30', color: '#34c98d',
+      principale: 'Technologies, architecture et méthode',
+      questions: 'Choix techniques, sécurité, déploiement' },
+    { from: 7,  to: 8,  nom: 'Nom 3', label: 'Nom 3 · 4 min 30', color: '#a87ff0',
+      principale: 'Démonstration fonctionnelle',
+      questions: 'Parcours utilisateur, ergonomie, fonctions métier' },
+    { from: 9,  to: 12, nom: 'Nom 4', label: 'Nom 4 · 4 min 30', color: '#f0a83c',
+      principale: 'Droits, qualité, limites, évolutions et conclusion',
+      questions: 'Tests, règles de gestion, améliorations futures' },
+    { from: 13, to: 21, nom: 'Annexes', label: 'Annexes · hors temps', color: '#2dd4c8',
+      principale: 'Diapositives de secours pour les questions (ne comptent pas dans les 18 minutes)',
+      questions: '' }
+  ];
+
+  function decorateSlides(){
+    document.querySelectorAll('.slide').forEach(function(slide){
+      if (slide.querySelector('.slide__glow')) return;
+      slide.insertAdjacentHTML('afterbegin', '<div class="slide__grid"></div><div class="slide__glow"></div>');
+    });
+  }
+
+  function playEnter(activeIndex){
+    try{
+      var slides = document.querySelectorAll('.swiper-slide');
+      var inner = slides[activeIndex] && slides[activeIndex].querySelector('.slide-inner');
+      if (!inner) return;
+      inner.classList.remove('enter');
+      void inner.offsetWidth; // force reflow so the animation can replay
+      inner.classList.add('enter');
+    }catch(e){}
+  }
+  function partForIndex(index){
+    for (var p = 0; p < PARTS.length; p++){
+      if (index >= PARTS[p].from && index <= PARTS[p].to) return PARTS[p];
+    }
+    return PARTS[0];
+  }
+  function partStarts(){
+    return PARTS.map(function(p){ return p.from; }).filter(function(f){ return f > 0; });
+  }
+
+  function updateChrome(index){
+    try{
+      document.getElementById('curIndex').textContent = String(index+1).padStart(2,'0');
+      var pct = totalSlides > 1 ? ((index) / (totalSlides-1)) * 93.75 + 6.25 : 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      var part = partForIndex(index);
+      document.getElementById('partLabel').textContent = part.label;
+      document.getElementById('partDot').style.background = part.color;
+      document.getElementById('partChip').style.borderColor = part.color;
+      document.getElementById('partChip').title = part.principale;
+      document.getElementById('progressFill').style.background =
+        'linear-gradient(90deg,' + part.color + ',' + part.color + 'CC)';
+    }catch(e){}
+    playEnter(index);
+  }
+
+  function styleBullet(el, idx){
+    var part = partForIndex(idx);
+    el.style.background = idx === 0 ? part.color : part.color + '55';
+    if (partStarts().indexOf(idx) !== -1) el.style.marginLeft = '12px';
+  }
+
+  function fallbackNav(){
+    // Minimal manual navigation if Swiper failed to load from the CDN.
+    var slides = document.querySelectorAll('.swiper-slide');
+    var wrapper = document.querySelector('.swiper-wrapper');
+    var i = 0;
+    function render(){
+      wrapper.style.transform = 'translateX(' + (-i*100) + '%)';
+      wrapper.style.transition = 'transform .4s ease';
+      updateChrome(i);
+    }
+    document.querySelector('.swiper-button-next').addEventListener('click', function(){ if(i<slides.length-1){ i++; render(); refreshBullets(); } });
+    document.querySelector('.swiper-button-prev').addEventListener('click', function(){ if(i>0){ i--; render(); refreshBullets(); } });
+    document.addEventListener('keydown', function(e){
+      if(e.key==='ArrowRight' && i<slides.length-1){ i++; render(); refreshBullets(); }
+      if(e.key==='ArrowLeft' && i>0){ i--; render(); refreshBullets(); }
+    });
+    var pag = document.getElementById('pagination');
+    slides.forEach(function(_, idx){
+      var b = document.createElement('button');
+      b.className = 'swiper-pagination-bullet' + (idx===0?' swiper-pagination-bullet-active':'');
+      styleBullet(b, idx);
+      b.addEventListener('click', function(){ i = idx; render(); refreshBullets(); });
+      pag.appendChild(b);
+    });
+    function refreshBullets(){
+      Array.prototype.forEach.call(pag.children, function(el, idx){
+        el.className = 'swiper-pagination-bullet' + (idx===i?' swiper-pagination-bullet-active':'');
+        styleBullet(el, idx);
+      });
+    }
+    render();
+  }
+
+  function initSwiper(){
+    var swiper = new window.Swiper('.swiper', {
+      speed: 500,
+      keyboard: { enabled: true, onlyInViewport: true },
+      pagination: {
+        el: '#pagination',
+        clickable: true,
+        renderBullet: function(index, className){
+          var part = partForIndex(index);
+          var extra = partStarts().indexOf(index) !== -1 ? 'margin-left:12px;' : '';
+          var bg = index === 0 ? part.color : part.color + '55';
+          return '<span class="' + className + '" style="background:' + bg + ';' + extra + '"></span>';
+        }
+      },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      a11y: true,
+      on: {
+        slideChange: function(){
+          updateChrome(this.activeIndex);
+          refreshSwiperBullets(this);
+        },
+        init: function(){
+          updateChrome(this.activeIndex);
+          refreshSwiperBullets(this);
+        }
+      }
+    });
+    function refreshSwiperBullets(sw){
+      try{
+        var bullets = sw.pagination.bullets;
+        for (var i = 0; i < bullets.length; i++){
+          var part = partForIndex(i);
+          bullets[i].style.background = i === sw.activeIndex ? part.color : part.color + '55';
+        }
+      }catch(e){}
+    }
+  }
+
+  function initThemeSwitch(){
+    var STORAGE_KEY = 'suivi-deck-theme';
+    var root = document.documentElement;
+    var btn = document.getElementById('themeSwitch');
+    var icon = document.getElementById('themeSwitchIcon');
+    var label = document.getElementById('themeSwitchLabel');
+    function apply(theme){
+      root.setAttribute('data-deck-theme', theme);
+      if (icon) icon.textContent = theme === 'light' ? '☀' : '☾';
+      if (label) label.textContent = theme === 'light' ? 'Clair' : 'Sombre';
+    }
+    var saved = 'dark';
+    try{ saved = localStorage.getItem(STORAGE_KEY) || 'dark'; }catch(e){}
+    apply(saved);
+    if (btn){
+      btn.addEventListener('click', function(){
+        var next = root.getAttribute('data-deck-theme') === 'light' ? 'dark' : 'light';
+        apply(next);
+        try{ localStorage.setItem(STORAGE_KEY, next); }catch(e){}
+      });
+    }
+  }
+
+  function boot(){
+    try{ initThemeSwitch(); }catch(e){}
+    try{ decorateSlides(); }catch(e){}
+    try{
+      if (window.Swiper){ initSwiper(); }
+      else { fallbackNav(); }
+    }catch(err){
+      try{ fallbackNav(); }catch(e2){}
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  try{
+    var wakeLock = null;
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'visible' && navigator.wakeLock){
+        navigator.wakeLock.request('screen').then(function(l){ wakeLock = l; }).catch(function(){});
+      }
+    });
+    if(navigator.wakeLock){ navigator.wakeLock.request('screen').then(function(l){ wakeLock = l; }).catch(function(){}); }
+  }catch(e){}
+})();
+</script>

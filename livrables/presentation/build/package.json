@@ -1,0 +1,15 @@
+{
+  "name": "suivi-presentation-build",
+  "version": "1.0.0",
+  "description": "Génère livrables/presentation/SUIVI — Présentation finale.pptx. npm install puis node generate.js.",
+  "main": "generate.js",
+  "scripts": {
+    "build": "node generate.js"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
