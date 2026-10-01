@@ -1,10 +1,13 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
+import { forbidden } from "../errors/app.error.js";
 import {
   createUtilisateur,
   findUtilisateurByIdentifiant,
+  findUtilisateurCredentials,
   markUtilisateurConnected,
+  updateUtilisateur,
 } from "../repositories/utilisateur.repository.js";
 
 const DUMMY_HASH = "$2b$12$CwTycUXWue0Thq9StjUM0uJ8U5CzRQAP0dEIvaWY7q3iUMlvhY4Rq";
@@ -42,11 +45,19 @@ export async function authenticate({ identifiant, motDePasse }) {
     });
   } else {
     const passwordValide = await bcrypt.compare(motDePasse, utilisateur.motDePasse);
-    if (!passwordValide) return null;
+    if (!passwordValide || !utilisateur.actif) return null;
   }
 
   utilisateur = await markUtilisateurConnected(utilisateur.id);
   return publicUtilisateur(utilisateur);
+}
+
+export async function changerMotDePasse(id, motDePasseActuel, nouveauMotDePasse) {
+  const utilisateur = await findUtilisateurCredentials(id);
+  const valide = utilisateur && (await bcrypt.compare(motDePasseActuel, utilisateur.motDePasse));
+  if (!valide) throw forbidden("MOT_DE_PASSE_ACTUEL_INVALIDE");
+
+  await updateUtilisateur(id, { motDePasse: await bcrypt.hash(nouveauMotDePasse, 12) });
 }
 
 export function createSessionToken(utilisateur) {

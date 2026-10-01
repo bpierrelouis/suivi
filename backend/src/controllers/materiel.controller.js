@@ -11,12 +11,17 @@ const service = createMaterielService(materielRepository, objectStorage);
 const reservations = createReservationService(reservationRepository, projetRepository);
 const uuid = z.uuid();
 const optionalText = z.union([z.string().trim().max(180), z.literal(""), z.null()]).optional().transform((value) => value || null);
+const optionalQuantite = z.union([z.number().int().min(0).max(1_000_000), z.null()]).optional().transform((value) => value ?? null);
 const materielSchema = z.object({
   nom: z.string().trim().min(1).max(160),
   modeSuivi: z.enum(["individualise", "non_individualise"]).default("individualise"),
   numeroSerie: optionalText,
   referenceConstructeur: optionalText,
   numeroInventaire: optionalText,
+  // Écart assumé avec le dictionnaire de données (Q-09/D-20) : uniquement pertinent pour le
+  // non-individualisé, forcé à null sinon par le service (normalizeQuantite).
+  quantite: optionalQuantite,
+  seuilAlerte: optionalQuantite,
   categorieIds: z.array(uuid).max(50).default([]),
 }).strict();
 const categorieSchema = z.object({ nom: z.string().trim().min(1).max(100) }).strict();
@@ -91,3 +96,5 @@ export async function downloadAttachment(req, res) {
   res.redirect(piece.url);
 }
 export async function removeAttachment(req, res) { const materielId = id(req.params.id, res); const pieceId = id(req.params.pieceId, res); if (materielId && pieceId) { await service.removeAttachment(req.utilisateur, materielId, pieceId); res.status(204).send(); } }
+export async function signalerRupture(req, res) { const value = id(req.params.id, res); if (value) { const demande = await service.signalerRupture(req.utilisateur, value); res.status(201).json({ demande }); } }
+export async function traiterReapprovisionnement(req, res) { const value = id(req.params.id, res); if (value) { await service.traiterReapprovisionnement(req.utilisateur, value); res.status(204).send(); } }

@@ -241,11 +241,11 @@ En tant qu’administrateur, je veux retirer un membre afin de gérer la composi
 
 En tant que membre ou administrateur, je veux gérer les tâches d’un projet dans un Kanban afin de suivre le travail.
 
-**Référence :** §4.3 ; RG-18, RG-19. **Décision :** D-16.
+**Référence :** §4.3 ; RG-18, RG-19. **Décision :** D-16 ; D-22.
 
 - CA1 : chaque tâche présente un titre et une description ; un responsable de tâche facultatif peut être choisi parmi les membres du projet, modifié ou retiré ; aucune échéance ni priorité n’est demandée.
 - CA2 : un membre ou l’administrateur crée, modifie, déplace et supprime une tâche d’un projet actif.
-- CA3 : les colonnes fixes sont À faire, En cours et Fait.
+- CA3 : les colonnes fixes sont À faire, En cours, En revue et Fait (D-22, écart assumé avec la décision initiale à trois colonnes).
 - CA4 : les personnes autorisées à consulter le projet peuvent voir son tableau ; les personnes sans droit de modification ne peuvent pas le changer.
 - CA5 : le Kanban est affiché dans l’onglet Description de la fiche projet ; il ne nécessite ni onglet Kanban distinct ni retour à la liste des projets.
 - CA6 : lorsque la dernière tâche non terminée passe à l’état terminé, le système déclenche automatiquement la clôture du projet selon US-20. Un projet sans tâche ne se clôture pas automatiquement.

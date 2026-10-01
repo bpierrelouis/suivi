@@ -14,6 +14,8 @@ function relationLabel(projet) {
     || (projet.visibilite === "public" ? "Lecture seule" : "Membre");
 }
 
+const etatLabel = { en_attente: "En attente", actif: "Actif", cloture: "Clôturé" };
+
 async function charger() {
   chargement.value = true;
   try {
@@ -59,7 +61,8 @@ onMounted(charger);
           <span class="visibility-badge visibility-badge--large" :class="`visibility-badge--${projet.visibilite}`">{{ projet.visibilite === "public" ? "Public" : "Privé" }}</span>
         </div>
         <div class="project-card__meta">
-          <strong>{{ relationLabel(projet) }}</strong><span>{{ projet.nombreMembres }} membre{{ projet.nombreMembres > 1 ? "s" : "" }}</span><span>{{ projet.statut === "actif" ? "Actif" : "Archivé" }}</span>
+          <strong>{{ relationLabel(projet) }}</strong><span>{{ projet.nombreMembres }} membre{{ projet.nombreMembres > 1 ? "s" : "" }}</span>
+          <span class="status-badge" :class="`status-badge--${projet.etat}`">{{ etatLabel[projet.etat] }}</span>
         </div>
         <span class="relation-badge" :class="`relation-badge--${projet.relation || 'lecteur'}`">{{ relationLabel(projet) }}</span>
       </RouterLink>

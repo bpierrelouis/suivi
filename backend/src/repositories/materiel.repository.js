@@ -8,6 +8,8 @@ const summarySelect = {
   numeroSerie: true,
   referenceConstructeur: true,
   numeroInventaire: true,
+  quantite: true,
+  seuilAlerte: true,
   creeLe: true,
   modifieLe: true,
   categories: { select: { categorie: { select: categorySelect } } },
@@ -224,9 +226,36 @@ export function archiveMateriel(id, auteurId) {
   });
 }
 
+// Réapprovisionnement (US non formalisée, écart assumé — Q-09/D-20) : un utilisateur signale une
+// rupture, l'administrateur ou le gestionnaire la traite. Une seule demande "nouvelle" par couple
+// matériel/demandeur pour éviter le spam de signalements identiques.
+export function findDemandeEnAttente(materielId, demandeParId) {
+  return prisma.demandeReapprovisionnement.findFirst({ where: { materielId, demandeParId, statut: "nouvelle" }, select: { id: true } });
+}
+export function createDemandeReapprovisionnement(materielId, demandeParId) {
+  return prisma.demandeReapprovisionnement.create({
+    data: { materielId, demandeParId },
+    select: { id: true, statut: true, creeLe: true },
+  });
+}
+export function findDemandesEnAttente(materielId) {
+  return prisma.demandeReapprovisionnement.findMany({
+    where: { materielId, statut: "nouvelle" },
+    orderBy: { creeLe: "asc" },
+    select: { id: true, creeLe: true, demandePar: { select: { id: true, identifiant: true } } },
+  });
+}
+export function traiterDemandesReapprovisionnement(materielId, traiteParId) {
+  return prisma.demandeReapprovisionnement.updateMany({
+    where: { materielId, statut: "nouvelle" },
+    data: { statut: "traitee", traiteeLe: new Date(), traiteeParId: traiteParId },
+  });
+}
+
 export const materielRepository = {
   findActiveMateriels, findActiveMaterielsForExport, findCalendarMateriels, findActiveMaterielById, findArchivedMateriels, findArchivedMaterielById, createMateriel, updateMateriel, findMaterielHistory,
   listCategories, createCategorie, updateCategorie, deleteCategorie, findCategoriesByIds,
   createAttachmentUpload, confirmAttachment, findAttachment, findPendingAttachment, discardAttachment, deleteAttachment,
   archiveMateriel,
+  findDemandeEnAttente, createDemandeReapprovisionnement, findDemandesEnAttente, traiterDemandesReapprovisionnement,
 };

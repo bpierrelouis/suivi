@@ -10,10 +10,11 @@
 | --- | --- | --- |
 | Identifiant interne | Proposition, automatique | Référence stable pour membres, auteurs et destinataires. |
 | Identifiant de connexion | Requis métier, texte | Peut être un courriel ; `admin` réservé au compte administrateur. Reconnaissance/normalisation à préciser en Q-21. |
-| Rôle | Requis métier, administrateur / gestionnaire / utilisateur | Un administrateur, zéro ou un gestionnaire ; utilisateur par défaut à la première connexion. |
+| Rôle | Requis métier, administrateur / gestionnaire / utilisateur | Un administrateur, zéro ou un gestionnaire ; utilisateur par défaut à la première connexion. Modifiable par l’administrateur (D-21). |
 | Données d’authentification | À définir | La simulation et la configuration des secrets relèvent de Q-21/Q-24. Aucun stockage de mot de passe en clair n’est proposé. |
+| Statut du compte | Requis métier, actif / désactivé | Ajouté par D-21 (écart assumé avec RG-01). Un compte désactivé ne peut plus se connecter, n’apparaît plus dans les listes de sélection, mais conserve son historique ; réactivable par l’administrateur. Ni auto-désactivation, ni désactivation du dernier administrateur actif. |
 
-Aucun nom, prénom, courriel distinct ou annuaire éditable n’est imposé par le besoin actuel. Les utilisateurs supposés exister à l’extérieur et non encore connectés nécessitent Q-07.
+Aucun nom, prénom, courriel distinct ou annuaire éditable n’est imposé par le besoin actuel. Les utilisateurs supposés exister à l’extérieur et non encore connectés nécessitent Q-07. L’administrateur peut en outre créer, modifier et désactiver un compte manuellement (D-21), en écart assumé avec RG-01 qui exclut toute création manuelle.
 
 ## Matériel
 
@@ -29,9 +30,10 @@ Aucun nom, prénom, courriel distinct ou annuaire éditable n’est imposé par 
 | Numéro d’inventaire / autre identifiant | Facultatif, texte | Liste et unicité à arbitrer en Q-08. |
 | État actif/archivé | Requis métier, géré par l’application | Suppression = archivage irréversible. |
 | Date et auteur de suppression | Requis si supprimé | Conservés avec l’identification et l’historique. |
-| Disponibilité | Dérivée des réservations pour l’individualisé | Doit être interprétée pour une période ; Q-25. Indisponibilité du non-individualisé : Q-09. |
+| Disponibilité | Dérivée des réservations pour l’individualisé | Doit être interprétée pour une période ; Q-25. Indisponibilité du non-individualisé : décidée en D-20 (voir ci-dessous), Q-09 close. |
+| Quantité et seuil d’alerte | Écart assumé (D-20), uniquement pour le non-individualisé | Sous le seuil : « à commander », visible seulement de l’administrateur et du gestionnaire. À zéro : rupture, visible de tous. |
 
-Aucun champ quantité précise pour le non-individualisé ni localisation physique. Une réservation concerne un exemplaire, pas un type ou une catégorie.
+Aucune localisation physique. Une réservation concerne un exemplaire, pas un type ou une catégorie. Le non-individualisé reçoit désormais une quantité et un seuil d’alerte (D-20), en écart assumé avec l’absence de champ quantité précise initialement retenue — demandé explicitement par le client pour alimenter le tableau de bord et le signalement de rupture.
 
 ## Pièce jointe de matériel
 
@@ -63,6 +65,7 @@ Le devenir des pièces jointes à l’archivage du matériel et la conservation 
 | Responsable | Requis métier, référence utilisateur | Utilisateur à l’origine du projet, obligatoirement membre ; droit de clôture/archivage. |
 | Date de début / date de fin | Facultatives | Peuvent préremplir une réservation ; aucun horaire projet n’est spécifié. |
 | État de cycle de vie | Actif ou archivé | Clôture et archivage sont équivalents et produisent l’état archivé, sans retour possible à l’état actif. Le passage de la dernière tâche non terminée à l’état terminé déclenche automatiquement cette transition ; un projet sans tâche reste actif. |
+| Tag d’état affiché | Dérivé, en attente / actif / clôturé | Ajouté par D-23 (écart assumé). Recalculé à la lecture, sans champ stocké distinct : « En attente » si la date de début est absente ou future, « Actif » si elle est atteinte, « Clôturé » si le projet est archivé. |
 | Participants, matériels associés, tâches réalisées | Informations à conserver dans l’archive | Consultation selon la visibilité du projet ; le gestionnaire reste exclu. |
 
 ## Documentation de projet
@@ -90,7 +93,7 @@ Une seule participation existe par couple utilisateur–projet. La nomination co
 | --- | --- | --- |
 | Identifiant interne et projet | Proposition de référence, automatiques | Une tâche appartient à un projet. |
 | Titre / description | Requis, textes non vides | Présents à la création et à la modification. |
-| Colonne / état Kanban | Requis | À faire, En cours ou Fait ; colonnes fixes. |
+| Colonne / état Kanban | Requis | À faire, En cours, En revue ou Fait ; colonnes fixes (D-22 : ajout d'En revue, écart assumé avec la décision initiale à trois colonnes). |
 | Responsable de la tâche | Facultatif, zéro ou une référence utilisateur | Doit être membre du projet ; peut être modifié ou retiré. |
 | Ordre dans la colonne | Entier géré par l’application | Prépare l’ordre stable des tâches dans une colonne. |
 
@@ -144,6 +147,16 @@ La suppression du matériel ne doit pas entraîner une suppression de son histor
 | État de lecture | Requis métier, lu/non lu | Propre à chaque destinataire, jamais global à tous. |
 
 **Proposition :** séparer la notification de ses états par destinataire, ou créer une notification propre à chacun. Ces deux conceptions sont possibles ; le choix de stockage n’est pas arrêté.
+
+## Demande de réapprovisionnement
+
+Écart assumé avec le dictionnaire de données (D-20), demandé explicitement par le client ; ne concerne que le matériel non individualisé en rupture.
+
+| Information | Obligation / forme conceptuelle | Règle |
+| --- | --- | --- |
+| Matériel et demandeur | Requis, références | Le matériel doit être en rupture (quantité nulle) au moment du signalement. |
+| État | Requis, nouvelle ou traitée | Une seule demande « nouvelle » à la fois par couple matériel/demandeur. |
+| Traitement | Date et référence utilisateur | Par l’administrateur ou le gestionnaire ; aucune association automatique à une commande réelle. |
 
 ## Relations et conservation
 

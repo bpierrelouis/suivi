@@ -31,7 +31,7 @@ Les définitions suivent le [compte rendu](compte-rendu-reunion-client.md). Les 
 | NP / public | Visibilité permettant la consultation par tous les utilisateurs sauf le gestionnaire. N’accorde pas automatiquement de droit de modification. |
 | Secret / privé | Visibilité limitée à l’administrateur et aux membres du projet, dont son responsable. « Secret » est ici un libellé de visibilité applicative. |
 | Réservé | Mention remplaçant le nom d’un projet inaccessible lorsqu’une réservation doit être signalée. |
-| Kanban | Tableau de suivi des tâches par colonnes ; À faire, En cours et Fait sont envisagées. |
+| Kanban | Tableau de suivi des tâches par colonnes fixes : À faire, En cours, En revue et Fait (D-22). |
 | Tâche | Élément de travail d’un projet comportant titre et description, avec un responsable de tâche facultatif choisi parmi les membres ; sans priorité ni échéance. |
 | Clôture de projet | Action de fin de projet, équivalente à l’archivage, qui libère immédiatement ses matériels et ne peut pas être annulée par une réouverture. Elle est déclenchée manuellement par un profil autorisé ou automatiquement lorsque la dernière tâche non terminée passe à l’état terminé ; un projet sans tâche reste actif. |
 | Archivage de projet | Même action que la clôture ; conserve les informations, participants, matériels associés, tâches réalisées et historique. La consultation continue selon la visibilité du projet, sans possibilité de réouverture. |

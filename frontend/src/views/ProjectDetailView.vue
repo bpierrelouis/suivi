@@ -1,13 +1,11 @@
 <script setup>
 import { computed, inject, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
-import ModalShell from "../components/ModalShell.vue";
+import AppLayout from "../components/AppLayout.vue";
 import { api, apiBlob } from "../services/api.js";
 import { renderMarkdown } from "../utils/markdown.js";
 
 const route = useRoute();
-const router = useRouter();
 const projet = ref(null);
 const utilisateurs = ref([]);
 const chargement = ref(true);
@@ -29,6 +27,7 @@ const rafraichirProjets = inject("rafraichirProjets", async () => {});
 const colonnes = [
   { id: "a_faire", label: "À faire" },
   { id: "en_cours", label: "En cours" },
+  { id: "en_revue", label: "En revue" },
   { id: "terminee", label: "Fait" },
 ];
 const membresAjoutables = computed(() => {
@@ -42,12 +41,12 @@ const relationLabel = computed(() => ({
   lecteur: "Lecture seule",
   administrateur: "Administrateur",
 })[projet.value?.relation] || "Projet");
+const etatLabel = { en_attente: "En attente", actif: "Actif", cloture: "Clôturé" };
 
 function dateInput(value) { return value ? value.slice(0, 10) : ""; }
 function formatDate(value) { return value ? new Intl.DateTimeFormat("fr-FR").format(new Date(value)) : "Non renseignée"; }
 function formatDateTime(value) { return value ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "—"; }
 function localInput(value) { if (!value) return ""; const date = new Date(value); const offset = date.getTimezoneOffset(); return new Date(date.getTime() - offset * 60_000).toISOString().slice(0, 16); }
-function close() { router.push({ name: "projets" }); }
 function hydrate(data) {
   projet.value = data;
   Object.assign(form, {
@@ -177,10 +176,22 @@ onMounted(charger);
 </script>
 
 <template>
-  <ModalShell :label="projet ? relationLabel : ''" :title="projet?.nom || 'Projet'" wide stable @close="close">
-    <template v-if="projet && onglet === 'description' && (projet.droits.modifier || projet.droits.archiver)" #actions><button v-if="projet.droits.modifier" class="button button--secondary" type="button" @click="edition = !edition">{{ edition ? "Annuler" : "Modifier" }}</button><button v-if="projet.droits.archiver" class="button button--danger" type="button" @click="archiveProject">Archiver</button></template>
+  <AppLayout>
+    <div class="project-page-header">
+      <div>
+        <RouterLink class="muted" to="/projets">← Retour aux projets</RouterLink>
+        <h1>{{ projet?.nom || 'Projet' }}</h1>
+        <p v-if="projet" class="muted">
+          {{ relationLabel }} · <span class="status-badge" :class="`status-badge--${projet.etat}`">{{ etatLabel[projet.etat] }}</span>
+        </p>
+      </div>
+      <div v-if="projet && onglet === 'description' && (projet.droits.modifier || projet.droits.archiver)" class="page-actions">
+        <button v-if="projet.droits.modifier" class="button button--secondary" type="button" @click="edition = !edition">{{ edition ? "Annuler" : "Modifier" }}</button>
+        <button v-if="projet.droits.archiver" class="button button--danger" type="button" @click="archiveProject">Archiver</button>
+      </div>
+    </div>
     <div v-if="chargement" class="loading">Chargement du projet…</div>
-    <div v-else-if="!projet" class="modal__body"><p class="form-error" role="alert">{{ erreur }}</p></div>
+    <div v-else-if="!projet"><p class="form-error" role="alert">{{ erreur }}</p></div>
     <template v-else>
       <nav class="project-tabs" aria-label="Rubriques du projet">
         <button :class="{ active: onglet === 'description' }" @click="onglet = 'description'">Description</button>
@@ -189,7 +200,7 @@ onMounted(charger);
         <button :class="{ active: onglet === 'documentation' }" @click="onglet = 'documentation'">Documentation</button>
         <button :class="{ active: onglet === 'historique' }" @click="onglet = 'historique'">Historique</button>
       </nav>
-      <div class="modal__body project-modal-body">
+      <div class="project-page-body">
         <p v-if="erreur" class="form-error" role="alert">{{ erreur }}</p><p v-if="message" class="form-success" role="status">{{ message }}</p>
 
         <template v-if="onglet === 'description'">
@@ -239,7 +250,7 @@ onMounted(charger);
 
         <section v-else class="history-section"><div class="section-heading"><div><h2>Historique du projet</h2><p>Les évolutions du projet restent consultables après son archivage.</p></div></div><ul v-if="projet.historique.length" class="history-list"><li v-for="event in projet.historique" :key="event.id"><strong>{{ ({ creation: 'Création', modification: 'Informations modifiées', ajout_membre: 'Membre ajouté', retrait_membre: 'Membre retiré', creation_tache: 'Tâche créée', modification_tache: 'Tâche modifiée', suppression_tache: 'Tâche supprimée', archivage: 'Projet archivé' })[event.type] }}</strong><span>{{ formatDateTime(event.creeLe) }} · {{ event.auteur?.identifiant || 'Système' }}</span></li></ul><p v-else class="muted">Aucun événement enregistré.</p></section>
       </div>
-      <footer class="modal__footer modal__footer--between"><small>Projet {{ projet.visibilite === 'public' ? 'public' : 'privé' }} · {{ projet.membres.length }} membre{{ projet.membres.length > 1 ? 's' : '' }} · {{ projet.statut === 'actif' ? 'actif' : 'archivé' }}</small></footer>
+      <p class="muted project-page-footer">Projet {{ projet.visibilite === 'public' ? 'public' : 'privé' }} · {{ projet.membres.length }} membre{{ projet.membres.length > 1 ? 's' : '' }} · {{ etatLabel[projet.etat].toLowerCase() }}</p>
     </template>
-  </ModalShell>
+  </AppLayout>
 </template>

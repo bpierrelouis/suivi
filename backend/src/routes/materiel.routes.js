@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { archiveMateriel, authorizeAttachment, confirmAttachment, createCategory, createMateriel, deleteCategory, downloadAttachment, exportMateriels, getArchivedHistory, getArchivedMateriel, getCalendar, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
+import { archiveMateriel, authorizeAttachment, confirmAttachment, createCategory, createMateriel, deleteCategory, downloadAttachment, exportMateriels, getArchivedHistory, getArchivedMateriel, getCalendar, getHistory, getMaterialReservations, getMateriel, listArchivedMateriels, listCategories, listMateriels, removeAttachment, signalerRupture, traiterReapprovisionnement, updateCategory, updateMateriel } from "../controllers/materiel.controller.js";
 import { requireSession } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -24,4 +24,6 @@ router.post("/:id/pieces-jointes/autorisation", authorizeAttachment);
 router.post("/:id/pieces-jointes/:pieceId/confirmation", confirmAttachment);
 router.get("/:id/pieces-jointes/:pieceId", downloadAttachment);
 router.delete("/:id/pieces-jointes/:pieceId", removeAttachment);
+router.post("/:id/reapprovisionnement", signalerRupture);
+router.post("/:id/reapprovisionnement/traitement", traiterReapprovisionnement);
 export default router;

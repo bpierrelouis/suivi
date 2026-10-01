@@ -58,6 +58,9 @@ onUnmounted(() => window.removeEventListener("notifications-updated", updateNoti
           <span class="account__avatar">{{ initiales }}</span>
           <span class="sidebar-account__identity"><strong>{{ auth.utilisateur?.identifiant }}</strong><small>{{ roleLabel }}</small></span>
         </div>
+        <RouterLink class="theme-toggle" to="/parametres">
+          <span aria-hidden="true">⚙</span><span class="logout-button__label">Paramètres</span>
+        </RouterLink>
         <button class="logout-button" type="button" @click="logout"><span aria-hidden="true">↪</span><span class="logout-button__label">Déconnexion</span></button>
       </div>
     </aside>

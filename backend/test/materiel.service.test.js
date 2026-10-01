@@ -9,7 +9,8 @@ const user = { id: "user-1", role: "utilisateur" };
 function rawMaterial(overrides = {}) {
   return {
     id: "material-1", nom: "Oscilloscope", modeSuivi: "individualise", numeroSerie: null,
-    referenceConstructeur: null, numeroInventaire: null, creeLe: new Date(), modifieLe: new Date(),
+    referenceConstructeur: null, numeroInventaire: null, quantite: null, seuilAlerte: null,
+    creeLe: new Date(), modifieLe: new Date(),
     auteurCreation: { id: "admin-1", identifiant: "admin" },
     categories: [{ categorie: { id: "cat-1", nom: "Mesure" } }], piecesJointes: [], ...overrides,
   };
@@ -25,7 +26,11 @@ function repository(overrides = {}) {
     async createAttachmentUpload(id, file, authorId) { return { id: "piece", materielId: id, auteurId: authorId, ...file }; },
     async findPendingAttachment() { return null; }, async confirmAttachment() {}, async discardAttachment() {},
     async findAttachment() { return { id: "piece", nomFichier: "facture.pdf", cleObjet: "materiels/material-1/piece", typeMime: "application/pdf", taille: 8, empreinte: "a".repeat(64) }; },
-    async deleteAttachment() {}, ...overrides,
+    async deleteAttachment() {},
+    async findDemandesEnAttente() { return []; }, async findDemandeEnAttente() { return null; },
+    async createDemandeReapprovisionnement(materielId, demandeParId) { return { id: "demande-1", materielId, demandeParId, statut: "nouvelle" }; },
+    async traiterDemandesReapprovisionnement() { return { count: 1 }; },
+    ...overrides,
   };
 }
 
@@ -103,4 +108,43 @@ test("le calendrier masque les projets auxquels le profil n'a pas accès", async
 
   assert.deepEqual(managerCalendar[0].reservations[0].projet, { id: null, nom: "Réservé" });
   assert.deepEqual(memberCalendar[0].reservations[0].projet, { id: "project-1", nom: "Projet confidentiel" });
+});
+
+test("la rupture est visible à tous, l'alerte de seuil réservée à l'administrateur et au gestionnaire", async () => {
+  const repo = repository({ async findActiveMateriels() { return [rawMaterial({ modeSuivi: "non_individualise", quantite: 0, seuilAlerte: 5 })]; } });
+  const service = createMaterielService(repo);
+  const [rupture] = await service.list(user, {});
+  assert.equal(rupture.disponibilite, "rupture");
+
+  const repoSeuil = repository({ async findActiveMateriels() { return [rawMaterial({ modeSuivi: "non_individualise", quantite: 3, seuilAlerte: 5 })]; } });
+  const serviceSeuil = createMaterielService(repoSeuil);
+  const [pourUtilisateur] = await serviceSeuil.list(user, {});
+  const [pourGestionnaire] = await serviceSeuil.list(manager, {});
+  assert.equal(pourUtilisateur.disponibilite, "disponible");
+  assert.equal(pourGestionnaire.disponibilite, "a_commander");
+});
+
+test("signaler une rupture est refusé si le matériel n'est pas en rupture", async () => {
+  const service = createMaterielService(repository({ async findActiveMaterielById() { return rawMaterial({ modeSuivi: "non_individualise", quantite: 3, seuilAlerte: 5 }); } }));
+  await assert.rejects(() => service.signalerRupture(user, "material-1"), { code: "MATERIEL_NON_EN_RUPTURE" });
+});
+
+test("un utilisateur ne peut pas signaler deux fois la même rupture", async () => {
+  const service = createMaterielService(repository({
+    async findActiveMaterielById() { return rawMaterial({ modeSuivi: "non_individualise", quantite: 0, seuilAlerte: 5 }); },
+    async findDemandeEnAttente() { return { id: "demande-existante" }; },
+  }));
+  await assert.rejects(() => service.signalerRupture(user, "material-1"), { code: "DEMANDE_DEJA_ENVOYEE" });
+});
+
+test("signaler une rupture crée bien la demande", async () => {
+  const service = createMaterielService(repository({ async findActiveMaterielById() { return rawMaterial({ modeSuivi: "non_individualise", quantite: 0, seuilAlerte: 5 }); } }));
+  const demande = await service.signalerRupture(user, "material-1");
+  assert.equal(demande.demandeParId, user.id);
+});
+
+test("seuls l'administrateur et le gestionnaire traitent les demandes de réapprovisionnement", async () => {
+  const service = createMaterielService(repository());
+  await assert.rejects(() => service.traiterReapprovisionnement(user, "material-1"), { code: "ACCES_INTERDIT" });
+  await assert.doesNotReject(() => service.traiterReapprovisionnement(manager, "material-1"));
 });

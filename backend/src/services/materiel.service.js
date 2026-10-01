@@ -7,10 +7,24 @@ const MANAGERS = new Set(["administrateur", "gestionnaire"]);
 function assertManager(user) {
   if (!MANAGERS.has(user.role)) throw forbidden();
 }
-function mapMateriel(item, includeAttachments = false) {
+// Disponibilité du non-individualisé — écart assumé avec le dictionnaire de données (aucune
+// quantité précise n'y est prévue), ajouté à la demande du client. Voir D-20 dans
+// decisions-et-questions.md. Trois états : "rupture" (quantité nulle, visible à tous), "a_commander"
+// (quantité au seuil ou en dessous, réservé à l'administrateur et au gestionnaire — un simple
+// utilisateur voit l'article comme "disponible" tant qu'il en reste), "disponible" sinon.
+// L'individualisé n'a pas de quantité : toujours "disponible" ici (sa disponibilité réelle dépend
+// des réservations, gérées séparément pour le calendrier).
+function disponibilite(materiel, role) {
+  if (materiel.quantite === null || materiel.quantite === undefined) return "disponible";
+  if (materiel.quantite === 0) return "rupture";
+  if (MANAGERS.has(role) && materiel.quantite <= materiel.seuilAlerte) return "a_commander";
+  return "disponible";
+}
+function mapMateriel(item, role, includeAttachments = false) {
   return {
     ...item,
     categories: item.categories.map(({ categorie }) => categorie),
+    disponibilite: disponibilite(item, role),
     ...(includeAttachments ? {} : { piecesJointes: undefined }),
   };
 }
@@ -33,6 +47,15 @@ function validateFileContent(file, contenu) {
       : contenu[0] === 0xff && contenu[1] === 0xd8 && contenu.at(-2) === 0xff && contenu.at(-1) === 0xd9;
   if (!signatureOk) throw conflict("CONTENU_FICHIER_INVALIDE");
   if (contenu.length !== file.taille || createHash("sha256").update(contenu).digest("hex") !== file.empreinte) throw conflict("EMPREINTE_FICHIER_INVALIDE");
+}
+
+// Le suivi de quantité ne concerne que le non-individualisé : chaque exemplaire individualisé a
+// sa propre fiche, donc pas de compteur sur sa ligne (cohérent avec le dictionnaire de données).
+function normalizeQuantite(data) {
+  if (data.modeSuivi === "individualise") {
+    data.quantite = null;
+    data.seuilAlerte = null;
+  }
 }
 
 function canSeeProject(user, project) {
@@ -59,22 +82,29 @@ export function createMaterielService(repository, storage) {
   return {
     async list(user, filters) {
       const items = await repository.findActiveMateriels(filters);
-      return items.map((item) => mapMateriel(item));
+      return items.map((item) => mapMateriel(item, user.role));
     },
     async get(user, id) {
       const item = await requireActive(id);
-      return { ...mapMateriel(item, MANAGERS.has(user.role)), droits: { gerer: MANAGERS.has(user.role), voirHistorique: MANAGERS.has(user.role), voirPiecesJointes: MANAGERS.has(user.role) } };
+      const demandesEnAttente = MANAGERS.has(user.role) ? await repository.findDemandesEnAttente(id) : [];
+      return {
+        ...mapMateriel(item, user.role, MANAGERS.has(user.role)),
+        droits: { gerer: MANAGERS.has(user.role), voirHistorique: MANAGERS.has(user.role), voirPiecesJointes: MANAGERS.has(user.role) },
+        demandesEnAttente,
+      };
     },
-    async listArchived(user, filters) { if (user.role !== "administrateur") throw forbidden("ARCHIVES_MATERIEL_RESERVEES_ADMINISTRATEUR"); return (await repository.findArchivedMateriels(filters)).map((item) => mapMateriel(item)); },
-    async getArchived(user, id) { const item = await requireArchived(user, id); return { ...mapMateriel(item, true), droits: { gerer: false, voirHistorique: true, voirPiecesJointes: true }, archive: { le: item.archiveLe, par: item.archivePar } }; },
+    async listArchived(user, filters) { if (user.role !== "administrateur") throw forbidden("ARCHIVES_MATERIEL_RESERVEES_ADMINISTRATEUR"); return (await repository.findArchivedMateriels(filters)).map((item) => mapMateriel(item, user.role)); },
+    async getArchived(user, id) { const item = await requireArchived(user, id); return { ...mapMateriel(item, user.role, true), droits: { gerer: false, voirHistorique: true, voirPiecesJointes: true }, archive: { le: item.archiveLe, par: item.archivePar } }; },
     async create(user, data) {
       assertManager(user);
       data.categorieIds = await validateCategories(data.categorieIds);
+      normalizeQuantite(data);
       return repository.createMateriel(data, user.id);
     },
     async update(user, id, data) {
       assertManager(user); await requireActive(id);
       data.categorieIds = await validateCategories(data.categorieIds);
+      normalizeQuantite(data);
       return repository.updateMateriel(id, data, user.id);
     },
     async history(user, id) { assertManager(user); await requireActive(id); return repository.findMaterielHistory(id); },
@@ -147,6 +177,19 @@ export function createMaterielService(repository, storage) {
       if (!piece) throw notFound("PIECE_JOINTE_INTROUVABLE");
       await storage.delete(piece.cleObjet);
       return repository.deleteAttachment(pieceId, id, user.id);
+    },
+    // Réapprovisionnement (écart assumé — Q-09/D-20) : un utilisateur signale une rupture au
+    // gestionnaire, qui la traite (ex. après une commande). Réservé au matériel réellement en
+    // rupture, une seule demande active à la fois par demandeur pour éviter le spam.
+    async signalerRupture(user, id) {
+      const item = await requireActive(id);
+      if (item.quantite !== 0) throw conflict("MATERIEL_NON_EN_RUPTURE");
+      if (await repository.findDemandeEnAttente(id, user.id)) throw conflict("DEMANDE_DEJA_ENVOYEE");
+      return repository.createDemandeReapprovisionnement(id, user.id);
+    },
+    async traiterReapprovisionnement(user, id) {
+      assertManager(user); await requireActive(id);
+      return repository.traiterDemandesReapprovisionnement(id, user.id);
     },
   };
 }

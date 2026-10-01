@@ -44,15 +44,15 @@ async function upsertProjet({ id, nom, description, visibilite, responsable, mem
   });
 }
 
-async function upsertMateriel({ id, nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire, auteur, categories }) {
+async function upsertMateriel({ id, nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire, quantite = null, seuilAlerte = null, auteur, categories }) {
   const categoryRows = [];
   for (const categoryName of categories) {
     categoryRows.push(await prisma.categorie.upsert({ where: { nom: categoryName }, update: {}, create: { nom: categoryName } }));
   }
   const materiel = await prisma.materiel.upsert({
     where: { id },
-    update: { nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire },
-    create: { id, nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire, auteurCreationId: auteur.id },
+    update: { nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire, quantite, seuilAlerte },
+    create: { id, nom, modeSuivi, numeroSerie, referenceConstructeur, numeroInventaire, quantite, seuilAlerte, auteurCreationId: auteur.id },
   });
   await prisma.materielCategorie.createMany({ data: categoryRows.map((category) => ({ materielId: id, categorieId: category.id })), skipDuplicates: true });
   const historyCount = await prisma.historiqueMateriel.count({ where: { materielId: id } });
@@ -118,7 +118,8 @@ try {
 
   await upsertMateriel({ id: "30000000-0000-4000-8000-000000000001", nom: "Oscilloscope MSO-4", modeSuivi: "individualise", numeroSerie: "MSO4-042", referenceConstructeur: "MSO44", numeroInventaire: "INV-0042", auteur: await prisma.utilisateur.findUnique({ where: { identifiant: "admin" } }), categories: ["Mesure", "Électronique"] });
   await upsertMateriel({ id: "30000000-0000-4000-8000-000000000002", nom: "Caméra thermique X2", modeSuivi: "individualise", numeroSerie: "TH-X2-117", referenceConstructeur: "X2", numeroInventaire: "INV-0117", auteur: await prisma.utilisateur.findUnique({ where: { identifiant: "admin" } }), categories: ["Imagerie"] });
-  await upsertMateriel({ id: "30000000-0000-4000-8000-000000000003", nom: "Kit optique 532 nm", modeSuivi: "non_individualise", numeroSerie: null, referenceConstructeur: "KIT-532", numeroInventaire: null, auteur: await prisma.utilisateur.findUnique({ where: { identifiant: "admin" } }), categories: ["Optique"] });
+  // Quantité à 0 : démontre l'indicateur "Réf. en rupture" du tableau de bord (écart assumé, D-14).
+  await upsertMateriel({ id: "30000000-0000-4000-8000-000000000003", nom: "Kit optique 532 nm", modeSuivi: "non_individualise", numeroSerie: null, referenceConstructeur: "KIT-532", numeroInventaire: null, quantite: 0, seuilAlerte: 5, auteur: await prisma.utilisateur.findUnique({ where: { identifiant: "admin" } }), categories: ["Optique"] });
 
   console.log("Données de démonstration des Sprints 1 à 3 initialisées.");
 } finally {

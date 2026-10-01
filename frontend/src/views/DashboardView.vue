@@ -8,6 +8,7 @@ const erreur = ref("");
 const estAdmin = computed(() => dashboard.value?.utilisateur.role === "administrateur");
 const estGestionnaire = computed(() => dashboard.value?.utilisateur.role === "gestionnaire");
 const titre = computed(() => estAdmin.value ? "Tableau de bord administrateur" : estGestionnaire.value ? "Tableau de bord gestionnaire" : "Tableau de bord");
+const etatLabel = { en_attente: "En attente", actif: "Actif", cloture: "Clôturé" };
 
 onMounted(async () => {
   try {
@@ -36,11 +37,23 @@ onMounted(async () => {
 
     <template v-else>
       <section class="metrics" aria-label="Indicateurs">
+        <article v-if="!estGestionnaire" class="metric-card">
+          <span class="metric-card__icon">P</span><div><strong>{{ dashboard.indicateurs.projetsActifs }}</strong><small>Projets actifs</small></div>
+        </article>
         <article class="metric-card">
           <span class="metric-card__icon">I</span><div><strong>{{ dashboard.indicateurs.materielsActifs }}</strong><small>Matériels actifs</small></div>
         </article>
-        <article v-if="!estGestionnaire" class="metric-card">
-          <span class="metric-card__icon">P</span><div><strong>{{ dashboard.indicateurs.projetsActifs }}</strong><small>Projets actifs</small></div>
+        <article class="metric-card">
+          <span class="metric-card__icon metric-card__icon--danger">R</span>
+          <div><strong>{{ dashboard.indicateurs.materielsEnRupture }}</strong><small class="metric-card__delta--danger">Réf. en rupture</small></div>
+        </article>
+        <article class="metric-card">
+          <span class="metric-card__icon metric-card__icon--success">D</span>
+          <div><strong>{{ dashboard.indicateurs.demandesEnAttente }}</strong><small class="metric-card__delta--success">Demandes en attente</small></div>
+        </article>
+        <article class="metric-card">
+          <span class="metric-card__icon">U</span>
+          <div><strong>{{ dashboard.indicateurs.utilisateursActifs }}</strong><small>Utilisateurs actifs · {{ dashboard.indicateurs.utilisateursTotal }} comptes</small></div>
         </article>
       </section>
 
@@ -57,7 +70,7 @@ onMounted(async () => {
               <span><strong>{{ projet.nom }}</strong><small>Responsable : {{ projet.responsable.identifiant }}</small></span>
               <span><span class="visibility-badge" :class="`visibility-badge--${projet.visibilite}`">{{ projet.visibilite === 'public' ? 'Public' : 'Privé' }}</span></span>
               <span>{{ projet.progression }} %</span>
-              <span><span class="status-badge">Actif</span></span>
+              <span><span class="status-badge" :class="`status-badge--${projet.etat}`">{{ etatLabel[projet.etat] }}</span></span>
             </div>
           </div>
           <div v-else class="empty-state">

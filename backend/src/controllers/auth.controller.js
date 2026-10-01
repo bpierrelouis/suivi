@@ -1,11 +1,18 @@
 import { z } from "zod";
 import { env } from "../config/env.js";
-import { authenticate, createSessionToken } from "../services/auth.service.js";
+import { authenticate, changerMotDePasse, createSessionToken } from "../services/auth.service.js";
 
 const loginSchema = z.object({
   identifiant: z.string().trim().min(1).max(254),
   motDePasse: z.string().min(1).max(256),
 });
+
+const changePasswordSchema = z
+  .object({
+    motDePasseActuel: z.string().min(1).max(256),
+    nouveauMotDePasse: z.string().min(8).max(200),
+  })
+  .strict();
 
 const cookieOptions = {
   httpOnly: true,
@@ -32,5 +39,13 @@ export function me(req, res) {
 
 export function logout(req, res) {
   res.clearCookie("suivi_session", { ...cookieOptions, maxAge: undefined });
+  res.status(204).send();
+}
+
+export async function updatePassword(req, res) {
+  const parsed = changePasswordSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: "DONNEES_INVALIDES" });
+
+  await changerMotDePasse(req.utilisateur.id, parsed.data.motDePasseActuel, parsed.data.nouveauMotDePasse);
   res.status(204).send();
 }

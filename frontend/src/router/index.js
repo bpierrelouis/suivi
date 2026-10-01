@@ -9,6 +9,7 @@ import ProjectCreateView from "../views/ProjectCreateView.vue";
 import UsersView from "../views/UsersView.vue";
 import NotificationsView from "../views/NotificationsView.vue";
 import CalendarView from "../views/CalendarView.vue";
+import SettingsView from "../views/SettingsView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -21,14 +22,18 @@ const router = createRouter({
       name: "projets",
       component: ProjectsView,
       meta: { interditGestionnaire: true },
-      children: [
-        { path: "nouveau", name: "projet-nouveau", component: ProjectCreateView },
-        { path: ":id", name: "projet-detail", component: ProjectDetailView },
-      ],
+      children: [{ path: "nouveau", name: "projet-nouveau", component: ProjectCreateView }],
+    },
+    {
+      path: "/projets/:id",
+      name: "projet-detail",
+      component: ProjectDetailView,
+      meta: { interditGestionnaire: true },
     },
     { path: "/utilisateurs", name: "utilisateurs", component: UsersView, meta: { administrateur: true } },
     { path: "/notifications", name: "notifications", component: NotificationsView },
     { path: "/calendrier", name: "calendrier", component: CalendarView },
+    { path: "/parametres", name: "parametres", component: SettingsView },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 });

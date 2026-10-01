@@ -8,7 +8,7 @@ export async function requireSession(req, res, next) {
   try {
     const session = verifySessionToken(token);
     const utilisateur = await findUtilisateurById(session.id);
-    if (!utilisateur) throw new Error("Utilisateur introuvable");
+    if (!utilisateur || !utilisateur.actif) throw new Error("Utilisateur introuvable ou désactivé");
     req.utilisateur = utilisateur;
     next();
   } catch {

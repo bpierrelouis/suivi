@@ -5,6 +5,7 @@ import {
   isProjetMember,
   visibleProjetFilter,
 } from "../policies/projet-access.policy.js";
+import { etatTag } from "../utils/projet-etat.js";
 
 function projectRelation(projet, viewer) {
   if (viewer.role === "administrateur") return "administrateur";
@@ -20,6 +21,7 @@ function toSummary(projet, utilisateur) {
     description: projet.description,
     visibilite: projet.visibilite,
     statut: projet.statut,
+    etat: etatTag(projet),
     dateDebut: projet.dateDebut,
     dateFin: projet.dateFin,
     responsable: projet.responsable,

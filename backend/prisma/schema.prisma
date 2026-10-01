@@ -25,6 +25,7 @@ enum StatutProjet {
 enum EtatTache {
   a_faire
   en_cours
+  en_revue
   terminee
 }
 
@@ -76,51 +77,85 @@ enum TypeNotification {
 }
 
 model Utilisateur {
-  id                      String                  @id @default(uuid()) @db.Uuid
-  identifiant             String                  @unique
-  motDePasse              String                  @map("mot_de_passe")
-  role                    Role                    @default(utilisateur)
-  creeLe                  DateTime                @default(now()) @map("cree_le") @db.Timestamptz(3)
-  derniereConnexion       DateTime?               @map("derniere_connexion") @db.Timestamptz(3)
-  projetsResponsables     Projet[]                @relation("ResponsableProjet")
-  participations          Participation[]
-  tachesAssignees         Tache[]                 @relation("ResponsableTache")
-  documentationsModifiees DocumentationProjet[]   @relation("AuteurDocumentation")
-  materielsCrees          Materiel[]              @relation("AuteurCreationMateriel")
-  historiquesMateriel     HistoriqueMateriel[]    @relation("AuteurEvenementMateriel")
-  piecesJointesMateriel   PieceJointeMateriel[]   @relation("AuteurPieceJointeMateriel")
-  materielsArchives       Materiel[]              @relation("AuteurArchivageMateriel")
-  reservationsCreees      Reservation[]           @relation("CreateurReservation")
-  reservationsAnnulees    Reservation[]           @relation("AuteurAnnulationReservation")
-  historiquesReservation  HistoriqueReservation[] @relation("AuteurEvenementReservation")
-  historiquesProjet       HistoriqueProjet[]      @relation("AuteurEvenementProjet")
-  notifications           Notification[]          @relation("DestinataireNotification")
+  id                                  String                       @id @default(uuid()) @db.Uuid
+  identifiant                         String                       @unique
+  motDePasse                          String                       @map("mot_de_passe")
+  role                                Role                         @default(utilisateur)
+  // D-21 : suppression = désactivation (pas de suppression physique, FK Restrict sur l'historique).
+  actif                               Boolean                      @default(true)
+  creeLe                              DateTime                     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  derniereConnexion                   DateTime?                    @map("derniere_connexion") @db.Timestamptz(3)
+  projetsResponsables                 Projet[]                     @relation("ResponsableProjet")
+  participations                      Participation[]
+  tachesAssignees                     Tache[]                      @relation("ResponsableTache")
+  documentationsModifiees             DocumentationProjet[]        @relation("AuteurDocumentation")
+  materielsCrees                      Materiel[]                   @relation("AuteurCreationMateriel")
+  historiquesMateriel                 HistoriqueMateriel[]         @relation("AuteurEvenementMateriel")
+  piecesJointesMateriel               PieceJointeMateriel[]        @relation("AuteurPieceJointeMateriel")
+  materielsArchives                   Materiel[]                   @relation("AuteurArchivageMateriel")
+  reservationsCreees                  Reservation[]                @relation("CreateurReservation")
+  reservationsAnnulees                Reservation[]                @relation("AuteurAnnulationReservation")
+  historiquesReservation              HistoriqueReservation[]      @relation("AuteurEvenementReservation")
+  historiquesProjet                   HistoriqueProjet[]           @relation("AuteurEvenementProjet")
+  notifications                       Notification[]               @relation("DestinataireNotification")
+  demandesReapprovisionnement         DemandeReapprovisionnement[] @relation("DemandeurReapprovisionnement")
+  demandesReapprovisionnementTraitees DemandeReapprovisionnement[] @relation("TraiteurReapprovisionnement")
 
   @@map("utilisateurs")
 }
 
 model Materiel {
-  id                    String                @id @default(uuid()) @db.Uuid
-  nom                   String
-  modeSuivi             ModeSuiviMateriel     @default(individualise) @map("mode_suivi")
-  numeroSerie           String?               @map("numero_serie")
-  referenceConstructeur String?               @map("reference_constructeur")
-  numeroInventaire      String?               @map("numero_inventaire")
-  statut                StatutMateriel        @default(actif)
-  auteurCreationId      String                @map("auteur_creation_id") @db.Uuid
-  auteurCreation        Utilisateur           @relation("AuteurCreationMateriel", fields: [auteurCreationId], references: [id], onDelete: Restrict)
-  categories            MaterielCategorie[]
-  historique            HistoriqueMateriel[]
-  piecesJointes         PieceJointeMateriel[]
-  archiveLe             DateTime?             @map("archive_le") @db.Timestamptz(3)
-  archiveParId          String?               @map("archive_par_id") @db.Uuid
-  archivePar            Utilisateur?          @relation("AuteurArchivageMateriel", fields: [archiveParId], references: [id], onDelete: Restrict)
-  reservations          Reservation[]
-  creeLe                DateTime              @default(now()) @map("cree_le") @db.Timestamptz(3)
-  modifieLe             DateTime              @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  id                          String                       @id @default(uuid()) @db.Uuid
+  nom                         String
+  modeSuivi                   ModeSuiviMateriel            @default(individualise) @map("mode_suivi")
+  numeroSerie                 String?                      @map("numero_serie")
+  referenceConstructeur       String?                      @map("reference_constructeur")
+  numeroInventaire            String?                      @map("numero_inventaire")
+  // Écart assumé avec le dictionnaire de données (aucune quantité précise n'y est prévue) : ajouté
+  // à la demande du client pour piloter la rupture/réapprovisionnement du non-individualisé (Q-09,
+  // D-20 dans decisions-et-questions.md). Toujours nul pour le mode individualisé.
+  quantite                    Int?
+  seuilAlerte                 Int?                         @map("seuil_alerte")
+  statut                      StatutMateriel               @default(actif)
+  auteurCreationId            String                       @map("auteur_creation_id") @db.Uuid
+  auteurCreation              Utilisateur                  @relation("AuteurCreationMateriel", fields: [auteurCreationId], references: [id], onDelete: Restrict)
+  categories                  MaterielCategorie[]
+  historique                  HistoriqueMateriel[]
+  piecesJointes               PieceJointeMateriel[]
+  archiveLe                   DateTime?                    @map("archive_le") @db.Timestamptz(3)
+  archiveParId                String?                      @map("archive_par_id") @db.Uuid
+  archivePar                  Utilisateur?                 @relation("AuteurArchivageMateriel", fields: [archiveParId], references: [id], onDelete: Restrict)
+  reservations                Reservation[]
+  demandesReapprovisionnement DemandeReapprovisionnement[]
+  creeLe                      DateTime                     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe                   DateTime                     @updatedAt @map("modifie_le") @db.Timestamptz(3)
 
   @@index([statut, nom])
   @@map("materiels")
+}
+
+enum StatutDemandeReapprovisionnement {
+  nouvelle
+  traitee
+}
+
+// Signalement de rupture par un utilisateur, traité par l'administrateur ou le gestionnaire —
+// fonctionnalité mockée dans le prototype, écart assumé avec le dictionnaire de données (Q-09
+// ouverte), ajoutée à la demande du client. Voir D-20 dans decisions-et-questions.md.
+model DemandeReapprovisionnement {
+  id           String                           @id @default(uuid()) @db.Uuid
+  materielId   String                           @map("materiel_id") @db.Uuid
+  materiel     Materiel                         @relation(fields: [materielId], references: [id], onDelete: Restrict)
+  demandeParId String                           @map("demande_par_id") @db.Uuid
+  demandePar   Utilisateur                      @relation("DemandeurReapprovisionnement", fields: [demandeParId], references: [id], onDelete: Restrict)
+  statut       StatutDemandeReapprovisionnement @default(nouvelle)
+  creeLe       DateTime                         @default(now()) @map("cree_le") @db.Timestamptz(3)
+  traiteeLe    DateTime?                        @map("traitee_le") @db.Timestamptz(3)
+  traiteeParId String?                          @map("traitee_par_id") @db.Uuid
+  traiteePar   Utilisateur?                     @relation("TraiteurReapprovisionnement", fields: [traiteeParId], references: [id], onDelete: Restrict)
+
+  @@index([materielId, statut])
+  @@map("demandes_reapprovisionnement")
 }
 
 model Categorie {

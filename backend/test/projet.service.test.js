@@ -44,6 +44,26 @@ test("la liste transforme les données sans exposer la structure de persistance"
   assert.equal("participations" in projets[0], false);
 });
 
+test("le tag d'état distingue en attente, actif et clôturé", async () => {
+  const service = createProjetService({
+    async findVisibleProjets() {
+      return [
+        rawProjet({ id: "sans-date", dateDebut: null }),
+        rawProjet({ id: "futur", dateDebut: new Date("2999-01-01T00:00:00Z") }),
+        rawProjet({ id: "en-cours", dateDebut: new Date("2020-01-01T00:00:00Z") }),
+        rawProjet({ id: "archive", statut: "archive", dateDebut: new Date("2020-01-01T00:00:00Z") }),
+      ];
+    },
+  });
+
+  const projets = await service.list(utilisateur);
+
+  assert.equal(projets.find((p) => p.id === "sans-date").etat, "en_attente");
+  assert.equal(projets.find((p) => p.id === "futur").etat, "en_attente");
+  assert.equal(projets.find((p) => p.id === "en-cours").etat, "actif");
+  assert.equal(projets.find((p) => p.id === "archive").etat, "cloture");
+});
+
 test("le détail inaccessible répond comme un projet introuvable", async () => {
   const service = createProjetService({
     async findVisibleProjetById() {

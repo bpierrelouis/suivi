@@ -25,7 +25,7 @@ const taskCreateSchema = z.object({
 const taskUpdateSchema = z.object({
   titre: z.string().trim().min(1).max(160).optional(),
   description: z.string().trim().min(1).max(3000).optional(),
-  etat: z.enum(["a_faire", "en_cours", "terminee"]).optional(),
+  etat: z.enum(["a_faire", "en_cours", "en_revue", "terminee"]).optional(),
   ordre: z.number().int().min(0).optional(),
   responsableId: uuid.nullable().optional(),
 }).strict().refine((data) => Object.keys(data).length > 0);
